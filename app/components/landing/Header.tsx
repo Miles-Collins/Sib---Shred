@@ -27,9 +27,6 @@ export function Header() {
     }
   });
 
-  const navBaseClass =
-    "brand-nav-link shrink-0 rounded-full border px-3 py-2";
-
   const readCartCount = () => {
     try {
       const raw = localStorage.getItem("sibshred-cart");
@@ -119,8 +116,9 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
-        <Link href="/" className="flex items-center justify-center gap-3 lg:justify-start">
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3 shrink-0">
           <Image
             src="/brand-logo.png"
             alt="Sibshred Kitchen"
@@ -129,41 +127,46 @@ export function Header() {
             priority
           />
           <div>
-            <p className="brand-section-title text-2xl">SIB & SHRED</p>
-            <p className="brand-kicker text-[var(--muted)]">
+            <p className="brand-section-title text-2xl leading-none">SIB & SHRED</p>
+            <p className="brand-kicker text-[10px] text-[var(--muted)]">
               Meal Prep
             </p>
           </div>
         </Link>
 
-        <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--muted)] lg:mx-0 lg:w-auto lg:flex-wrap lg:justify-center lg:overflow-visible lg:px-0 lg:pb-0">
+        {/* Center Navigation Links */}
+        <div className="hidden gap-8 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--muted)] lg:flex lg:items-center">
           {navLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`${navBaseClass} ${
+              className={`transition-colors relative ${
                 isActive(item.href)
-                  ? "border-[var(--ink)] bg-[var(--ink)] text-white"
-                  : "border-transparent hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]"
+                  ? "text-[var(--ink)] font-bold"
+                  : "hover:text-[var(--ink)]"
               }`}
             >
               {item.label}
+              {isActive(item.href) && (
+                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[var(--ink)]" />
+              )}
             </Link>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:items-center lg:gap-3">
+        {/* Right CTA Buttons */}
+        <div className="flex items-center gap-3 shrink-0">
           <Link
             href="/menu"
-            className="brand-control premium-sheen rounded-md border border-[var(--line)] bg-white px-4 py-2 text-center text-sm font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)]"
+            className="hidden brand-control premium-sheen rounded-md border border-[var(--line)] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition sm:block"
           >
             Explore Meals
           </Link>
           <Link
             href="/checkout"
-            className="brand-control premium-sheen inline-flex items-center justify-center gap-2 rounded-md bg-[var(--sun)] px-5 py-2.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            className="brand-control premium-sheen inline-flex items-center justify-center gap-2 rounded-md bg-[var(--sun)] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
           >
-            Start Order
+            <span className="hidden sm:inline">Start</span> Order
             {cartCount > 0 ? (
               <span className="inline-flex min-w-[1.4rem] items-center justify-center rounded-full bg-[var(--ink)] px-1.5 py-0.5 text-[10px] font-black leading-none text-white">
                 {cartCount}
