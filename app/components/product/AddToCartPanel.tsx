@@ -14,6 +14,7 @@ type CartItem = {
 
 type AddToCartPanelProps = {
   meal: Meal;
+  compact?: boolean;
 };
 
 function readCart(): CartItem[] {
@@ -30,7 +31,7 @@ function readCart(): CartItem[] {
   }
 }
 
-export function AddToCartPanel({ meal }: AddToCartPanelProps) {
+export function AddToCartPanel({ meal, compact = false }: AddToCartPanelProps) {
   const [quantity, setQuantity] = useState(1);
   const [status, setStatus] = useState<string>("");
 
@@ -59,7 +60,9 @@ export function AddToCartPanel({ meal }: AddToCartPanelProps) {
 
   return (
     <div className="space-y-2 pt-2">
-      <p className="text-5xl font-black text-[var(--berry)]">{meal.price}</p>
+      <p className={`${compact ? "text-3xl" : "text-5xl"} font-black text-[var(--berry)]`}>
+        {meal.price}
+      </p>
       <p className="text-sm text-[var(--muted)]">In stock</p>
       <div className="flex flex-wrap gap-3">
         <button
@@ -82,7 +85,9 @@ export function AddToCartPanel({ meal }: AddToCartPanelProps) {
         <button
           type="button"
           onClick={addToCart}
-          className="rounded-md bg-[var(--sun)] px-6 py-2.5 font-bold text-white"
+          className={`rounded-md bg-[var(--sun)] font-bold text-white ${
+            compact ? "px-5 py-2" : "px-6 py-2.5"
+          }`}
         >
           Add to cart
         </button>

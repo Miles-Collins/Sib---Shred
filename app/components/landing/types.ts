@@ -3,6 +3,8 @@ export type Meal = {
   name: string;
   subtitle?: string;
   description: string;
+  allergens: string;
+  facilityNote: string;
   dietaryTags: string[];
   calories: number;
   protein: string;

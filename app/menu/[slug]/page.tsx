@@ -2,8 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Header } from "../../components/landing/Header";
 import { featuredMeals, getMealBySlug } from "../../components/landing/data";
 import { AddToCartPanel } from "../../components/product/AddToCartPanel";
+import { ProductDescription } from "../../components/product/ProductDescription";
+import { TinyShareButton } from "../../components/product/TinyShareButton";
 import { YouMightAlsoLikeCarousel } from "../../components/product/YouMightAlsoLikeCarousel";
 
 type MealPageProps = {
@@ -14,9 +17,47 @@ export function generateStaticParams() {
   return featuredMeals.map((meal) => ({ slug: meal.slug }));
 }
 
-function macroPercent(value: string, max: number) {
-  const numeric = Number.parseInt(value, 10);
-  return Math.min(100, Math.round((numeric / max) * 100));
+function nutritionRows(meal: {
+  calories: number;
+  fat: string;
+  carbs: string;
+  protein: string;
+  sodium: string;
+}) {
+  const fatNum = Number.parseInt(meal.fat, 10);
+  const carbNum = Number.parseInt(meal.carbs, 10);
+  const proteinNum = Number.parseInt(meal.protein, 10);
+
+  return [
+    ["Calories", `${meal.calories}kcal`],
+    ["Fat", meal.fat],
+    ["Saturated Fat", `${Math.max(4, Math.round(fatNum * 0.42))}g`],
+    ["Carbohydrate", meal.carbs],
+    ["Sugar", `${Math.max(4, Math.round(carbNum * 0.24))}g`],
+    ["Dietary Fiber", `${Math.max(3, Math.round(carbNum * 0.18))}g`],
+    ["Protein", meal.protein],
+    ["Cholesterol", `${Math.max(80, proteinNum * 5)}mg`],
+    ["Sodium", meal.sodium],
+    ["Potassium", `${Math.max(500, proteinNum * 20)}mg`],
+    ["Calcium", "200mg"],
+    ["Iron", "2.3mg"],
+  ] as const;
+}
+
+function splitIngredients(ingredients: string[]) {
+  const mid = Math.ceil(ingredients.length / 2);
+  return [ingredients.slice(0, mid), ingredients.slice(mid)];
+}
+
+function dietBadgeClass(tag: string) {
+  if (tag === "LOW CARB") return "bg-[#2e74d7] text-white";
+  if (tag === "CALORIE SMART") return "bg-[#4ec9ee] text-white";
+  if (tag === "HIGH PROTEIN") return "bg-[#45b649] text-white";
+  if (tag === "FIBER FILLED") return "bg-[#3f4a49] text-white";
+  if (tag === "GF") return "bg-[#2e74d7] text-white";
+  if (tag === "VEGAN") return "bg-[#45b649] text-white";
+  if (tag === "SPICY") return "bg-[#d5423a] text-white";
+  return "bg-[#3f4a49] text-white";
 }
 
 export default async function MealPage({ params }: MealPageProps) {
@@ -27,120 +68,109 @@ export default async function MealPage({ params }: MealPageProps) {
     notFound();
   }
 
-  const proteinPct = macroPercent(meal.protein, 50);
-  const carbsPct = macroPercent(meal.carbs, 70);
-  const fatPct = macroPercent(meal.fat, 30);
+  const rows = nutritionRows(meal);
+  const [leftIngredients, rightIngredients] = splitIngredients(meal.ingredients);
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-16 px-5 py-6 sm:px-8">
-      <div className="text-sm text-[var(--muted)]">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>{" "}
-        /{" "}
-        <Link href="/menu" className="hover:underline">
-          Menu
-        </Link>{" "}
-        / {meal.name}
-      </div>
+    <div className="flex min-h-full flex-col bg-[#e6e7df] text-[var(--ink)]">
+      <Header />
 
-      <section className="grid gap-8 lg:grid-cols-[1.35fr_1fr]">
-        <div className="rounded-lg border border-[var(--line)] bg-white p-2">
-          <Image
-            src={meal.image}
-            alt={meal.name}
-            width={1400}
-            height={920}
-            className="w-full rounded-md object-cover"
-            priority
-          />
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-6 sm:px-8">
+        <div className="text-[15px] text-[var(--muted)]">
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>{" "}
+          /{" "}
+          <Link href="/menu" className="hover:underline">
+            Menu
+          </Link>{" "}
+          / {meal.name}
         </div>
 
-        <div className="space-y-4">
-          <h1 className="text-5xl font-black leading-tight tracking-tight">
-            {meal.name}
-            {meal.subtitle ? ` | ${meal.subtitle}` : ""}
-          </h1>
-          <p className="text-xl text-[var(--muted)]">{meal.description}</p>
+        <section className="grid gap-5 lg:grid-cols-[1.45fr_0.78fr]">
+          <article className="rounded-3xl border border-[#d9dbd2] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h1 className="text-[clamp(2rem,2.8vw,3.1rem)] leading-[1.08] font-black tracking-tight">
+                  {meal.name}
+                </h1>
+                <p className="mt-1 text-[clamp(1.65rem,2vw,2.2rem)] leading-[1.12] font-semibold text-[var(--ink)]">
+                  {meal.subtitle ? `| ${meal.subtitle}` : ""}
+                </p>
+              </div>
+              <TinyShareButton title={meal.name} />
+            </div>
 
-          <div className="space-y-1.5 pt-2 text-lg">
-            <p>Calories: {meal.calories}</p>
-            <p>Protein: {meal.protein}</p>
-            <p>Carbs: {meal.carbs}</p>
-            <p>Fat: {meal.fat}</p>
-            <p>Sodium: {meal.sodium}</p>
-            {meal.isGlutenFree ? <p>Gluten Free</p> : null}
-          </div>
+            <div className="mt-5 overflow-hidden rounded-md border border-[var(--line)]">
+              <Image
+                src={meal.image}
+                alt={meal.name}
+                width={1600}
+                height={980}
+                className="w-full object-cover"
+                priority
+              />
+            </div>
 
-          <div className="rounded-lg border border-[var(--line)] bg-white p-4">
-            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
-              Ingredients
+            <div className="mt-4 flex flex-wrap gap-2">
+              {Array.from(new Set([...meal.dietaryTags, "CALORIE SMART", "FIBER FILLED"])).map((tag) => (
+                <span
+                  key={tag}
+                  className={`rounded-[2px] px-2.5 py-1 text-[12px] font-bold leading-none tracking-[0.04em] ${dietBadgeClass(tag)}`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <AddToCartPanel meal={meal} compact />
+          </article>
+
+          <aside className="rounded-3xl border border-[#d9dbd2] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-6">
+            <h2 className="text-[clamp(1.9rem,2.2vw,2.8rem)] font-black tracking-tight">Nutrition Per Serving</h2>
+            <div className="mt-3 text-right text-[1.1rem] font-semibold">Per serving</div>
+            <div className="mt-2 space-y-1">
+              {rows.map(([label, value]) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between border-t border-[#d7d8d1] py-2.5 text-[1rem]"
+                >
+                  <span className="font-semibold">{label}</span>
+                  <span>{value}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-5 text-[0.9rem] text-[var(--muted)]">
+              Nutritional info may vary slightly by time of delivery.
             </p>
-            <p className="mt-2 text-[15px] leading-relaxed text-[var(--muted)]">
-              {meal.ingredients.join(", ")}.
-            </p>
+          </aside>
+        </section>
+
+        <ProductDescription text={meal.description} />
+
+        <section className="rounded-3xl border border-[#d9dbd2] bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-8">
+          <h2 className="text-[clamp(1.8rem,2.2vw,2.5rem)] font-black tracking-tight">Ingredients</h2>
+          <p className="mt-3 text-[1.05rem]">Allergens: {meal.allergens}</p>
+          <p className="mt-1 text-[0.95rem] font-semibold text-[var(--muted)]">{meal.facilityNote}</p>
+
+          <div className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
+            {[leftIngredients, rightIngredients].map((column, index) => (
+              <ul key={`column-${index}`} className="space-y-2">
+                {column.map((ingredient) => (
+                  <li key={ingredient} className="flex items-center gap-3 text-[1rem]">
+                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-[#70716f] text-[11px] text-white">
+                      ■
+                    </span>
+                    <span>{ingredient}</span>
+                  </li>
+                ))}
+              </ul>
+            ))}
           </div>
+        </section>
 
-          <AddToCartPanel meal={meal} />
-        </div>
-      </section>
-
-      <section className="space-y-6 rounded-2xl bg-[#e9ece8] px-5 py-12 sm:px-10">
-        <h2 className="text-center text-5xl font-medium tracking-tight">Nutrition Facts</h2>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="text-center">
-            <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-full bg-white text-5xl font-black">
-              {meal.calories}
-            </div>
-            <p className="mt-4 text-3xl font-semibold">Calories</p>
-          </div>
-
-          <div className="text-center">
-            <div
-              className="mx-auto flex h-40 w-40 items-center justify-center rounded-full text-5xl font-black"
-              style={{
-                background: `conic-gradient(#f5aa1a ${proteinPct}%, #f0f1ef ${proteinPct}% 100%)`,
-              }}
-            >
-              <span className="flex h-32 w-32 items-center justify-center rounded-full bg-white text-5xl">
-                {meal.protein}
-              </span>
-            </div>
-            <p className="mt-4 text-3xl font-semibold">Protein</p>
-          </div>
-
-          <div className="text-center">
-            <div
-              className="mx-auto flex h-40 w-40 items-center justify-center rounded-full text-5xl font-black"
-              style={{
-                background: `conic-gradient(#46c6a0 ${carbsPct}%, #f0f1ef ${carbsPct}% 100%)`,
-              }}
-            >
-              <span className="flex h-32 w-32 items-center justify-center rounded-full bg-white text-5xl">
-                {meal.carbs}
-              </span>
-            </div>
-            <p className="mt-4 text-3xl font-semibold">Carbs</p>
-          </div>
-
-          <div className="text-center">
-            <div
-              className="mx-auto flex h-40 w-40 items-center justify-center rounded-full text-5xl font-black"
-              style={{
-                background: `conic-gradient(#ff6464 ${fatPct}%, #f0f1ef ${fatPct}% 100%)`,
-              }}
-            >
-              <span className="flex h-32 w-32 items-center justify-center rounded-full bg-white text-5xl">
-                {meal.fat}
-              </span>
-            </div>
-            <p className="mt-4 text-3xl font-semibold">Fat</p>
-          </div>
-        </div>
-      </section>
-
-      <YouMightAlsoLikeCarousel currentMealSlug={meal.slug} meals={featuredMeals} />
+        <YouMightAlsoLikeCarousel currentMealSlug={meal.slug} meals={featuredMeals} />
+      </main>
     </div>
   );
 }

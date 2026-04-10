@@ -7,6 +7,9 @@ export const featuredMeals: Meal[] = [
     subtitle: "Fit",
     description:
       "Organic free-range chicken breast served with garlic mashed potatoes and roasted vegetables.",
+    allergens: "Milk",
+    facilityNote:
+      "Produced in a facility that processes eggs, fish, milk, peanuts, sesame, shellfish, soy, tree nuts, and wheat.",
     dietaryTags: ["GF", "HIGH PROTEIN"],
     calories: 610,
     protein: "44g",
@@ -33,6 +36,9 @@ export const featuredMeals: Meal[] = [
     subtitle: "Fit",
     description:
       "Organic free-range chicken breast with peppers, onions, brown rice, and black beans.",
+    allergens: "None declared",
+    facilityNote:
+      "Produced in a facility that processes eggs, fish, milk, peanuts, sesame, shellfish, soy, tree nuts, and wheat.",
     dietaryTags: ["GF", "SPICY", "HIGH PROTEIN"],
     calories: 410,
     protein: "38g",
@@ -60,6 +66,9 @@ export const featuredMeals: Meal[] = [
     subtitle: "Performance",
     description:
       "All-natural turkey breast, mashed potatoes, green beans, and cranberry sauce.",
+    allergens: "Milk",
+    facilityNote:
+      "Produced in a facility that processes eggs, fish, milk, peanuts, sesame, shellfish, soy, tree nuts, and wheat.",
     dietaryTags: ["GF"],
     calories: 600,
     protein: "50g",
@@ -86,6 +95,9 @@ export const featuredMeals: Meal[] = [
     subtitle: "Vegan",
     description:
       "Tofu, jasmine rice, basil chili sauce, and stir-fried peppers with fresh herbs.",
+    allergens: "Soy",
+    facilityNote:
+      "Produced in a facility that processes eggs, fish, milk, peanuts, sesame, shellfish, soy, tree nuts, and wheat.",
     dietaryTags: ["VEGAN", "GF", "SPICY"],
     calories: 445,
     protein: "30g",
