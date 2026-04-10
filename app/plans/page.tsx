@@ -1,42 +1,250 @@
 import Link from "next/link";
 
+import { Header } from "../components/landing/Header";
 import { plans } from "../components/landing/data";
 
-export default function PlansPage() {
-  return (
-    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
-      <header>
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
-          Subscribe and save
-        </p>
-        <h1 className="mt-1 text-4xl font-black tracking-tight">Plan options</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-          Simple weekly plans for one person who wants fresh meals without a
-          kitchen full of leftovers.
-        </p>
-      </header>
+const A_LA_CARTE_PRICE = 16.49;
 
-      <section className="grid gap-4 md:grid-cols-3">
-        {plans.map((plan) => (
-          <article
-            key={plan.title}
-            className="rounded-2xl border border-[var(--line)] bg-white p-6"
-          >
-            <p className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
-              {plan.title}
+const savingsRows = plans.map((plan) => {
+  const mealsPerWeek = Number(plan.detail.match(/\d+/)?.[0] ?? 0);
+  const weeklyAlaCarte = mealsPerWeek * A_LA_CARTE_PRICE;
+  const weeklySavings = weeklyAlaCarte - Number(plan.price.replace("$", ""));
+
+  return {
+    ...plan,
+    mealsPerWeek,
+    weeklyAlaCarte,
+    weeklySavings,
+    monthlySavings: weeklySavings * 4,
+  };
+});
+
+export default function PlansPage() {
+  const featuredPlan = savingsRows[1];
+
+  return (
+    <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
+      <Header />
+
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-5 py-10 sm:px-8">
+        <section className="brand-shell grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              Subscribe and save
             </p>
-            <p className="mt-2 text-lg font-semibold">{plan.detail}</p>
-            <p className="mt-5 text-4xl font-black tracking-tight">{plan.price}</p>
-            <p className="text-sm text-[var(--muted)]">per week</p>
+            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
+              Simple weekly plans with built-in savings.
+            </h1>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+              Plans are designed for one person who wants fresh meals without a kitchen full of leftovers.
+              The more you order, the lower your average meal cost becomes.
+            </p>
+
+            <div className="mt-7 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Best value
+                </p>
+                <p className="mt-2 text-lg font-black text-[var(--ink)]">Momentum</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">Balanced volume and savings.</p>
+              </div>
+              <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Avg ala carte
+                </p>
+                <p className="mt-2 text-lg font-black text-[var(--ink)]">${A_LA_CARTE_PRICE.toFixed(2)}</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">Per meal, before fees.</p>
+              </div>
+              <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Cancel anytime
+                </p>
+                <p className="mt-2 text-lg font-black text-[var(--ink)]">No contract</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">Pause or skip with ease.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside className="brand-panel overflow-hidden p-6 sm:p-7">
+            <p className="brand-kicker text-[var(--muted)]">Savings snapshot</p>
+            <div className="mt-4 space-y-4">
+              {savingsRows.map((plan, index) => (
+                <div
+                  key={plan.title}
+                  className={`rounded-2xl border p-4 ${
+                    index === 1
+                      ? "border-[var(--sun)] bg-[var(--mint)]/50"
+                      : "border-[var(--line)] bg-white"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                        {plan.title}
+                      </p>
+                      <p className="mt-1 text-lg font-black text-[var(--ink)]">{plan.detail}</p>
+                    </div>
+                    {index === 1 ? (
+                      <span className="brand-badge brand-badge--green rounded-[0.2rem] px-2 py-1 text-[11px]">
+                        Best Value
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                        Weekly price
+                      </p>
+                      <p className="mt-1 text-lg font-black">{plan.price}</p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                        vs ala carte
+                      </p>
+                      <p className="mt-1 text-lg font-black">-${plan.weeklySavings.toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                        Monthly save
+                      </p>
+                      <p className="mt-1 text-lg font-black text-[var(--berry)]">-${plan.monthlySavings.toFixed(0)}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </section>
+
+        <section className="grid gap-4 md:grid-cols-3">
+          {savingsRows.map((plan) => (
+            <article
+              key={plan.title}
+              className={`motion-lift brand-panel p-6 ${plan.title === featuredPlan.title ? "border-[var(--sun)]" : ""}`}
+            >
+              <p className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                {plan.title}
+              </p>
+              <p className="mt-2 text-lg font-semibold">{plan.detail}</p>
+              <div className="mt-5 flex items-end gap-3">
+                <p className="text-4xl font-black tracking-tight">{plan.price}</p>
+                <p className="pb-1 text-sm text-[var(--muted)]">per week</p>
+              </div>
+              <p className="mt-2 text-sm text-[var(--muted)]">
+                Estimated savings of ${plan.weeklySavings.toFixed(2)} per week versus ordering meals individually.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-[var(--muted)]">
+                <li>Chef-prepared weekly menu</li>
+                <li>Pause or skip anytime</li>
+                <li>Insulated local delivery</li>
+              </ul>
+              <Link
+                href="/checkout"
+                className={`brand-control mt-6 inline-block w-full rounded-full px-4 py-3 text-center text-sm font-bold uppercase tracking-[0.1em] text-white ${
+                  plan.title === featuredPlan.title ? "bg-[var(--sun)]" : "bg-[var(--ink)]"
+                }`}
+              >
+                Choose plan
+              </Link>
+            </article>
+          ))}
+        </section>
+
+        <section className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div>
+            <p className="brand-kicker text-[var(--muted)]">Why it feels premium</p>
+            <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
+              The plan gets more efficient as your week gets busier.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+              Instead of paying one-off delivery fees and picking through random meals,
+              you lock in a cleaner weekly routine. That means less friction, less waste,
+              and a lower cost per meal the more you order.
+            </p>
+          </div>
+
+          <div className="grid gap-3">
+            {[
+              {
+                title: "For lighter weeks",
+                text: "Starter keeps things simple if you want a few reliable meals without overcommitting.",
+              },
+              {
+                title: "Best balance",
+                text: "Momentum gives you the strongest blend of savings, convenience, and variety.",
+              },
+              {
+                title: "Maximum savings",
+                text: "All In is the best value if you want most of your lunches and dinners handled for the week.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-2xl border border-[var(--line)] bg-white p-5">
+                <p className="brand-kicker text-[var(--berry)]">{item.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="brand-panel p-6 sm:p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="brand-kicker text-[var(--muted)]">Common questions</p>
+              <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
+                What should I choose?
+              </h2>
+            </div>
+            <Link href="/about" className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline">
+              Learn more about Alysha
+            </Link>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {[
+              {
+                q: "Which plan gives the best savings?",
+                a: "Momentum is the best value for most people because it balances meal count and price per meal.",
+              },
+              {
+                q: "Can I change plans later?",
+                a: "Yes. Start with the plan that fits your week now and adjust as your routine changes.",
+              },
+              {
+                q: "Is this good for one person?",
+                a: "Yes. The whole menu and pricing structure are built around practical weekly routines for one person.",
+              },
+              {
+                q: "What if I want more meals?",
+                a: "Choose the larger plan for better savings per meal, then scale down later if needed.",
+              },
+            ].map((item) => (
+              <article key={item.q} className="rounded-2xl border border-[var(--line)] bg-[var(--bg-cream)] p-5">
+                <p className="text-sm font-bold uppercase tracking-[0.1em] text-[var(--ink)]">{item.q}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.a}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-[var(--line)] bg-[var(--mint)]/45 p-7 sm:p-10">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+                Ready when you are
+              </p>
+              <h2 className="mt-2 text-3xl leading-tight font-black tracking-tight sm:text-5xl">
+                Pick a plan that fits your week.
+              </h2>
+            </div>
             <Link
               href="/checkout"
-              className="mt-6 inline-block w-full rounded-full bg-[var(--ink)] px-4 py-3 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
+              className="brand-control rounded-full bg-[var(--ink)] px-8 py-4 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
             >
-              Choose plan
+              Start order
             </Link>
-          </article>
-        ))}
-      </section>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
