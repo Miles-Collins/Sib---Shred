@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import type { Meal } from "./types";
 
@@ -9,17 +10,21 @@ type MealCardProps = {
 export function MealCard({ meal }: MealCardProps) {
   return (
     <article className="group rounded-2xl border border-[var(--line)] bg-white p-5 transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(0,0,0,0.08)]">
-      <Image
-        src={meal.image}
-        alt={meal.name}
-        width={600}
-        height={380}
-        className="h-42 w-full rounded-xl border border-[var(--line)] object-cover"
-      />
+      <Link href={`/menu/${meal.slug}`}>
+        <Image
+          src={meal.image}
+          alt={meal.name}
+          width={600}
+          height={380}
+          className="h-42 w-full rounded-xl border border-[var(--line)] object-cover"
+        />
+      </Link>
       <p className="mt-4 inline-block rounded-full bg-[var(--berry)] px-3 py-1 text-xs font-bold tracking-[0.12em] text-white uppercase">
         {meal.tag}
       </p>
-      <h3 className="mt-3 text-xl font-extrabold leading-tight">{meal.name}</h3>
+      <h3 className="mt-3 text-xl font-extrabold leading-tight">
+        <Link href={`/menu/${meal.slug}`}>{meal.name}</Link>
+      </h3>
       <p className="mt-4 text-xs font-semibold tracking-[0.12em] text-[var(--muted)] uppercase">
         Nutrition
       </p>
@@ -31,9 +36,12 @@ export function MealCard({ meal }: MealCardProps) {
       </div>
       <div className="mt-6 flex items-center justify-between">
         <p className="text-lg font-black">{meal.price}</p>
-        <button className="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white">
-          Add Meal
-        </button>
+        <Link
+          href={`/menu/${meal.slug}`}
+          className="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white"
+        >
+          View Meal
+        </Link>
       </div>
     </article>
   );

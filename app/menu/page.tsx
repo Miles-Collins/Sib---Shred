@@ -27,22 +27,29 @@ export default function MenuPage() {
             key={meal.name}
             className="rounded-2xl border border-[var(--line)] bg-white p-5"
           >
-            <Image
-              src={meal.image}
-              alt={meal.name}
-              width={600}
-              height={380}
-              className="h-42 w-full rounded-xl border border-[var(--line)] object-cover"
-            />
-            <h2 className="mt-4 text-xl font-extrabold">{meal.name}</h2>
+            <Link href={`/menu/${meal.slug}`}>
+              <Image
+                src={meal.image}
+                alt={meal.name}
+                width={600}
+                height={380}
+                className="h-42 w-full rounded-xl border border-[var(--line)] object-cover"
+              />
+            </Link>
+            <h2 className="mt-4 text-xl font-extrabold">
+              <Link href={`/menu/${meal.slug}`}>{meal.name}</Link>
+            </h2>
             <p className="mt-2 text-sm text-[var(--muted)]">
               {meal.calories} cal · {meal.protein} protein · {meal.carbs} carbs
             </p>
             <div className="mt-5 flex items-center justify-between">
               <p className="text-lg font-black">{meal.price}</p>
-              <button className="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold uppercase text-white">
-                Add
-              </button>
+              <Link
+                href={`/menu/${meal.slug}`}
+                className="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold uppercase text-white"
+              >
+                View
+              </Link>
             </div>
           </article>
         ))}
