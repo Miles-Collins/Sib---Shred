@@ -71,6 +71,7 @@ export function Header() {
     () => [
       { href: "/menu", label: "Menu" },
       { href: "/plans", label: "Plans" },
+      { href: "/journal", label: "Journal" },
       { href: "/#how", label: "How It Works" },
       { href: "/#reviews", label: "Testimonials" },
       { href: "/about", label: "About" },

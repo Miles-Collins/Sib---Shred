@@ -13,6 +13,14 @@ import {
 } from "./components/landing/data";
 import { getHomepagePostsFromSanity } from "@/sanity/lib/queries";
 
+function slugify(input: string) {
+  return input
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
 export default async function Home() {
   const categoryHighlights = [
     {
@@ -58,11 +66,11 @@ export default async function Home() {
       ? sanityPosts.map((post) => ({
           title: post.title,
           date: post.date,
-          href: `/about#my-story`,
+          href: `/journal/${post.slug}`,
         }))
       : blogPosts.map((post) => ({
           ...post,
-          href: "/about#my-story",
+          href: `/journal/${slugify(post.title)}`,
         }));
 
   return (
@@ -395,12 +403,12 @@ export default async function Home() {
                 Tips, nutrition, and updates
               </h2>
             </div>
-            <a
-              href="/about"
+            <Link
+              href="/journal"
               className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
-              Read my story
-            </a>
+              Read all posts
+            </Link>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
@@ -415,12 +423,12 @@ export default async function Home() {
                 <h3 className="mt-3 text-xl leading-tight font-extrabold">
                   {post.title}
                 </h3>
-                <a
+                <Link
                   href={post.href}
                   className="mt-5 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
                 >
                   Read article
-                </a>
+                </Link>
               </article>
             ))}
           </div>

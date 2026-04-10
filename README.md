@@ -51,6 +51,10 @@ Required variables:
 
 - `post` document type for homepage journal/blog content.
 - Homepage reads Sanity featured posts with fallback to local static data.
+- Public journal routes:
+	- `/journal` (listing)
+	- `/journal/[slug]` (article detail)
+	- If no Sanity content is available yet, routes still work using local fallback content.
 
 ### 4. Useful Sanity commands
 
