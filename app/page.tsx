@@ -81,7 +81,7 @@ export default function Home() {
             </h2>
             <a
               href="#reviews"
-              className="w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-[var(--ink)]"
+              className="brand-control w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-[var(--ink)]"
             >
               View Reviews
             </a>
@@ -100,7 +100,7 @@ export default function Home() {
             </div>
             <Link
               href="/menu"
-              className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+                className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
               View all 40+ meals
             </Link>
@@ -123,7 +123,7 @@ export default function Home() {
             </div>
             <Link
               href="/menu"
-              className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+                className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
               See full menu
             </Link>
@@ -263,7 +263,7 @@ export default function Home() {
             </div>
             <Link
               href="/plans"
-              className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
               Compare plans
             </Link>
@@ -288,7 +288,7 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/checkout"
-                  className="mt-6 inline-block w-full rounded-full bg-[var(--ink)] px-4 py-3 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
+                  className="brand-control mt-6 inline-block w-full rounded-full bg-[var(--ink)] px-4 py-3 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
                 >
                   Select Plan
                 </Link>

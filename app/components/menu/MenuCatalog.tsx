@@ -76,9 +76,9 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
 
   return (
     <div className="space-y-7">
-      <section className="motion-sticky rounded-2xl border border-[var(--line)] bg-white/92 p-4 shadow-[0_10px_26px_rgba(16,27,23,0.06)]">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-2">
+      <section className="motion-sticky rounded-2xl border border-[var(--line)] bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0 lg:pb-0">
             {FILTERS.map((filter) => {
               const active = activeFilters.includes(filter);
               const meta = TAG_META[filter];
@@ -88,7 +88,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                   key={filter}
                   type="button"
                   onClick={() => toggleFilter(filter)}
-                  className={`brand-chip inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase ${
+                  className={`brand-chip inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase ${
                     active
                       ? "border-[var(--ink)] bg-[var(--ink)] text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)] translate-y-px"
                       : "border-[var(--line)] bg-white text-[var(--ink)] shadow-[0_4px_10px_rgba(16,27,23,0.04)]"
@@ -117,19 +117,19 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
             ) : null}
           </div>
 
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search meals"
-              className="rounded-md border border-[var(--line)] bg-white px-3 py-2 text-sm outline-none ring-[var(--sun)] placeholder:text-[var(--muted)] focus:ring-2"
+              className="brand-control w-full rounded-md border border-[var(--line)] bg-white px-3 py-2 text-sm outline-none ring-[var(--sun)] placeholder:text-[var(--muted)] focus:ring-2"
             />
             <select
               value={sortBy}
               onChange={(event) =>
                 setSortBy(event.target.value as "popular" | "price" | "calories")
               }
-              className="rounded-md border border-[var(--line)] bg-white px-3 py-2 text-sm outline-none ring-[var(--sun)] focus:ring-2"
+              className="brand-control w-full rounded-md border border-[var(--line)] bg-white px-3 py-2 text-sm outline-none ring-[var(--sun)] focus:ring-2 sm:w-auto"
             >
               <option value="popular">Sort: Popular</option>
               <option value="price">Sort: Price</option>
