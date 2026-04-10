@@ -15,54 +15,54 @@ export default function AboutPage() {
       <Header />
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
-        <section className="overflow-hidden rounded-[1.4rem] border border-[#d8ddd3] bg-[#eceeea] p-4 sm:p-8">
-          <div className="relative grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section className="overflow-hidden rounded-[1.2rem] border border-[#d4d9d0] bg-[#eceeeb] p-4 sm:p-8 lg:p-10">
+          <div className="relative grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div className="relative">
-              <div className="overflow-hidden rounded-[0.35rem] bg-white shadow-[0_18px_42px_rgba(16,27,23,0.12)]">
+              <div className="overflow-hidden rounded-[0.15rem] bg-white shadow-[0_18px_42px_rgba(16,27,23,0.12)]">
                 <Image
                   src="/alysha-portrait.png"
                   alt="Portrait of Alysha"
                   width={940}
                   height={1040}
-                  className="h-full w-full object-cover"
+                  className="h-full max-h-[42rem] w-full object-cover"
                   priority
                 />
               </div>
 
-              <div className="absolute top-10 left-0 hidden -translate-x-1/2 items-center bg-[#bc7f6f] px-4 py-5 md:flex">
+              <div className="absolute top-12 left-0 hidden -translate-x-1/2 items-center bg-[#b97d6f] px-3 py-5 md:flex">
                 <span className="[writing-mode:vertical-rl] rotate-180 text-[10px] font-bold tracking-[0.2em] text-white uppercase">
                   Meet Alysha
                 </span>
               </div>
             </div>
 
-            <article className="relative border-t border-[#aab0a5] bg-[#f2f3f0] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-16 lg:p-10">
-              <p className="text-[13px] font-bold tracking-[0.24em] text-[#4f5551] uppercase">
+            <article className="relative border-t-2 border-[#adb3aa] bg-[#f1f2ef] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-14 lg:max-w-[42rem] lg:p-10">
+              <p className="text-[12px] font-bold tracking-[0.24em] text-[#4f5551] uppercase">
                 It&apos;s nice to meet you.
-                <span className={`${signatureFont.className} ml-2 text-[2.05rem] normal-case tracking-normal text-[#c59385]`}>
+                <span className={`${signatureFont.className} ml-2 text-[2.15rem] normal-case tracking-normal text-[#c59385]`}>
                   I&apos;m Alysha.
                 </span>
               </p>
 
-              <h1 className="mt-5 text-[2rem] leading-[1.12] font-semibold text-[#323734] sm:text-[2.3rem]">
-                I help people <span className="font-black">eat with less stress</span> through
-                honest ingredients, smart portions, and practical weekly prep.
+              <h1 className="mt-5 text-[2rem] leading-[1.2] font-semibold text-[#323734] sm:text-[2.35rem]">
+                I help people <span className="font-black">eat with less stress</span> with blunt
+                honesty, clear portions, and practical weekly prep.
               </h1>
 
-              <p className="mt-5 text-[1.02rem] leading-[1.75] text-[#4f5551]">
+              <p className="mt-5 text-[1rem] leading-[1.8] text-[#4f5551]">
                 Sibshred Kitchen started as a way to make healthy eating feel realistic,
                 even on packed weeks. Instead of another generic subscription experience,
                 I built something personal: I cook, portion, and package each meal myself
                 so the quality stays consistent from the first order to the final bite.
               </p>
 
-              <p className="mt-4 text-[1.02rem] leading-[1.75] text-[#4f5551]">
+              <p className="mt-4 text-[1rem] leading-[1.8] text-[#4f5551]">
                 My goal is simple: make your week easier without sacrificing flavor or
                 nutrition. Fewer last-minute food decisions, less prep fatigue, and meals
                 you actually look forward to opening.
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/menu"
                   className="brand-control rounded-full bg-[var(--ink)] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
