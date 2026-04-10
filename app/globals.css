@@ -105,6 +105,54 @@ body {
   font-weight: 900;
 }
 
+.motion-reveal {
+  will-change: transform, opacity;
+}
+
+.motion-lift {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.motion-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-raise);
+}
+
+.motion-lift:active {
+  transform: translateY(-1px);
+}
+
+.motion-badge {
+  transition:
+    transform 160ms ease,
+    filter 160ms ease,
+    opacity 160ms ease;
+}
+
+.motion-badge:hover {
+  transform: translateY(-1px) scale(1.02);
+  filter: saturate(1.08);
+}
+
+.motion-sticky {
+  position: sticky;
+  top: 6rem;
+  z-index: 40;
+  backdrop-filter: blur(10px);
+}
+
+.motion-card-image {
+  transition: transform 220ms ease;
+}
+
+.motion-card:hover .motion-card-image {
+  transform: scale(1.02);
+}
+
 .grain-panel {
   background-image:
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.75) 0, rgba(255, 255, 255, 0) 42%),
@@ -120,7 +168,9 @@ h4 {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  main section {
+  main section,
+  main header,
+  main article {
     animation: reveal 0.6s ease both;
   }
 
@@ -134,6 +184,14 @@ h4 {
 
   main section:nth-child(4) {
     animation-delay: 180ms;
+  }
+
+  main section:nth-child(5) {
+    animation-delay: 220ms;
+  }
+
+  main section:nth-child(6) {
+    animation-delay: 260ms;
   }
 }
 

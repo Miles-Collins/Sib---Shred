@@ -58,11 +58,11 @@ export default function Home() {
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8">
         <Hero />
 
-        <section className="brand-grid brand-panel grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
+        <section className="motion-reveal brand-grid brand-panel grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
           {categoryHighlights.map((item) => (
             <article
               key={item.title}
-              className="rounded-[1.4rem] border border-[var(--line)] bg-white/95 p-5"
+              className="motion-lift rounded-[1.4rem] border border-[var(--line)] bg-white/95 p-5"
             >
               <p className="brand-kicker text-[var(--berry)]">
                 category
@@ -73,7 +73,7 @@ export default function Home() {
           ))}
         </section>
 
-        <section className="brand-panel-strong px-6 py-5 text-white sm:px-9">
+        <section className="motion-reveal brand-panel-strong px-6 py-5 text-white sm:px-9">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="brand-section-title text-2xl sm:text-3xl">
               Trusted by busy professionals, athletes, and families across the region.
@@ -87,7 +87,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="menu" className="space-y-6">
+        <section id="menu" className="motion-reveal space-y-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="brand-kicker text-[var(--muted)]">
@@ -112,7 +112,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="brand-shell space-y-5 p-6 sm:p-8">
+        <section className="motion-reveal brand-shell space-y-5 p-6 sm:p-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="brand-kicker text-[var(--muted)]">
@@ -140,7 +140,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how" className="space-y-5">
+        <section id="how" className="motion-reveal space-y-5">
           <p className="brand-kicker text-[var(--muted)]">
             Mighty made easy
           </p>
@@ -165,7 +165,7 @@ export default function Home() {
             ].map((step, index) => (
               <article
                 key={step.title}
-                className="brand-panel p-5"
+                className="motion-lift brand-panel p-5"
               >
                 <p className="brand-kicker text-[var(--berry)]">
                   Step {index + 1}
@@ -179,7 +179,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="brand-shell grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
+        <section className="motion-reveal brand-shell grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="brand-kicker text-[var(--muted)]">
               Why we stand out
@@ -197,7 +197,7 @@ export default function Home() {
             {goals.map((goal) => (
               <div
                 key={goal}
-                className="brand-badge brand-badge--charcoal rounded-[0.35rem] px-3 py-4 text-center text-sm"
+                className="motion-badge brand-badge brand-badge--charcoal rounded-[0.35rem] px-3 py-4 text-center text-sm"
               >
                 {goal}
               </div>
@@ -205,7 +205,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="brand-panel-strong overflow-hidden p-6 text-white sm:p-9">
+        <section className="motion-reveal brand-panel-strong overflow-hidden p-6 text-white sm:p-9">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <h2 className="brand-section-title max-w-lg text-3xl sm:text-4xl">
               You are busy. Your nutrition plan should not be.
@@ -249,7 +249,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="plans" className="space-y-6">
+        <section id="plans" className="motion-reveal space-y-6">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="brand-kicker text-[var(--muted)]">
@@ -271,7 +271,7 @@ export default function Home() {
             {plans.map((plan) => (
               <article
                 key={plan.title}
-                className="brand-panel p-6 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
+                className="motion-lift brand-panel p-6"
               >
                 <p className="brand-kicker text-[var(--muted)]">
                   {plan.title}
@@ -295,11 +295,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="motion-reveal grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {valueBlocks.map((item) => (
             <article
               key={item.title}
-              className="brand-panel p-5"
+              className="motion-lift brand-panel p-5"
             >
               <h3 className="brand-section-title text-xl">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
@@ -315,7 +315,7 @@ export default function Home() {
 
         <section
           id="reviews"
-          className="brand-shell p-6 sm:p-9"
+          className="motion-reveal brand-shell p-6 sm:p-9"
         >
           <p className="brand-kicker text-[var(--muted)]">
             Testimonials
@@ -335,7 +335,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="blog" className="space-y-6">
+        <section id="blog" className="motion-reveal space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="brand-kicker text-[var(--muted)]">
@@ -357,7 +357,7 @@ export default function Home() {
             {blogPosts.map((post) => (
               <article
                 key={post.title}
-                className="brand-panel p-5"
+                className="motion-lift brand-panel p-5"
               >
                 <p className="brand-kicker text-[var(--muted)]">
                   {post.date}

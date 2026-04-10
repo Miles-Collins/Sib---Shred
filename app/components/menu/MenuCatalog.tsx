@@ -76,7 +76,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
 
   return (
     <div className="space-y-7">
-      <section className="sticky top-27 z-40 rounded-2xl border border-[var(--line)] bg-white/95 p-4 backdrop-blur-sm">
+      <section className="motion-sticky rounded-2xl border border-[var(--line)] bg-white/92 p-4 shadow-[0_10px_26px_rgba(16,27,23,0.06)]">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-2">
             {FILTERS.map((filter) => {
@@ -99,7 +99,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                     alt={filter}
                     width={20}
                     height={20}
-                    className="h-5 w-5"
+                    className="motion-badge h-5 w-5"
                   />
                   {filter}
                 </button>
@@ -143,7 +143,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         {filteredMeals.map((meal) => (
           <article
             key={meal.slug}
-            className="overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
+            className="motion-card overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
           >
             <Link href={`/menu/${meal.slug}`}>
               <Image
@@ -151,7 +151,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 alt={meal.name}
                 width={900}
                 height={560}
-                className="h-52 w-full object-cover"
+                className="motion-card-image h-52 w-full object-cover"
               />
             </Link>
 
@@ -164,7 +164,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                       alt={tag}
                       width={24}
                       height={24}
-                      className="h-6 w-6"
+                      className="motion-badge h-6 w-6"
                     />
                   </div>
                 ))}

@@ -9,14 +9,14 @@ type MealCardProps = {
 
 export function MealCard({ meal }: MealCardProps) {
   return (
-    <article className="group rounded-2xl border border-[var(--line)] bg-white p-5 transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(0,0,0,0.08)]">
+    <article className="motion-lift group rounded-2xl border border-[var(--line)] bg-white p-5">
       <Link href={`/menu/${meal.slug}`}>
         <Image
           src={meal.image}
           alt={meal.name}
           width={600}
           height={380}
-          className="h-42 w-full rounded-xl border border-[var(--line)] object-cover"
+          className="motion-card-image h-42 w-full rounded-xl border border-[var(--line)] object-cover"
         />
       </Link>
       <p className="mt-4 inline-block rounded-full bg-[var(--berry)] px-3 py-1 text-xs font-bold tracking-[0.12em] text-white uppercase">
