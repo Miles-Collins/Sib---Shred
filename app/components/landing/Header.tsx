@@ -5,7 +5,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/90 backdrop-blur-md">
       <div className="bg-[var(--deep)] px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
-        Save $120 on your first month + free local delivery
+        Fresh weekly drop by Alysha + free local delivery
       </div>
 
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--muted)] sm:px-8 lg:flex-row lg:items-center lg:justify-between">
@@ -62,21 +62,21 @@ export function Header() {
           <Link href="/about" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
             About
           </Link>
-          <a href="#blog" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
+          <Link href="/#blog" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
             Blog
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:items-center lg:gap-3">
           <Link
             href="/menu"
-            className="brand-control rounded-md border border-[var(--line)] bg-white px-4 py-2 text-center text-sm font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)]"
+            className="brand-control premium-sheen rounded-md border border-[var(--line)] bg-white px-4 py-2 text-center text-sm font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)]"
           >
             Explore Meals
           </Link>
           <Link
             href="/checkout"
-            className="brand-control rounded-md bg-[var(--sun)] px-5 py-2.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            className="brand-control premium-sheen rounded-md bg-[var(--sun)] px-5 py-2.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
           >
             Start Order
           </Link>

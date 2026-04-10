@@ -88,6 +88,39 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="motion-reveal texture-dots overflow-hidden rounded-3xl border border-[var(--line)] p-6 sm:p-8">
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="brand-kicker text-[var(--muted)]">Alysha&apos;s kitchen standard</p>
+              <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
+                Premium meal prep should feel personal, not mass-produced.
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+                Every menu drop is intentionally small-batch. The recipes, packaging,
+                and final quality check are handled by Alysha so each delivery feels
+                like a thoughtful weekly reset, not a generic subscription box.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              {[
+                {
+                  label: "Small batch",
+                  text: "Cooked in limited runs for consistency and freshness.",
+                },
+                {
+                  label: "Real support",
+                  text: "Questions go directly to Alysha, not a ticket queue.",
+                },
+              ].map((item) => (
+                <article key={item.label} className="rounded-2xl border border-[var(--line)] bg-white p-5">
+                  <p className="brand-kicker text-[var(--berry)]">{item.label}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="menu" className="motion-reveal space-y-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -307,7 +340,7 @@ export default function Home() {
               <h3 className="brand-section-title text-xl">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
               <a
-                href="#"
+                href="/about#my-story"
                 className="mt-4 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
               >
                 Learn more
@@ -369,7 +402,7 @@ export default function Home() {
                   {post.title}
                 </h3>
                 <a
-                  href="#"
+                  href="/about#my-story"
                   className="mt-5 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
                 >
                   Read article

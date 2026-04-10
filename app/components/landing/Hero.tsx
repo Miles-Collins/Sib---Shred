@@ -20,16 +20,26 @@ export function Hero() {
           <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
             <Link
               href="/menu"
-              className="brand-control inline-flex justify-center rounded-md bg-[var(--sun)] px-7 py-3 text-sm font-bold uppercase tracking-[0.09em] text-white transition hover:brightness-95 sm:w-auto"
+              className="brand-control premium-sheen inline-flex justify-center rounded-md bg-[var(--sun)] px-7 py-3 text-sm font-bold uppercase tracking-[0.09em] text-white transition hover:brightness-95 sm:w-auto"
             >
               Choose Meals
             </Link>
             <Link
               href="/plans"
-              className="brand-control inline-flex justify-center rounded-md border border-[var(--ink)] bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.09em] transition hover:bg-[var(--ink)] hover:text-white sm:w-auto"
+              className="brand-control premium-sheen inline-flex justify-center rounded-md border border-[var(--ink)] bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.09em] transition hover:bg-[var(--ink)] hover:text-white sm:w-auto"
             >
               View Plans
             </Link>
+          </div>
+
+          <div className="editorial-divider mt-8 rounded-2xl border border-[var(--line)] bg-white/88 p-4 pt-5 sm:max-w-xl">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+              Founder&apos;s note
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+              Every menu is curated and packed by Alysha. If it does not taste premium,
+              it does not ship.
+            </p>
           </div>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
