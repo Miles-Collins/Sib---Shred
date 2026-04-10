@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project for Sibshred Kitchen.
 
 ## Getting Started
 
@@ -17,6 +17,49 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+## Sanity CMS Setup (Private Admin)
+
+This project includes Sanity CMS with a private admin flow:
+
+- Private admin login page: `/admin`
+- Sanity Studio route: `/studio`
+
+### 1. Configure environment variables
+
+Copy `.env.example` to `.env.local` and fill in your values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables:
+
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`
+- `NEXT_PUBLIC_SANITY_DATASET`
+- `NEXT_PUBLIC_SANITY_API_VERSION`
+- `ADMIN_PASSCODE` (used by the private `/admin` login)
+
+### 2. Start the app and login
+
+1. Run `npm run dev`
+2. Open `/admin`
+3. Enter `ADMIN_PASSCODE`
+4. You will be redirected to `/studio`
+
+### 3. CMS schema included
+
+- `post` document type for homepage journal/blog content.
+- Homepage reads Sanity featured posts with fallback to local static data.
+
+### 4. Useful Sanity commands
+
+```bash
+npm run sanity:dev
+npm run sanity:deploy
+```
+
+If Sanity environment values are missing, the site still runs with fallback content and Studio shows a configuration message.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

@@ -11,8 +11,9 @@ import {
   plans,
   testimonials,
 } from "./components/landing/data";
+import { getHomepagePostsFromSanity } from "@/sanity/lib/queries";
 
-export default function Home() {
+export default async function Home() {
   const categoryHighlights = [
     {
       title: "Under 500",
@@ -50,6 +51,19 @@ export default function Home() {
       text: "Questions about plans, delivery, or ingredients? I make ordering personal and easy.",
     },
   ];
+
+  const sanityPosts = await getHomepagePostsFromSanity();
+  const renderedBlogPosts =
+    sanityPosts.length > 0
+      ? sanityPosts.map((post) => ({
+          title: post.title,
+          date: post.date,
+          href: `/about#my-story`,
+        }))
+      : blogPosts.map((post) => ({
+          ...post,
+          href: "/about#my-story",
+        }));
 
   return (
     <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
@@ -390,7 +404,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {blogPosts.map((post) => (
+            {renderedBlogPosts.map((post) => (
               <article
                 key={post.title}
                 className="motion-lift brand-panel p-5"
@@ -402,7 +416,7 @@ export default function Home() {
                   {post.title}
                 </h3>
                 <a
-                  href="/about#my-story"
+                  href={post.href}
                   className="mt-5 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
                 >
                   Read article
