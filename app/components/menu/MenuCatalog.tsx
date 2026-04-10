@@ -14,45 +14,24 @@ const FILTERS = ["GF", "VEGAN", "SPICY", "HIGH PROTEIN"] as const;
 
 const TAG_META: Record<
   string,
-  { icon: string; shortLabel: string; bgClass: string; textClass: string }
+  { icon: string }
 > = {
   GF: {
     icon: "/labels/gf-badge.svg",
-    shortLabel: "GF",
-    bgClass: "bg-zinc-100",
-    textClass: "text-zinc-900",
   },
   VEGAN: {
     icon: "/labels/vegan-badge.svg",
-    shortLabel: "V",
-    bgClass: "bg-cyan-100",
-    textClass: "text-cyan-900",
   },
   SPICY: {
     icon: "/labels/spicy-badge.svg",
-    shortLabel: "S",
-    bgClass: "bg-red-100",
-    textClass: "text-red-800",
   },
   "HIGH PROTEIN": {
     icon: "/labels/protein-badge.svg",
-    shortLabel: "HP",
-    bgClass: "bg-emerald-100",
-    textClass: "text-emerald-800",
   },
 };
 
 function parseMoney(price: string) {
   return Number.parseFloat(price.replace("$", ""));
-}
-
-function tagClass(tag: string) {
-  const meta = TAG_META[tag];
-  if (!meta) {
-    return "bg-zinc-100 text-zinc-800";
-  }
-
-  return `${meta.bgClass} ${meta.textClass}`;
 }
 
 export function MenuCatalog({ meals }: MenuCatalogProps) {
