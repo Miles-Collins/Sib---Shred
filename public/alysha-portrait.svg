@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 760" role="img" aria-labelledby="title desc">
+  <title id="title">Alysha portrait illustration</title>
+  <desc id="desc">Stylized portrait block for the About page</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbf2"/>
+      <stop offset="100%" stop-color="#dce9c8"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2f7a4c"/>
+      <stop offset="100%" stop-color="#1f5835"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="760" rx="42" fill="url(#bg)"/>
+  <circle cx="320" cy="280" r="126" fill="#f0c9ad"/>
+  <path d="M194 274c0-86 56-152 126-152s126 66 126 152c0 6 0 12-1 18-12-18-34-34-61-44-36-14-71-14-114 0-27 9-49 25-62 44-1-6-1-12-1-18z" fill="#1e2420"/>
+  <path d="M210 325c13-18 36-34 65-43 38-12 72-11 108 1 27 10 50 25 64 42-14 67-61 112-127 112s-112-44-110-112z" fill="#f3d2bb"/>
+  <ellipse cx="270" cy="282" rx="12" ry="9" fill="#1e2420"/>
+  <ellipse cx="370" cy="282" rx="12" ry="9" fill="#1e2420"/>
+  <path d="M284 352c18 16 54 16 72 0" fill="none" stroke="#9b5f4f" stroke-width="7" stroke-linecap="round"/>
+  <path d="M160 700c16-128 83-205 160-205s145 77 160 205" fill="url(#shirt)"/>
+  <rect x="248" y="518" width="144" height="52" rx="24" fill="#f0c9ad"/>
+  <circle cx="320" cy="210" r="114" fill="none" stroke="rgba(16,27,23,0.08)" stroke-width="12"/>
+</svg>

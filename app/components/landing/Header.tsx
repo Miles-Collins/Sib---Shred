@@ -1,7 +1,96 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export function Header() {
+  const pathname = usePathname();
+  const [cartCount, setCartCount] = useState(() => {
+    if (typeof window === "undefined") {
+      return 0;
+    }
+
+    try {
+      const raw = localStorage.getItem("sibshred-cart");
+      if (!raw) {
+        return 0;
+      }
+
+      const parsed = JSON.parse(raw) as Array<{ qty?: number }>;
+      return Array.isArray(parsed)
+        ? parsed.reduce((acc, item) => acc + (item.qty ?? 0), 0)
+        : 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  const navBaseClass =
+    "brand-nav-link shrink-0 rounded-full border px-3 py-2";
+
+  const readCartCount = () => {
+    try {
+      const raw = localStorage.getItem("sibshred-cart");
+      if (!raw) {
+        setCartCount(0);
+        return;
+      }
+
+      const parsed = JSON.parse(raw) as Array<{ qty?: number }>;
+      const total = Array.isArray(parsed)
+        ? parsed.reduce((acc, item) => acc + (item.qty ?? 0), 0)
+        : 0;
+
+      setCartCount(total);
+    } catch {
+      setCartCount(0);
+    }
+  };
+
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (!event.key || event.key === "sibshred-cart") {
+        readCartCount();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener("focus", readCartCount);
+    window.addEventListener("sibshred-cart-updated", readCartCount);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("focus", readCartCount);
+      window.removeEventListener("sibshred-cart-updated", readCartCount);
+    };
+  }, []);
+
+  const navLinks = useMemo(
+    () => [
+      { href: "/menu", label: "Menu" },
+      { href: "/plans", label: "Plans" },
+      { href: "/#how", label: "How It Works" },
+      { href: "/#reviews", label: "Testimonials" },
+      { href: "/about", label: "About" },
+      { href: "/#blog", label: "Blog" },
+    ],
+    [],
+  );
+
+  const isActive = (href: string) => {
+    if (href.startsWith("/#")) {
+      return pathname === "/";
+    }
+
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/90 backdrop-blur-md">
       <div className="bg-[var(--deep)] px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
@@ -47,24 +136,19 @@ export function Header() {
         </Link>
 
         <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--muted)] lg:mx-0 lg:w-auto lg:flex-wrap lg:justify-center lg:overflow-visible lg:px-0 lg:pb-0">
-          <Link href="/menu" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
-            Menu
-          </Link>
-          <Link href="/plans" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
-            Plans
-          </Link>
-          <Link href="/#how" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
-            How It Works
-          </Link>
-          <Link href="/#reviews" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
-            Testimonials
-          </Link>
-          <Link href="/about" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
-            About
-          </Link>
-          <Link href="/#blog" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
-            Blog
-          </Link>
+          {navLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${navBaseClass} ${
+                isActive(item.href)
+                  ? "border-[var(--ink)] bg-[var(--ink)] text-white"
+                  : "border-transparent hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:items-center lg:gap-3">
@@ -76,9 +160,14 @@ export function Header() {
           </Link>
           <Link
             href="/checkout"
-            className="brand-control premium-sheen rounded-md bg-[var(--sun)] px-5 py-2.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            className="brand-control premium-sheen inline-flex items-center justify-center gap-2 rounded-md bg-[var(--sun)] px-5 py-2.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
           >
             Start Order
+            {cartCount > 0 ? (
+              <span className="inline-flex min-w-[1.4rem] items-center justify-center rounded-full bg-[var(--ink)] px-1.5 py-0.5 text-[10px] font-black leading-none text-white">
+                {cartCount}
+              </span>
+            ) : null}
           </Link>
         </div>
       </nav>

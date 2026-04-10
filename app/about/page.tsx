@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Header } from "../components/landing/Header";
@@ -11,10 +12,14 @@ export default function AboutPage() {
         <section className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[linear-gradient(180deg,#f9f8f1,#eef4e8)] p-6 shadow-[var(--shadow-card)]">
             <div className="mx-auto flex max-w-sm flex-col items-center text-center">
-              <div className="flex h-44 w-44 items-center justify-center rounded-full border border-[rgba(16,27,23,0.08)] bg-white shadow-[0_18px_40px_rgba(16,27,23,0.1)]">
-                <div className="flex h-36 w-36 items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_35%,#dfeccb_0%,#8bbf5c_60%,#2f7a4c_100%)] text-4xl font-black text-white">
-                  A
-                </div>
+              <div className="overflow-hidden rounded-[1.3rem] border border-[rgba(16,27,23,0.08)] bg-white shadow-[0_18px_40px_rgba(16,27,23,0.1)]">
+                <Image
+                  src="/alysha-portrait.svg"
+                  alt="Illustrated portrait of Alysha"
+                  width={260}
+                  height={308}
+                  className="h-auto w-[12.5rem] sm:w-[14rem]"
+                />
               </div>
               <p className="mt-5 text-xs font-bold uppercase tracking-[0.22em] text-[var(--muted)]">
                 Solo founder
