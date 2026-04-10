@@ -143,7 +143,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         {filteredMeals.map((meal) => (
           <article
             key={meal.slug}
-            className="motion-card overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
+            className="brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
           >
             <Link href={`/menu/${meal.slug}`}>
               <Image
@@ -189,7 +189,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 <p className="text-[1.85rem] font-black text-[var(--berry)]">{meal.price}</p>
                 <Link
                   href={`/menu/${meal.slug}`}
-                  className="rounded-md bg-[var(--sun)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
+                  className="brand-control rounded-md bg-[var(--sun)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
                 >
                   View Meal
                 </Link>

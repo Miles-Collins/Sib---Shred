@@ -9,7 +9,7 @@ type MealCardProps = {
 
 export function MealCard({ meal }: MealCardProps) {
   return (
-    <article className="motion-lift group rounded-2xl border border-[var(--line)] bg-white p-5">
+    <article className="brand-card-hover motion-lift group rounded-2xl border border-[var(--line)] bg-white p-5">
       <Link href={`/menu/${meal.slug}`}>
         <Image
           src={meal.image}
@@ -38,7 +38,7 @@ export function MealCard({ meal }: MealCardProps) {
         <p className="text-lg font-black">{meal.price}</p>
         <Link
           href={`/menu/${meal.slug}`}
-          className="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white"
+          className="brand-control rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white"
         >
           View Meal
         </Link>

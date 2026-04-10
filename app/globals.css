@@ -32,6 +32,59 @@ body {
   font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
 }
 
+:where(a, button, summary, select, [role="button"]) {
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease,
+    filter 160ms ease;
+}
+
+:where(a, button, summary, select, [role="button"]):hover {
+  transform: translateY(-1px);
+}
+
+:where(.brand-nav-link, .brand-chip, .brand-control):hover {
+  transform: translateY(-1px);
+}
+
+:where(.brand-nav-link, .brand-chip, .brand-control):active {
+  transform: translateY(0);
+}
+
+:where(.brand-card-hover):hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-raise);
+  border-color: rgba(47, 122, 76, 0.28);
+}
+
+:where(.brand-card-hover):hover .motion-card-image {
+  transform: translateY(-2px) scale(1.04);
+}
+
+:where(a, button, summary, select, [role="button"]):active {
+  transform: translateY(0);
+}
+
+:where(a, button, summary, select, [role="button"]):focus-visible {
+  outline: 2px solid rgba(47, 122, 76, 0.35);
+  outline-offset: 3px;
+}
+
+:where(a:not([class*="underline"])):hover {
+  text-decoration: none;
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .brand-shell {
   border: 1px solid var(--line);
   border-radius: 1.75rem;
@@ -149,8 +202,20 @@ body {
   transition: transform 220ms ease;
 }
 
-.motion-card:hover .motion-card-image {
-  transform: scale(1.02);
+.brand-card-hover .motion-card-image {
+  transition: transform 260ms ease;
+}
+
+.brand-nav-link,
+.brand-chip,
+.brand-control {
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
 }
 
 .grain-panel {

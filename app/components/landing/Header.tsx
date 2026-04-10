@@ -42,22 +42,22 @@ export function Header() {
         </Link>
 
         <div className="flex flex-wrap items-center gap-5 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
-          <Link href="/menu" className="hover:text-[var(--ink)]">
+          <Link href="/menu" className="brand-nav-link hover:text-[var(--ink)]">
             Menu
           </Link>
-          <Link href="/plans" className="hover:text-[var(--ink)]">
+          <Link href="/plans" className="brand-nav-link hover:text-[var(--ink)]">
             Plans
           </Link>
-          <Link href="/#how" className="hover:text-[var(--ink)]">
+          <Link href="/#how" className="brand-nav-link hover:text-[var(--ink)]">
             How It Works
           </Link>
-          <Link href="/#reviews" className="hover:text-[var(--ink)]">
+          <Link href="/#reviews" className="brand-nav-link hover:text-[var(--ink)]">
             Testimonials
           </Link>
-          <a href="#blog" className="hover:text-[var(--ink)]">
+          <a href="#blog" className="brand-nav-link hover:text-[var(--ink)]">
             Blog
           </a>
-          <a href="#" className="hover:text-[var(--ink)]">
+          <a href="#" className="brand-nav-link hover:text-[var(--ink)]">
             FAQ
           </a>
         </div>
@@ -65,13 +65,13 @@ export function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/menu"
-            className="rounded-md border border-[var(--line)] bg-white px-4 py-2 text-sm font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)]"
+            className="brand-control rounded-md border border-[var(--line)] bg-white px-4 py-2 text-sm font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)]"
           >
             Explore Meals
           </Link>
           <Link
             href="/checkout"
-            className="rounded-md bg-[var(--sun)] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            className="brand-control rounded-md bg-[var(--sun)] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
           >
             Start Order
           </Link>
