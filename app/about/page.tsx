@@ -14,7 +14,7 @@ export default function AboutPage() {
             <div className="mx-auto flex max-w-sm flex-col items-center text-center">
               <div className="overflow-hidden rounded-[1.3rem] border border-[rgba(16,27,23,0.08)] bg-white shadow-[0_18px_40px_rgba(16,27,23,0.1)]">
                 <Image
-                  src="/alysha-portrait.svg"
+                  src="/alysha-portrait.png"
                   alt="Illustrated portrait of Alysha"
                   width={260}
                   height={308}
