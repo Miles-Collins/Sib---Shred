@@ -1,7 +1,13 @@
+import { Caveat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Header } from "../components/landing/Header";
+
+const signatureFont = Caveat({
+  subsets: ["latin"],
+  weight: ["500"],
+});
 
 export default function AboutPage() {
   return (
@@ -9,61 +15,68 @@ export default function AboutPage() {
       <Header />
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
-        <section className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[linear-gradient(180deg,#f9f8f1,#eef4e8)] p-6 shadow-[var(--shadow-card)]">
-            <div className="mx-auto flex max-w-sm flex-col items-center text-center">
-              <div className="overflow-hidden rounded-[1.3rem] border border-[rgba(16,27,23,0.08)] bg-white shadow-[0_18px_40px_rgba(16,27,23,0.1)]">
+        <section className="overflow-hidden rounded-[1.4rem] border border-[#d8ddd3] bg-[#eceeea] p-4 sm:p-8">
+          <div className="relative grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div className="relative">
+              <div className="overflow-hidden rounded-[0.35rem] bg-white shadow-[0_18px_42px_rgba(16,27,23,0.12)]">
                 <Image
                   src="/alysha-portrait.png"
-                  alt="Illustrated portrait of Alysha"
-                  width={260}
-                  height={308}
-                  className="h-auto w-[12.5rem] sm:w-[14rem]"
+                  alt="Portrait of Alysha"
+                  width={940}
+                  height={1040}
+                  className="h-full w-full object-cover"
+                  priority
                 />
               </div>
-              <p className="mt-5 text-xs font-bold uppercase tracking-[0.22em] text-[var(--muted)]">
-                Solo founder
-              </p>
-              <p className="mt-2 text-lg font-semibold text-[var(--ink)]">
-                Built, cooked, packaged, and delivered by Alysha.
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
-                This is a small, hands-on kitchen, not a big operation hiding behind a generic storefront.
-              </p>
-            </div>
-          </div>
 
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
-              About me
-            </p>
-            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
-              One kitchen, one set of recipes, Alysha behind every box.
-            </h1>
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-              Sibshred Kitchen is Alysha&apos;s solo-run meal prep service built around fresh food,
-              clear macros, and a simple ordering flow. She cooks, portions, and packages each
-              meal herself so the experience stays personal from the first click to delivery.
-            </p>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
-                  What Alysha values
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                  Fresh cooking, honest nutrition, and a smooth customer experience.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
-                  Best for
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                  Anyone who wants real meals ready in minutes without living in the kitchen.
-                </p>
+              <div className="absolute top-10 left-0 hidden -translate-x-1/2 items-center bg-[#bc7f6f] px-4 py-5 md:flex">
+                <span className="[writing-mode:vertical-rl] rotate-180 text-[10px] font-bold tracking-[0.2em] text-white uppercase">
+                  Meet Alysha
+                </span>
               </div>
             </div>
+
+            <article className="relative border-t border-[#aab0a5] bg-[#f2f3f0] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-16 lg:p-10">
+              <p className="text-[13px] font-bold tracking-[0.24em] text-[#4f5551] uppercase">
+                It&apos;s nice to meet you.
+                <span className={`${signatureFont.className} ml-2 text-[2.05rem] normal-case tracking-normal text-[#c59385]`}>
+                  I&apos;m Alysha.
+                </span>
+              </p>
+
+              <h1 className="mt-5 text-[2rem] leading-[1.12] font-semibold text-[#323734] sm:text-[2.3rem]">
+                I help people <span className="font-black">eat with less stress</span> through
+                honest ingredients, smart portions, and practical weekly prep.
+              </h1>
+
+              <p className="mt-5 text-[1.02rem] leading-[1.75] text-[#4f5551]">
+                Sibshred Kitchen started as a way to make healthy eating feel realistic,
+                even on packed weeks. Instead of another generic subscription experience,
+                I built something personal: I cook, portion, and package each meal myself
+                so the quality stays consistent from the first order to the final bite.
+              </p>
+
+              <p className="mt-4 text-[1.02rem] leading-[1.75] text-[#4f5551]">
+                My goal is simple: make your week easier without sacrificing flavor or
+                nutrition. Fewer last-minute food decisions, less prep fatigue, and meals
+                you actually look forward to opening.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link
+                  href="/menu"
+                  className="brand-control rounded-full bg-[var(--ink)] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
+                >
+                  Explore Menu
+                </Link>
+                <Link
+                  href="/plans"
+                  className="brand-control rounded-full border border-[var(--ink)] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
+                >
+                  View Plans
+                </Link>
+              </div>
+            </article>
           </div>
         </section>
 
