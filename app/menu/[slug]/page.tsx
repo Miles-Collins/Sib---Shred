@@ -88,31 +88,31 @@ export default async function MealPage({ params }: MealPageProps) {
         </div>
 
         <section className="grid gap-5 lg:grid-cols-[1.45fr_0.78fr]">
-          <article className="brand-shell p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-3">
+          <article className="brand-shell p-5 sm:p-6 lg:p-7">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h1 className="text-[clamp(2rem,2.8vw,3.1rem)] leading-[1.08] font-black tracking-tight">
+                <h1 className="max-w-3xl text-[clamp(2rem,2.8vw,3.1rem)] leading-[1.05] font-black tracking-tight">
                   {meal.name}
                 </h1>
-                <p className="mt-1 text-[clamp(1.65rem,2vw,2.2rem)] leading-[1.12] font-semibold text-[var(--ink)]">
-                  {meal.subtitle ? `| ${meal.subtitle}` : ""}
+                <p className="mt-2 max-w-2xl text-[1.05rem] leading-relaxed text-[var(--muted)] sm:text-[1.1rem]">
+                  {meal.subtitle}
                 </p>
               </div>
               <TinyShareButton title={meal.name} />
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-md border border-[var(--line)] shadow-[0_10px_24px_rgba(16,27,23,0.08)]">
+            <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--line)] shadow-[0_10px_24px_rgba(16,27,23,0.08)]">
               <Image
                 src={meal.image}
                 alt={meal.name}
                 width={1600}
                 height={980}
-                className="w-full object-cover"
+                className="h-full w-full object-cover"
                 priority
               />
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-2">
               {Array.from(new Set([...meal.dietaryTags, "CALORIE SMART", "FIBER FILLED"])).map((tag) => (
                 <span
                   key={tag}
@@ -126,21 +126,23 @@ export default async function MealPage({ params }: MealPageProps) {
             <AddToCartPanel meal={meal} compact />
           </article>
 
-          <aside className="brand-shell p-5 sm:p-6">
-            <h2 className="text-[clamp(1.9rem,2.2vw,2.8rem)] font-black tracking-tight">Nutrition Per Serving</h2>
-            <div className="mt-3 text-right text-[1.1rem] font-semibold">Per serving</div>
-            <div className="mt-2 space-y-1">
+          <aside className="brand-shell p-5 sm:p-6 lg:p-7">
+            <p className="brand-kicker text-[var(--muted)]">Nutrition snapshot</p>
+            <h2 className="mt-2 text-[clamp(1.9rem,2.2vw,2.8rem)] font-black tracking-tight">
+              Per serving
+            </h2>
+            <div className="mt-5 space-y-0.5">
               {rows.map(([label, value]) => (
                 <div
                   key={label}
-                  className="flex items-center justify-between border-t border-[#d7d8d1] py-2.5 text-[1rem]"
+                  className="flex items-center justify-between border-t border-[#d7d8d1] py-3 text-[0.95rem] sm:text-[1rem]"
                 >
                   <span className="font-semibold">{label}</span>
-                  <span>{value}</span>
+                  <span className="font-medium text-[var(--ink)]">{value}</span>
                 </div>
               ))}
             </div>
-            <p className="mt-5 text-[0.9rem] text-[var(--muted)]">
+            <p className="mt-5 text-[0.9rem] leading-relaxed text-[var(--muted)]">
               Nutritional info may vary slightly by time of delivery.
             </p>
           </aside>
@@ -148,10 +150,16 @@ export default async function MealPage({ params }: MealPageProps) {
 
         <ProductDescription text={meal.description} />
 
-        <section className="brand-shell p-6 sm:p-8">
-          <h2 className="text-[clamp(1.8rem,2.2vw,2.5rem)] font-black tracking-tight">Ingredients</h2>
-          <p className="mt-3 text-[1.05rem]">Allergens: {meal.allergens}</p>
-          <p className="mt-1 text-[0.95rem] font-semibold text-[var(--muted)]">{meal.facilityNote}</p>
+        <section className="brand-shell p-6 sm:p-8 lg:p-9">
+          <h2 className="text-[clamp(1.8rem,2.2vw,2.5rem)] font-black tracking-tight">
+            Ingredients
+          </h2>
+          <p className="mt-3 text-[1.05rem] leading-relaxed">
+            Allergens: {meal.allergens}
+          </p>
+          <p className="mt-1 text-[0.95rem] font-semibold leading-relaxed text-[var(--muted)]">
+            {meal.facilityNote}
+          </p>
 
           <div className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
             {[leftIngredients, rightIngredients].map((column, index) => (

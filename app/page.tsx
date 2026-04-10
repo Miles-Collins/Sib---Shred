@@ -35,11 +35,11 @@ export default function Home() {
   const valueBlocks = [
     {
       title: "Free Nutrition Guidance",
-      text: "Get practical coaching from our nutrition team when you need help dialing in your plan.",
+      text: "Get practical guidance directly from me when you need help dialing in your plan.",
     },
     {
       title: "Local Sourcing Priority",
-      text: "We partner with regional suppliers to keep meals fresher and support local producers.",
+      text: "I source from regional suppliers to keep meals fresher and support local producers.",
     },
     {
       title: "Sustainable Packaging",
@@ -47,7 +47,7 @@ export default function Home() {
     },
     {
       title: "Concierge-Level Support",
-      text: "Questions about plans, delivery, or ingredients? We make ordering personal and easy.",
+      text: "Questions about plans, delivery, or ingredients? I make ordering personal and easy.",
     },
   ];
 
@@ -77,7 +77,7 @@ export default function Home() {
         <section className="motion-reveal brand-panel-strong px-6 py-5 text-white sm:px-9">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="brand-section-title text-2xl sm:text-3xl">
-              Trusted by busy professionals, athletes, and families across the region.
+              Trusted by people who want great meals without the daily prep.
             </h2>
             <a
               href="#reviews"
@@ -100,13 +100,13 @@ export default function Home() {
             </div>
             <Link
               href="/menu"
-                className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
               View all 40+ meals
             </Link>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {featuredMeals.map((meal, index) => (
               <MealCard key={meal.name} meal={meal} delayMs={index * 90} />
             ))}
@@ -123,7 +123,7 @@ export default function Home() {
             </div>
             <Link
               href="/menu"
-                className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
               See full menu
             </Link>
@@ -143,7 +143,7 @@ export default function Home() {
 
         <section id="how" className="motion-reveal space-y-5">
           <p className="brand-kicker text-[var(--muted)]">
-            Mighty made easy
+            Meal prep made easy
           </p>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
@@ -152,11 +152,11 @@ export default function Home() {
                 text: "Choose from chef-prepared weekly drops that fit your goals.",
               },
               {
-                title: "Chefs cook fresh",
+                title: "I cook fresh",
                 text: "Meals are made locally in small batches for freshness.",
               },
               {
-                title: "We deliver",
+                title: "I deliver",
                 text: "Convenient drop-offs to home or office on your schedule.",
               },
               {
@@ -184,10 +184,10 @@ export default function Home() {
         <section className="motion-reveal brand-shell grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="brand-kicker text-[var(--muted)]">
-              Why we stand out
+              Why it stands out
             </p>
             <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-              The convenience of big meal kits, with local kitchen quality.
+              The convenience of big meal kits, with one-on-one kitchen quality.
             </h2>
             <p className="mt-4 max-w-xl text-[var(--muted)]">
               Enjoy premium flavors, clean ingredients, and delivery that respects
@@ -324,7 +324,7 @@ export default function Home() {
             Testimonials
           </p>
           <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-            People staying on track, week after week.
+            Customers staying on track, week after week.
           </h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {testimonials.map((quote) => (
@@ -342,7 +342,7 @@ export default function Home() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="brand-kicker text-[var(--muted)]">
-                From our blog
+                  From the journal
               </p>
               <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
                 Tips, nutrition, and updates
@@ -407,9 +407,9 @@ export default function Home() {
           </div>
           <div className="space-y-1">
             <p className="font-semibold text-[var(--ink)]">Company</p>
-            <a href="#" className="block">
+            <Link href="/about" className="block">
               About
-            </a>
+            </Link>
             <a href="#" className="block">
               FAQ
             </a>

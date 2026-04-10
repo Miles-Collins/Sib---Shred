@@ -24,8 +24,8 @@ export function Header() {
           </a>
         </div>
         <div className="flex items-center justify-center gap-4 text-[10px] sm:text-[11px] lg:justify-end">
-          <a href="#">Login</a>
-          <a href="#">Sign Up</a>
+          <Link href="/about">About</Link>
+          <a href="mailto:info@sibshredkitchen.com">Contact</a>
         </div>
       </div>
 
@@ -58,6 +58,9 @@ export function Header() {
           </Link>
           <Link href="/#reviews" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
             Testimonials
+          </Link>
+          <Link href="/about" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
+            About
           </Link>
           <a href="#blog" className="brand-nav-link shrink-0 rounded-full border border-transparent px-3 py-2 hover:border-[var(--line)] hover:bg-white hover:text-[var(--ink)]">
             Blog

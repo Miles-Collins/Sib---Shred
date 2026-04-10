@@ -10,6 +10,10 @@ export default function PlansPage() {
           Subscribe and save
         </p>
         <h1 className="mt-1 text-4xl font-black tracking-tight">Plan options</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+          Simple weekly plans for one person who wants fresh meals without a
+          kitchen full of leftovers.
+        </p>
       </header>
 
       <section className="grid gap-4 md:grid-cols-3">

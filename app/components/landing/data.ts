@@ -148,12 +148,12 @@ export const steps: Step[] = [
     text: "Browse the weekly drop and pick exactly what you want.",
   },
   {
-    title: "We prep and chill",
-    text: "Your order is cooked fresh, portioned, and quality checked.",
+    title: "I prep and chill",
+    text: "Every order is cooked fresh, portioned, and quality checked by me.",
   },
   {
     title: "Heat and eat",
-    text: "Delivered to your door in insulated packaging, ready in minutes.",
+    text: "Delivered in insulated packaging and ready in minutes.",
   },
 ];
 
