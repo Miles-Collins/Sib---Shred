@@ -3,20 +3,28 @@ import Link from "next/link";
 
 export function Header() {
   return (
-    <header className="border-b border-[var(--line)] bg-white/95">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)] sm:px-8">
+    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/90 backdrop-blur-md">
+      <div className="bg-[var(--deep)] px-5 py-2 text-center text-xs font-semibold uppercase tracking-[0.14em] text-white sm:px-8">
+        Save $120 on your first month + free local delivery
+      </div>
+
+      <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)] sm:px-8">
         <div className="flex items-center gap-4">
-          <a href="tel:+18664423287">(866) 442-3287</a>
-          <a href="mailto:info@sibshredkitchen.com">info@sibshredkitchen.com</a>
+          <a href="tel:+18664423287" className="hover:text-[var(--ink)]">
+            (866) 442-3287
+          </a>
+          <a href="mailto:info@sibshredkitchen.com" className="hover:text-[var(--ink)]">
+            info@sibshredkitchen.com
+          </a>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 text-[11px]">
           <a href="#">Login</a>
           <a href="#">Sign Up</a>
-          <a href="#">0 Items</a>
+          <a href="#">Rewards</a>
         </div>
       </div>
 
-      <nav className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
+      <nav className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-5 py-4 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/brand-logo.png"
@@ -49,14 +57,25 @@ export function Header() {
           <a href="#blog" className="hover:text-[var(--ink)]">
             Blog
           </a>
+          <a href="#" className="hover:text-[var(--ink)]">
+            FAQ
+          </a>
         </div>
 
-        <Link
-          href="/checkout"
-          className="rounded-md bg-[var(--sun)] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
-        >
-          Order This Week
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/menu"
+            className="rounded-md border border-[var(--line)] bg-white px-4 py-2 text-sm font-bold uppercase tracking-[0.08em]"
+          >
+            Explore Meals
+          </Link>
+          <Link
+            href="/checkout"
+            className="rounded-md bg-[var(--sun)] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+          >
+            Start Order
+          </Link>
+        </div>
       </nav>
     </header>
   );

@@ -9,17 +9,83 @@ import {
   goals,
   mealOptions,
   plans,
-  steps,
   testimonials,
 } from "./components/landing/data";
 
 export default function Home() {
+  const categoryHighlights = [
+    {
+      title: "Under 500",
+      text: "High flavor meals dialed in for lighter days.",
+    },
+    {
+      title: "Gluten Free",
+      text: "Simple ingredients and options your body loves.",
+    },
+    {
+      title: "Vegetarian",
+      text: "Plant-forward meals with real protein power.",
+    },
+    {
+      title: "Low Carb",
+      text: "Smart carb cuts without giving up satisfaction.",
+    },
+  ];
+
+  const valueBlocks = [
+    {
+      title: "Free Nutrition Guidance",
+      text: "Get practical coaching from our nutrition team when you need help dialing in your plan.",
+    },
+    {
+      title: "Local Sourcing Priority",
+      text: "We partner with regional suppliers to keep meals fresher and support local producers.",
+    },
+    {
+      title: "Sustainable Packaging",
+      text: "Responsible insulation and recyclable components reduce waste without compromising quality.",
+    },
+    {
+      title: "Concierge-Level Support",
+      text: "Questions about plans, delivery, or ingredients? We make ordering personal and easy.",
+    },
+  ];
+
   return (
     <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-18 px-5 pb-20 sm:px-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 sm:px-8">
         <Hero />
+
+        <section className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          {categoryHighlights.map((item) => (
+            <article
+              key={item.title}
+              className="rounded-2xl border border-[var(--line)] bg-white p-5"
+            >
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--berry)]">
+                category
+              </p>
+              <h3 className="mt-2 text-2xl font-black tracking-tight">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+            </article>
+          ))}
+        </section>
+
+        <section className="rounded-2xl border border-[var(--line)] bg-[var(--deep)] px-6 py-5 text-white sm:px-9">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h2 className="text-2xl font-black tracking-tight sm:text-3xl">
+              Trusted by busy professionals, athletes, and families across the region.
+            </h2>
+            <a
+              href="#reviews"
+              className="w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-[var(--ink)]"
+            >
+              View Reviews
+            </a>
+          </div>
+        </section>
 
         <section id="menu" className="space-y-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -52,7 +118,7 @@ export default function Home() {
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
                 Meal options
               </p>
-              <h2 className="mt-1 text-3xl font-black tracking-tight">Shop by category</h2>
+              <h2 className="mt-1 text-3xl font-black tracking-tight">Pick your path</h2>
             </div>
             <Link
               href="/menu"
@@ -74,17 +140,57 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="how" className="space-y-5">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+            Mighty made easy
+          </p>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                title: "Pick your meals",
+                text: "Choose from chef-prepared weekly drops that fit your goals.",
+              },
+              {
+                title: "Chefs cook fresh",
+                text: "Meals are made locally in small batches for freshness.",
+              },
+              {
+                title: "We deliver",
+                text: "Convenient drop-offs to home or office on your schedule.",
+              },
+              {
+                title: "Heat & repeat",
+                text: "Ready in minutes so healthy eating stays effortless.",
+              },
+            ].map((step, index) => (
+              <article
+                key={step.title}
+                className="rounded-2xl border border-[var(--line)] bg-white p-5"
+              >
+                <p className="text-xs font-bold tracking-[0.14em] text-[var(--berry)] uppercase">
+                  Step {index + 1}
+                </p>
+                <h3 className="mt-2 text-2xl font-black tracking-tight">{step.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+                  {step.text}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="grid gap-8 rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
-              Meal paths
+              Why we stand out
             </p>
             <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
-              Pick meals by your goal, not by guesswork.
+              The convenience of big meal kits, with local kitchen quality.
             </h2>
             <p className="mt-4 max-w-xl text-[var(--muted)]">
-              Choose from rotating categories built by dietitians and chefs. Mix
-              and match every week with no long-term contracts.
+              Enjoy premium flavors, clean ingredients, and delivery that respects
+              your week. It is a smarter way to eat well without spending nights
+              shopping, prepping, and cleaning.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2">
@@ -95,28 +201,6 @@ export default function Home() {
               >
                 {goal}
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="how" className="space-y-5">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
-            How it works
-          </p>
-          <div className="grid gap-4 md:grid-cols-3">
-            {steps.map((step, index) => (
-              <article
-                key={step.title}
-                className="rounded-2xl border border-[var(--line)] bg-white p-5"
-              >
-                <p className="text-xs font-bold tracking-[0.14em] text-[var(--berry)] uppercase">
-                  Step {index + 1}
-                </p>
-                <h3 className="mt-2 text-xl font-extrabold">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
-                  {step.text}
-                </p>
-              </article>
             ))}
           </div>
         </section>
@@ -187,7 +271,7 @@ export default function Home() {
             {plans.map((plan) => (
               <article
                 key={plan.title}
-                className="rounded-2xl border border-[var(--line)] bg-white p-6"
+                className="rounded-2xl border border-[var(--line)] bg-white p-6 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
               >
                 <p className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
                   {plan.title}
@@ -195,6 +279,11 @@ export default function Home() {
                 <p className="mt-2 text-lg font-semibold">{plan.detail}</p>
                 <p className="mt-5 text-4xl font-black tracking-tight">{plan.price}</p>
                 <p className="text-sm text-[var(--muted)]">per week</p>
+                <ul className="mt-4 space-y-1 text-sm text-[var(--muted)]">
+                  <li>Chef-prepared weekly menus</li>
+                  <li>Pause or skip anytime</li>
+                  <li>Fresh local delivery</li>
+                </ul>
                 <Link
                   href="/checkout"
                   className="mt-6 inline-block w-full rounded-full bg-[var(--ink)] px-4 py-3 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
@@ -204,6 +293,24 @@ export default function Home() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {valueBlocks.map((item) => (
+            <article
+              key={item.title}
+              className="rounded-2xl border border-[var(--line)] bg-white p-5"
+            >
+              <h3 className="text-xl font-black tracking-tight">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+              <a
+                href="#"
+                className="mt-4 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
+              >
+                Learn more
+              </a>
+            </article>
+          ))}
         </section>
 
         <section
