@@ -78,8 +78,9 @@ export function Header() {
   );
 
   const isActive = (href: string) => {
+    // Don't highlight hash links (they're sections, not pages)
     if (href.startsWith("/#")) {
-      return pathname === "/";
+      return false;
     }
 
     if (href === "/") {
