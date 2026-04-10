@@ -179,7 +179,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
             <div className="space-y-3 p-4">
               <div className="flex flex-wrap gap-2">
                 {meal.dietaryTags.map((tag) => (
-                  <div key={tag} className="inline-flex items-center gap-1.5" title={tag}>
+                  <div key={tag} className="inline-flex items-center" title={tag}>
                     <Image
                       src={TAG_META[tag]?.icon ?? "/labels/gf-badge.svg"}
                       alt={tag}
@@ -187,11 +187,6 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                       height={24}
                       className="h-6 w-6"
                     />
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] ${tagClass(tag)}`}
-                    >
-                      {TAG_META[tag]?.shortLabel ?? tag}
-                    </span>
                   </div>
                 ))}
               </div>
