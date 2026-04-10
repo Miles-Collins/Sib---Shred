@@ -7,6 +7,7 @@ export const featuredMeals: Meal[] = [
     subtitle: "Fit",
     description:
       "Organic free-range chicken breast served with garlic mashed potatoes and roasted vegetables.",
+    dietaryTags: ["GF", "HIGH PROTEIN"],
     calories: 610,
     protein: "44g",
     carbs: "48g",
@@ -32,6 +33,7 @@ export const featuredMeals: Meal[] = [
     subtitle: "Fit",
     description:
       "Organic free-range chicken breast with peppers, onions, brown rice, and black beans.",
+    dietaryTags: ["GF", "SPICY", "HIGH PROTEIN"],
     calories: 410,
     protein: "38g",
     carbs: "30g",
@@ -58,6 +60,7 @@ export const featuredMeals: Meal[] = [
     subtitle: "Performance",
     description:
       "All-natural turkey breast, mashed potatoes, green beans, and cranberry sauce.",
+    dietaryTags: ["GF"],
     calories: 600,
     protein: "50g",
     carbs: "50g",
@@ -75,6 +78,32 @@ export const featuredMeals: Meal[] = [
     isGlutenFree: true,
     tag: "Performance",
     price: "$17.49",
+    image: "/meal-tofu.svg",
+  },
+  {
+    slug: "thai-basil-tofu-vegan",
+    name: "THAI BASIL TOFU",
+    subtitle: "Vegan",
+    description:
+      "Tofu, jasmine rice, basil chili sauce, and stir-fried peppers with fresh herbs.",
+    dietaryTags: ["VEGAN", "GF", "SPICY"],
+    calories: 445,
+    protein: "30g",
+    carbs: "40g",
+    fat: "18g",
+    sodium: "485mg",
+    ingredients: [
+      "Tofu",
+      "Jasmine rice",
+      "Thai basil",
+      "Bell peppers",
+      "Garlic",
+      "Chili paste",
+      "Coconut aminos",
+    ],
+    isGlutenFree: true,
+    tag: "Plant Forward",
+    price: "$15.49",
     image: "/meal-tofu.svg",
   },
 ];
