@@ -12,16 +12,47 @@ type MenuCatalogProps = {
 
 const FILTERS = ["GF", "VEGAN", "SPICY", "HIGH PROTEIN"] as const;
 
+const TAG_META: Record<
+  string,
+  { icon: string; shortLabel: string; bgClass: string; textClass: string }
+> = {
+  GF: {
+    icon: "/labels/gf-badge.svg",
+    shortLabel: "GF",
+    bgClass: "bg-zinc-100",
+    textClass: "text-zinc-900",
+  },
+  VEGAN: {
+    icon: "/labels/vegan-badge.svg",
+    shortLabel: "V",
+    bgClass: "bg-cyan-100",
+    textClass: "text-cyan-900",
+  },
+  SPICY: {
+    icon: "/labels/spicy-badge.svg",
+    shortLabel: "S",
+    bgClass: "bg-red-100",
+    textClass: "text-red-800",
+  },
+  "HIGH PROTEIN": {
+    icon: "/labels/protein-badge.svg",
+    shortLabel: "HP",
+    bgClass: "bg-emerald-100",
+    textClass: "text-emerald-800",
+  },
+};
+
 function parseMoney(price: string) {
   return Number.parseFloat(price.replace("$", ""));
 }
 
 function tagClass(tag: string) {
-  if (tag === "GF") return "bg-emerald-100 text-emerald-800";
-  if (tag === "VEGAN") return "bg-lime-100 text-lime-800";
-  if (tag === "SPICY") return "bg-red-100 text-red-800";
-  if (tag === "HIGH PROTEIN") return "bg-blue-100 text-blue-800";
-  return "bg-zinc-100 text-zinc-800";
+  const meta = TAG_META[tag];
+  if (!meta) {
+    return "bg-zinc-100 text-zinc-800";
+  }
+
+  return `${meta.bgClass} ${meta.textClass}`;
 }
 
 export function MenuCatalog({ meals }: MenuCatalogProps) {
@@ -71,18 +102,26 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
           <div className="flex flex-wrap items-center gap-2">
             {FILTERS.map((filter) => {
               const active = activeFilters.includes(filter);
+              const meta = TAG_META[filter];
 
               return (
                 <button
                   key={filter}
                   type="button"
                   onClick={() => toggleFilter(filter)}
-                  className={`rounded-full border px-4 py-2 text-xs font-bold tracking-[0.08em] uppercase transition ${
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase transition ${
                     active
                       ? "border-[var(--ink)] bg-[var(--ink)] text-white"
                       : "border-[var(--line)] bg-white text-[var(--ink)]"
                   }`}
                 >
+                  <Image
+                    src={meta.icon}
+                    alt={filter}
+                    width={20}
+                    height={20}
+                    className="h-5 w-5"
+                  />
                   {filter}
                 </button>
               );
@@ -140,12 +179,20 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
             <div className="space-y-3 p-4">
               <div className="flex flex-wrap gap-2">
                 {meal.dietaryTags.map((tag) => (
-                  <span
-                    key={tag}
-                    className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${tagClass(tag)}`}
-                  >
-                    {tag}
-                  </span>
+                  <div key={tag} className="inline-flex items-center gap-1.5" title={tag}>
+                    <Image
+                      src={TAG_META[tag]?.icon ?? "/labels/gf-badge.svg"}
+                      alt={tag}
+                      width={24}
+                      height={24}
+                      className="h-6 w-6"
+                    />
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] ${tagClass(tag)}`}
+                    >
+                      {TAG_META[tag]?.shortLabel ?? tag}
+                    </span>
+                  </div>
                 ))}
               </div>
 
