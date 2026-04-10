@@ -19,14 +19,14 @@ export function Header() {
       <nav className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/brand-logo.svg"
+            src="/brand-logo.png"
             alt="Sibshred Kitchen"
             width={46}
             height={46}
             priority
           />
           <div>
-            <p className="text-2xl font-black tracking-tight">SIBSHRED</p>
+            <p className="text-2xl font-black tracking-tight">SIB & SHRED</p>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
               Meal Prep
             </p>
