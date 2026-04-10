@@ -206,6 +206,10 @@ select:disabled {
   transition: transform 260ms ease;
 }
 
+.motion-stagger {
+  animation: reveal 0.55s ease both;
+}
+
 .brand-nav-link,
 .brand-chip,
 .brand-control {

@@ -59,10 +59,11 @@ export default function Home() {
         <Hero />
 
         <section className="motion-reveal brand-grid brand-panel grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
-          {categoryHighlights.map((item) => (
+          {categoryHighlights.map((item, index) => (
             <article
               key={item.title}
-              className="motion-lift rounded-[1.4rem] border border-[var(--line)] bg-white/95 p-5"
+              className="motion-lift motion-stagger rounded-[1.4rem] border border-[var(--line)] bg-white/95 p-5"
+              style={{ animationDelay: `${index * 70}ms` }}
             >
               <p className="brand-kicker text-[var(--berry)]">
                 category
@@ -106,8 +107,8 @@ export default function Home() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {featuredMeals.map((meal) => (
-              <MealCard key={meal.name} meal={meal} />
+            {featuredMeals.map((meal, index) => (
+              <MealCard key={meal.name} meal={meal} delayMs={index * 90} />
             ))}
           </div>
         </section>
@@ -165,7 +166,8 @@ export default function Home() {
             ].map((step, index) => (
               <article
                 key={step.title}
-                className="motion-lift brand-panel p-5"
+                className="motion-lift motion-stagger brand-panel p-5"
+                style={{ animationDelay: `${index * 60}ms` }}
               >
                 <p className="brand-kicker text-[var(--berry)]">
                   Step {index + 1}
@@ -296,10 +298,11 @@ export default function Home() {
         </section>
 
         <section className="motion-reveal grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {valueBlocks.map((item) => (
+          {valueBlocks.map((item, index) => (
             <article
               key={item.title}
-              className="motion-lift brand-panel p-5"
+              className="motion-lift motion-stagger brand-panel p-5"
+              style={{ animationDelay: `${index * 70}ms` }}
             >
               <h3 className="brand-section-title text-xl">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>

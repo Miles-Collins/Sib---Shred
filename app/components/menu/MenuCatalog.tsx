@@ -88,9 +88,9 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                   key={filter}
                   type="button"
                   onClick={() => toggleFilter(filter)}
-                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase transition ${
+                  className={`brand-chip inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase ${
                     active
-                      ? "border-[var(--ink)] bg-[var(--ink)] text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)]"
+                      ? "border-[var(--ink)] bg-[var(--ink)] text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)] translate-y-px"
                       : "border-[var(--line)] bg-white text-[var(--ink)] shadow-[0_4px_10px_rgba(16,27,23,0.04)]"
                   }`}
                 >
@@ -140,10 +140,11 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {filteredMeals.map((meal) => (
+        {filteredMeals.map((meal, index) => (
           <article
             key={meal.slug}
-            className="brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
+            className="motion-stagger brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
+            style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
           >
             <Link href={`/menu/${meal.slug}`}>
               <Image

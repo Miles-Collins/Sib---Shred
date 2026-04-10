@@ -5,11 +5,15 @@ import type { Meal } from "./types";
 
 type MealCardProps = {
   meal: Meal;
+  delayMs?: number;
 };
 
-export function MealCard({ meal }: MealCardProps) {
+export function MealCard({ meal, delayMs = 0 }: MealCardProps) {
   return (
-    <article className="brand-card-hover motion-lift group rounded-2xl border border-[var(--line)] bg-white p-5">
+    <article
+      className="brand-card-hover motion-lift motion-stagger group rounded-2xl border border-[var(--line)] bg-white p-5"
+      style={{ animationDelay: `${delayMs}ms` }}
+    >
       <Link href={`/menu/${meal.slug}`}>
         <Image
           src={meal.image}
