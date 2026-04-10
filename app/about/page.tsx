@@ -8,49 +8,89 @@ export default function AboutPage() {
       <Header />
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
-        <header className="space-y-3">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
-            About me
-          </p>
-          <h1 className="text-4xl font-black tracking-tight sm:text-5xl">
-            One kitchen, one set of recipes, one person behind every box.
-          </h1>
-          <p className="max-w-3xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-            Sibshred Kitchen is a solo-run meal prep service built around fresh
-            food, clear macros, and a simple ordering flow. I cook, portion, and
-            package each meal myself so the experience stays personal from the
-            first click to delivery.
-          </p>
-        </header>
+        <section className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[linear-gradient(180deg,#f9f8f1,#eef4e8)] p-6 shadow-[var(--shadow-card)]">
+            <div className="mx-auto flex max-w-sm flex-col items-center text-center">
+              <div className="flex h-44 w-44 items-center justify-center rounded-full border border-[rgba(16,27,23,0.08)] bg-white shadow-[0_18px_40px_rgba(16,27,23,0.1)]">
+                <div className="flex h-36 w-36 items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_35%,#dfeccb_0%,#8bbf5c_60%,#2f7a4c_100%)] text-4xl font-black text-white">
+                  A
+                </div>
+              </div>
+              <p className="mt-5 text-xs font-bold uppercase tracking-[0.22em] text-[var(--muted)]">
+                Solo founder
+              </p>
+              <p className="mt-2 text-lg font-semibold text-[var(--ink)]">
+                Built, cooked, packaged, and delivered by Alysha.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+                This is a small, hands-on kitchen, not a big operation hiding behind a generic storefront.
+              </p>
+            </div>
+          </div>
 
-        <section className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <p className="brand-kicker text-[var(--muted)]">My approach</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              About me
+            </p>
+            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
+              One kitchen, one set of recipes, Alysha behind every box.
+            </h1>
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+              Sibshred Kitchen is Alysha&apos;s solo-run meal prep service built around fresh food,
+              clear macros, and a simple ordering flow. She cooks, portions, and packages each
+              meal herself so the experience stays personal from the first click to delivery.
+            </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  What Alysha values
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+                  Fresh cooking, honest nutrition, and a smooth customer experience.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Best for
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+                  Anyone who wants real meals ready in minutes without living in the kitchen.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="my-story" className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_0.9fr]">
+          <div>
+            <p className="brand-kicker text-[var(--muted)]">My story</p>
             <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-              I keep the menu focused, seasonal, and realistic to prep well.
+              Alysha wanted healthy food to feel simple, personal, and worth repeating.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-              The goal is not to feel like a giant chain. It is to feel like a
-              thoughtful kitchen you can trust every week. I keep the ordering
-              straightforward, the ingredients clear, and the meals balanced so
-              you can eat well without extra work.
+              Sibshred started from the idea that meal prep should taste like something you would
+              actually look forward to opening in the fridge. Alysha keeps the menu focused, uses
+              ingredients she would serve to people she cares about, and builds every box with the
+              same attention she would want for her own meals.
+            </p>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+              The goal is not to feel like a giant chain. It is to feel like a thoughtful kitchen you
+              can trust every week. Alysha keeps the ordering straightforward, the ingredients clear,
+              and the meals balanced so you can eat well without extra work.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+          <div className="grid gap-3">
             <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
-                What I value
-              </p>
+              <p className="brand-kicker text-[var(--berry)]">What to expect</p>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                Fresh cooking, honest nutrition, and a smooth customer experience.
+                A small-batch menu, direct communication, and meals that are packed with care.
               </p>
             </div>
             <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
-                Best for
-              </p>
+              <p className="brand-kicker text-[var(--berry)]">My promise</p>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                Anyone who wants real meals ready in minutes without living in the kitchen.
+                If it goes out under Alysha&apos;s name, it has to taste good, look good, and make sense for your week.
               </p>
             </div>
           </div>
@@ -61,7 +101,7 @@ export default function AboutPage() {
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {[
               "Pick your meals from the weekly menu",
-              "I prep, portion, and package everything fresh",
+              "Alysha preps, portions, and packages everything fresh",
               "You heat, eat, and get your time back",
             ].map((item, index) => (
               <div
@@ -73,6 +113,28 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="brand-shell grid gap-4 p-6 sm:p-8 md:grid-cols-3">
+          {[
+            {
+              label: "Kitchen style",
+              text: "Small-batch cooking with a focus on consistency and freshness.",
+            },
+            {
+              label: "Voice",
+              text: "Direct, personal, and built around a one-person relationship.",
+            },
+            {
+              label: "Experience",
+              text: "Simple ordering, clear labels, and meals that are ready when you need them.",
+            },
+          ].map((item) => (
+            <article key={item.label} className="rounded-2xl border border-[var(--line)] bg-white p-5">
+              <p className="brand-kicker text-[var(--muted)]">{item.label}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+            </article>
+          ))}
         </section>
 
         <section className="rounded-3xl border border-[var(--line)] bg-[var(--mint)]/45 p-7 sm:p-10">

@@ -342,17 +342,17 @@ export default function Home() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="brand-kicker text-[var(--muted)]">
-                  From the journal
+                From the journal
               </p>
               <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
                 Tips, nutrition, and updates
               </h2>
             </div>
             <a
-              href="#"
+              href="/about"
               className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
             >
-              Read all posts
+              Read my story
             </a>
           </div>
 
@@ -403,17 +403,17 @@ export default function Home() {
         <div className="mx-auto grid w-full max-w-6xl gap-5 px-5 py-8 text-sm text-[var(--muted)] sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
           <div>
             <p className="text-lg font-black text-[var(--ink)]">SIBSHRED</p>
-            <p className="mt-1">Healthy Meals Delivered</p>
+              <p className="mt-1">Healthy Meals Delivered by Alysha</p>
           </div>
           <div className="space-y-1">
             <p className="font-semibold text-[var(--ink)]">Company</p>
             <Link href="/about" className="block">
               About
             </Link>
-            <a href="#" className="block">
+            <a href="/about#my-story" className="block">
               FAQ
             </a>
-            <a href="#" className="block">
+            <a href="mailto:info@sibshredkitchen.com" className="block">
               Contact Us
             </a>
           </div>
