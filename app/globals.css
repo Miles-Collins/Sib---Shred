@@ -1,16 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --bg-cream: #f3f6f1;
-  --ink: #182218;
-  --muted: #596559;
-  --line: #d3ddd1;
-  --sun: #8dbb5c;
-  --mint: #d9ebcb;
-  --berry: #2d7a4b;
-  --hero: radial-gradient(circle at 10% 10%, #f4faee 0%, #ffffff 35%, #eff4ea 100%);
-  --deep: #132018;
-  --warm: #f7efe1;
+  --bg-cream: #f4f5ef;
+  --ink: #111815;
+  --muted: #5f6a60;
+  --line: #d5dbd0;
+  --sun: #8bbf5c;
+  --mint: #dfeccb;
+  --berry: #2f7a4c;
+  --hero: radial-gradient(circle at 10% 10%, #f6faef 0%, #ffffff 42%, #eef3ea 100%);
+  --deep: #101b17;
+  --warm: #f7efe2;
+  --paper: #ffffff;
+  --paper-soft: #fafaf7;
+  --shadow-card: 0 14px 34px rgba(16, 27, 23, 0.08);
+  --shadow-raise: 0 18px 40px rgba(16, 27, 23, 0.12);
   --background: var(--bg-cream);
   --foreground: var(--ink);
 }
@@ -26,6 +30,79 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+}
+
+.brand-shell {
+  border: 1px solid var(--line);
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 250, 246, 0.96));
+  box-shadow: var(--shadow-card);
+}
+
+.brand-panel {
+  border: 1px solid var(--line);
+  border-radius: 1.75rem;
+  background: var(--paper);
+  box-shadow: var(--shadow-card);
+}
+
+.brand-panel-strong {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.75rem;
+  background: linear-gradient(135deg, #13211b 0%, #0f1814 100%);
+  box-shadow: var(--shadow-raise);
+}
+
+.brand-kicker {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.2rem;
+  padding: 0.28rem 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.brand-badge--green {
+  background: #2f7a4c;
+  color: #fff;
+}
+
+.brand-badge--blue {
+  background: #2e74d7;
+  color: #fff;
+}
+
+.brand-badge--aqua {
+  background: #4ec9ee;
+  color: #fff;
+}
+
+.brand-badge--charcoal {
+  background: #3f4a49;
+  color: #fff;
+}
+
+.brand-grid {
+  background-image:
+    linear-gradient(to right, rgba(16, 27, 23, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 27, 23, 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.brand-section-title {
+  letter-spacing: -0.03em;
+  line-height: 0.96;
+  font-weight: 900;
 }
 
 .grain-panel {

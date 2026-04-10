@@ -4,7 +4,7 @@ import Link from "next/link";
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/90 backdrop-blur-md">
-      <div className="bg-[var(--deep)] px-5 py-2 text-center text-xs font-semibold uppercase tracking-[0.14em] text-white sm:px-8">
+      <div className="bg-[var(--deep)] px-5 py-2 text-center text-xs font-semibold uppercase tracking-[0.18em] text-white sm:px-8">
         Save $120 on your first month + free local delivery
       </div>
 
@@ -34,8 +34,8 @@ export function Header() {
             priority
           />
           <div>
-            <p className="text-2xl font-black tracking-tight">SIB & SHRED</p>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+            <p className="brand-section-title text-2xl">SIB & SHRED</p>
+            <p className="brand-kicker text-[var(--muted)]">
               Meal Prep
             </p>
           </div>
@@ -65,7 +65,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/menu"
-            className="rounded-md border border-[var(--line)] bg-white px-4 py-2 text-sm font-bold uppercase tracking-[0.08em]"
+            className="rounded-md border border-[var(--line)] bg-white px-4 py-2 text-sm font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)]"
           >
             Explore Meals
           </Link>

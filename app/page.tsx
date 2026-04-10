@@ -55,27 +55,27 @@ export default function Home() {
     <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 sm:px-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8">
         <Hero />
 
-        <section className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <section className="brand-grid brand-panel grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
           {categoryHighlights.map((item) => (
             <article
               key={item.title}
-              className="rounded-2xl border border-[var(--line)] bg-white p-5"
+              className="rounded-[1.4rem] border border-[var(--line)] bg-white/95 p-5"
             >
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--berry)]">
+              <p className="brand-kicker text-[var(--berry)]">
                 category
               </p>
-              <h3 className="mt-2 text-2xl font-black tracking-tight">{item.title}</h3>
+              <h3 className="brand-section-title mt-2 text-2xl">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
             </article>
           ))}
         </section>
 
-        <section className="rounded-2xl border border-[var(--line)] bg-[var(--deep)] px-6 py-5 text-white sm:px-9">
+        <section className="brand-panel-strong px-6 py-5 text-white sm:px-9">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-black tracking-tight sm:text-3xl">
+            <h2 className="brand-section-title text-2xl sm:text-3xl">
               Trusted by busy professionals, athletes, and families across the region.
             </h2>
             <a
@@ -90,10 +90,10 @@ export default function Home() {
         <section id="menu" className="space-y-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="brand-kicker text-[var(--muted)]">
                 Weekly spotlight
               </p>
-              <h2 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">
+              <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
                 Featured meals
               </h2>
             </div>
@@ -112,13 +112,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="space-y-5 rounded-2xl border border-[var(--line)] bg-white p-6 sm:p-8">
+        <section className="brand-shell space-y-5 p-6 sm:p-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="brand-kicker text-[var(--muted)]">
                 Meal options
               </p>
-              <h2 className="mt-1 text-3xl font-black tracking-tight">Pick your path</h2>
+              <h2 className="brand-section-title mt-1 text-3xl">Pick your path</h2>
             </div>
             <Link
               href="/menu"
@@ -141,7 +141,7 @@ export default function Home() {
         </section>
 
         <section id="how" className="space-y-5">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+          <p className="brand-kicker text-[var(--muted)]">
             Mighty made easy
           </p>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -165,12 +165,12 @@ export default function Home() {
             ].map((step, index) => (
               <article
                 key={step.title}
-                className="rounded-2xl border border-[var(--line)] bg-white p-5"
+                className="brand-panel p-5"
               >
-                <p className="text-xs font-bold tracking-[0.14em] text-[var(--berry)] uppercase">
+                <p className="brand-kicker text-[var(--berry)]">
                   Step {index + 1}
                 </p>
-                <h3 className="mt-2 text-2xl font-black tracking-tight">{step.title}</h3>
+                <h3 className="brand-section-title mt-2 text-2xl">{step.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
                   {step.text}
                 </p>
@@ -179,12 +179,12 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid gap-8 rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
+        <section className="brand-shell grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+            <p className="brand-kicker text-[var(--muted)]">
               Why we stand out
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+            <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
               The convenience of big meal kits, with local kitchen quality.
             </h2>
             <p className="mt-4 max-w-xl text-[var(--muted)]">
@@ -197,7 +197,7 @@ export default function Home() {
             {goals.map((goal) => (
               <div
                 key={goal}
-                className="rounded-xl border border-[var(--line)] bg-[var(--bg-cream)] px-3 py-4 text-center text-sm font-bold uppercase tracking-[0.09em]"
+                className="brand-badge brand-badge--charcoal rounded-[0.35rem] px-3 py-4 text-center text-sm"
               >
                 {goal}
               </div>
@@ -205,9 +205,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--ink)] p-6 text-white sm:p-9">
+        <section className="brand-panel-strong overflow-hidden p-6 text-white sm:p-9">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="max-w-lg text-3xl leading-tight font-black sm:text-4xl">
+            <h2 className="brand-section-title max-w-lg text-3xl sm:text-4xl">
               You are busy. Your nutrition plan should not be.
             </h2>
             <p className="max-w-sm text-sm text-white/80">
@@ -252,10 +252,10 @@ export default function Home() {
         <section id="plans" className="space-y-6">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="brand-kicker text-[var(--muted)]">
                 Subscribe and save
               </p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+              <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
                 Flexible weekly plans
               </h2>
             </div>
@@ -271,9 +271,9 @@ export default function Home() {
             {plans.map((plan) => (
               <article
                 key={plan.title}
-                className="rounded-2xl border border-[var(--line)] bg-white p-6 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
+                className="brand-panel p-6 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
               >
-                <p className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                <p className="brand-kicker text-[var(--muted)]">
                   {plan.title}
                 </p>
                 <p className="mt-2 text-lg font-semibold">{plan.detail}</p>
@@ -299,9 +299,9 @@ export default function Home() {
           {valueBlocks.map((item) => (
             <article
               key={item.title}
-              className="rounded-2xl border border-[var(--line)] bg-white p-5"
+              className="brand-panel p-5"
             >
-              <h3 className="text-xl font-black tracking-tight">{item.title}</h3>
+              <h3 className="brand-section-title text-xl">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
               <a
                 href="#"
@@ -315,12 +315,12 @@ export default function Home() {
 
         <section
           id="reviews"
-          className="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-9"
+          className="brand-shell p-6 sm:p-9"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+          <p className="brand-kicker text-[var(--muted)]">
             Testimonials
           </p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+          <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
             People staying on track, week after week.
           </h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -338,10 +338,10 @@ export default function Home() {
         <section id="blog" className="space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="brand-kicker text-[var(--muted)]">
                 From our blog
               </p>
-              <h2 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">
+              <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
                 Tips, nutrition, and updates
               </h2>
             </div>
@@ -357,9 +357,9 @@ export default function Home() {
             {blogPosts.map((post) => (
               <article
                 key={post.title}
-                className="rounded-2xl border border-[var(--line)] bg-white p-5"
+                className="brand-panel p-5"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]">
+                <p className="brand-kicker text-[var(--muted)]">
                   {post.date}
                 </p>
                 <h3 className="mt-3 text-xl leading-tight font-extrabold">

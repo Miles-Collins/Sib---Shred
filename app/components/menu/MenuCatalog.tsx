@@ -90,8 +90,8 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                   onClick={() => toggleFilter(filter)}
                   className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase transition ${
                     active
-                      ? "border-[var(--ink)] bg-[var(--ink)] text-white"
-                      : "border-[var(--line)] bg-white text-[var(--ink)]"
+                      ? "border-[var(--ink)] bg-[var(--ink)] text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)]"
+                      : "border-[var(--line)] bg-white text-[var(--ink)] shadow-[0_4px_10px_rgba(16,27,23,0.04)]"
                   }`}
                 >
                   <Image
@@ -143,7 +143,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         {filteredMeals.map((meal) => (
           <article
             key={meal.slug}
-            className="overflow-hidden rounded-xl border border-[var(--line)] bg-white"
+            className="overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
           >
             <Link href={`/menu/${meal.slug}`}>
               <Image
@@ -170,7 +170,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 ))}
               </div>
 
-              <h2 className="text-2xl font-black tracking-tight leading-tight">
+              <h2 className="brand-section-title text-[1.45rem] leading-tight">
                 <Link href={`/menu/${meal.slug}`}>{meal.name}</Link>
               </h2>
 
@@ -186,10 +186,10 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               </div>
 
               <div className="flex items-center justify-between border-t border-[var(--line)] pt-3">
-                <p className="text-3xl font-black text-[var(--berry)]">{meal.price}</p>
+                <p className="text-[1.85rem] font-black text-[var(--berry)]">{meal.price}</p>
                 <Link
                   href={`/menu/${meal.slug}`}
-                  className="rounded-md bg-[var(--sun)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white"
+                  className="rounded-md bg-[var(--sun)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
                 >
                   View Meal
                 </Link>

@@ -72,7 +72,7 @@ export default async function MealPage({ params }: MealPageProps) {
   const [leftIngredients, rightIngredients] = splitIngredients(meal.ingredients);
 
   return (
-    <div className="flex min-h-full flex-col bg-[#e6e7df] text-[var(--ink)]">
+    <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
       <Header />
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-6 sm:px-8">
@@ -88,7 +88,7 @@ export default async function MealPage({ params }: MealPageProps) {
         </div>
 
         <section className="grid gap-5 lg:grid-cols-[1.45fr_0.78fr]">
-          <article className="rounded-3xl border border-[#d9dbd2] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-6">
+          <article className="brand-shell p-5 sm:p-6">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h1 className="text-[clamp(2rem,2.8vw,3.1rem)] leading-[1.08] font-black tracking-tight">
@@ -101,7 +101,7 @@ export default async function MealPage({ params }: MealPageProps) {
               <TinyShareButton title={meal.name} />
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-md border border-[var(--line)]">
+            <div className="mt-5 overflow-hidden rounded-md border border-[var(--line)] shadow-[0_10px_24px_rgba(16,27,23,0.08)]">
               <Image
                 src={meal.image}
                 alt={meal.name}
@@ -116,7 +116,7 @@ export default async function MealPage({ params }: MealPageProps) {
               {Array.from(new Set([...meal.dietaryTags, "CALORIE SMART", "FIBER FILLED"])).map((tag) => (
                 <span
                   key={tag}
-                  className={`rounded-[2px] px-2.5 py-1 text-[12px] font-bold leading-none tracking-[0.04em] ${dietBadgeClass(tag)}`}
+                  className={`brand-badge rounded-[0.2rem] px-2.5 py-1 ${dietBadgeClass(tag)}`}
                 >
                   {tag}
                 </span>
@@ -126,7 +126,7 @@ export default async function MealPage({ params }: MealPageProps) {
             <AddToCartPanel meal={meal} compact />
           </article>
 
-          <aside className="rounded-3xl border border-[#d9dbd2] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-6">
+          <aside className="brand-shell p-5 sm:p-6">
             <h2 className="text-[clamp(1.9rem,2.2vw,2.8rem)] font-black tracking-tight">Nutrition Per Serving</h2>
             <div className="mt-3 text-right text-[1.1rem] font-semibold">Per serving</div>
             <div className="mt-2 space-y-1">
@@ -148,7 +148,7 @@ export default async function MealPage({ params }: MealPageProps) {
 
         <ProductDescription text={meal.description} />
 
-        <section className="rounded-3xl border border-[#d9dbd2] bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-8">
+        <section className="brand-shell p-6 sm:p-8">
           <h2 className="text-[clamp(1.8rem,2.2vw,2.5rem)] font-black tracking-tight">Ingredients</h2>
           <p className="mt-3 text-[1.05rem]">Allergens: {meal.allergens}</p>
           <p className="mt-1 text-[0.95rem] font-semibold text-[var(--muted)]">{meal.facilityNote}</p>
