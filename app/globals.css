@@ -24,6 +24,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
 body {
@@ -200,9 +201,15 @@ select:disabled {
 }
 
 .brand-section-title {
+  font-family: var(--font-display), Georgia, serif;
   letter-spacing: -0.03em;
   line-height: 0.96;
   font-weight: 900;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display), Georgia, serif;
 }
 
 .motion-reveal {
@@ -267,6 +274,26 @@ select:disabled {
     border-color 150ms ease,
     color 150ms ease,
     opacity 150ms ease;
+}
+
+.brand-control {
+  position: relative;
+  isolation: isolate;
+  box-shadow: 0 8px 20px rgba(16, 27, 23, 0.08);
+}
+
+.brand-control:hover {
+  box-shadow: 0 12px 26px rgba(16, 27, 23, 0.14);
+}
+
+.brand-control:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: 0 6px 14px rgba(16, 27, 23, 0.1);
+}
+
+.brand-control:focus-visible {
+  outline: 2px solid rgba(47, 122, 76, 0.42);
+  outline-offset: 2px;
 }
 
 .grain-panel {

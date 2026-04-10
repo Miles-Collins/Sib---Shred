@@ -3,11 +3,38 @@ import { featuredMeals } from "../components/landing/data";
 import { MenuCatalog } from "../components/menu/MenuCatalog";
 
 export default function MenuPage() {
+  const orderProgress = [
+    { label: "Choose meals", state: "active" },
+    { label: "Set delivery", state: "upcoming" },
+    { label: "Checkout", state: "upcoming" },
+  ] as const;
+
   return (
     <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
       <Header />
 
       <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-5 py-8 sm:px-8">
+        <section className="motion-sticky rounded-2xl border border-[var(--line)] bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="brand-kicker text-[var(--muted)]">Order progress</p>
+            <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-bold uppercase tracking-[0.09em] sm:w-[28rem]">
+              {orderProgress.map((step, index) => (
+                <div
+                  key={step.label}
+                  className={`rounded-full border px-2 py-2 ${
+                    step.state === "active"
+                      ? "border-[var(--ink)] bg-[var(--ink)] text-white"
+                      : "border-[var(--line)] bg-[var(--paper-soft)] text-[var(--muted)]"
+                  }`}
+                >
+                  <span className="mr-1">{index + 1}.</span>
+                  {step.label}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <header className="space-y-3">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
             Order meals
