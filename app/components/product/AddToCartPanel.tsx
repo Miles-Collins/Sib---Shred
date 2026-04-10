@@ -68,7 +68,7 @@ export function AddToCartPanel({ meal, compact = false }: AddToCartPanelProps) {
         <button
           type="button"
           onClick={decrease}
-          className="rounded-md border border-[var(--line)] bg-white px-4 py-2 font-semibold"
+          className="brand-control rounded-md border border-[var(--line)] bg-white px-4 py-2 font-semibold"
         >
           -
         </button>
@@ -78,14 +78,14 @@ export function AddToCartPanel({ meal, compact = false }: AddToCartPanelProps) {
         <button
           type="button"
           onClick={increase}
-          className="rounded-md border border-[var(--line)] bg-white px-4 py-2 font-semibold"
+          className="brand-control rounded-md border border-[var(--line)] bg-white px-4 py-2 font-semibold"
         >
           +
         </button>
         <button
           type="button"
           onClick={addToCart}
-          className={`rounded-md bg-[var(--sun)] font-bold text-white ${
+          className={`brand-control rounded-md bg-[var(--sun)] font-bold text-white ${
             compact ? "px-5 py-2" : "px-6 py-2.5"
           }`}
         >
