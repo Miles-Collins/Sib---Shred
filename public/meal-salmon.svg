@@ -1,0 +1,17 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lemon herb salmon and rice">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#78D8C5"/>
+      <stop offset="100%" stop-color="#1E9DB9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#g2)"/>
+  <ellipse cx="600" cy="390" rx="350" ry="220" fill="#F7FFF8"/>
+  <ellipse cx="600" cy="390" rx="310" ry="185" fill="#F0EBD8"/>
+  <path d="M430 355C500 300 620 290 760 340C740 420 630 470 520 450C470 442 440 410 430 355Z" fill="#F48C5D"/>
+  <circle cx="730" cy="300" r="32" fill="#F8DA4E"/>
+  <circle cx="730" cy="300" r="18" fill="#FFF5B7"/>
+  <circle cx="510" cy="470" r="36" fill="#6AAE61"/>
+  <circle cx="560" cy="500" r="36" fill="#6AAE61"/>
+  <circle cx="610" cy="470" r="36" fill="#6AAE61"/>
+</svg>

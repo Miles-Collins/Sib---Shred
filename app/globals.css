@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-cream: #f6f8f5;
+  --ink: #182018;
+  --muted: #5a6558;
+  --line: #d9e1d7;
+  --sun: #8dbb5c;
+  --mint: #e5f0dc;
+  --berry: #3d6f2c;
+  --hero: linear-gradient(180deg, #ffffff 0%, #eef5ea 100%);
+  --background: var(--bg-cream);
+  --foreground: var(--ink);
 }
 
 @theme inline {
@@ -12,15 +20,45 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  main section {
+    animation: reveal 0.6s ease both;
+  }
+
+  main section:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  main section:nth-child(3) {
+    animation-delay: 130ms;
+  }
+
+  main section:nth-child(4) {
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

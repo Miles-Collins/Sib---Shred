@@ -1,0 +1,17 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chipotle chicken bowl">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F59A4B"/>
+      <stop offset="100%" stop-color="#E35C47"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#g1)"/>
+  <ellipse cx="600" cy="390" rx="350" ry="220" fill="#FFF4D8"/>
+  <ellipse cx="600" cy="390" rx="300" ry="180" fill="#DFA86C"/>
+  <circle cx="500" cy="350" r="58" fill="#8E3E2B"/>
+  <circle cx="620" cy="430" r="56" fill="#8E3E2B"/>
+  <circle cx="700" cy="330" r="58" fill="#8E3E2B"/>
+  <circle cx="560" cy="430" r="42" fill="#89BF6A"/>
+  <circle cx="675" cy="390" r="40" fill="#89BF6A"/>
+  <circle cx="530" cy="300" r="34" fill="#F0C64B"/>
+</svg>
