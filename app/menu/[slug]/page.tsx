@@ -116,7 +116,7 @@ export default async function MealPage({ params }: MealPageProps) {
               {Array.from(new Set([...meal.dietaryTags, "CALORIE SMART", "FIBER FILLED"])).map((tag) => (
                 <span
                   key={tag}
-                  className={`brand-badge rounded-[0.2rem] px-2.5 py-1 ${dietBadgeClass(tag)}`}
+                  className={`brand-badge motion-badge rounded-[0.2rem] px-2.5 py-1 ${dietBadgeClass(tag)}`}
                 >
                   {tag}
                 </span>
