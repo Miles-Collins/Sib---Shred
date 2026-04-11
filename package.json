@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "sanity:dev": "sanity dev",
-    "sanity:deploy": "sanity deploy"
+    "sanity:deploy": "sanity deploy",
+    "studio:dev": "npm --prefix studio-sib-shred-performance-kitchen run dev",
+    "studio:build": "npm --prefix studio-sib-shred-performance-kitchen run build",
+    "studio:start": "npm --prefix studio-sib-shred-performance-kitchen run start"
   },
   "dependencies": {
     "@sanity/vision": "^5.20.0",
