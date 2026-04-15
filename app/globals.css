@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --bg-cream: #f4f5ef;
-  --ink: #111815;
-  --muted: #5f6a60;
-  --line: #d5dbd0;
-  --sun: #8bbf5c;
-  --mint: #dfeccb;
-  --berry: #2f7a4c;
-  --hero: radial-gradient(circle at 10% 10%, #f6faef 0%, #ffffff 42%, #eef3ea 100%);
-  --deep: #101b17;
-  --warm: #f7efe2;
+  --bg-cream: #f4fcff;
+  --ink: #000000;
+  --muted: #304149;
+  --line: #bfeaf3;
+  --sun: #0cc0df;
+  --mint: #e9faff;
+  --berry: #000000;
+  --hero: radial-gradient(circle at 10% 10%, #eefdff 0%, #ffffff 42%, #e9f8fd 100%);
+  --deep: #000000;
+  --warm: #f2fbff;
   --paper: #ffffff;
-  --paper-soft: #fafaf7;
-  --shadow-card: 0 14px 34px rgba(16, 27, 23, 0.08);
-  --shadow-raise: 0 18px 40px rgba(16, 27, 23, 0.12);
+  --paper-soft: #f7fdff;
+  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.08);
+  --shadow-raise: 0 18px 40px rgba(0, 0, 0, 0.12);
   --background: var(--bg-cream);
   --foreground: var(--ink);
 }
@@ -60,7 +60,7 @@ body {
 :where(.brand-card-hover):hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-raise);
-  border-color: rgba(47, 122, 76, 0.28);
+  border-color: rgba(12, 192, 223, 0.35);
 }
 
 :where(.brand-card-hover):hover .motion-card-image {
@@ -72,7 +72,7 @@ body {
 }
 
 :where(a, button, summary, select, [role="button"]):focus-visible {
-  outline: 2px solid rgba(47, 122, 76, 0.35);
+  outline: 2px solid rgba(12, 192, 223, 0.45);
   outline-offset: 3px;
 }
 
@@ -128,8 +128,8 @@ select:disabled {
 
 .texture-dots {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(16, 27, 23, 0.11) 1px, transparent 0),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(245, 248, 239, 0.9));
+    radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.12) 1px, transparent 0),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(234, 250, 255, 0.94));
   background-size: 16px 16px, auto;
 }
 
@@ -144,13 +144,13 @@ select:disabled {
   left: 0;
   width: 84px;
   height: 2px;
-  background: linear-gradient(90deg, var(--berry), rgba(47, 122, 76, 0));
+  background: linear-gradient(90deg, var(--sun), rgba(12, 192, 223, 0));
 }
 
 .brand-panel-strong {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 1.75rem;
-  background: linear-gradient(135deg, #13211b 0%, #0f1814 100%);
+  background: linear-gradient(135deg, #042128 0%, #000000 100%);
   box-shadow: var(--shadow-raise);
 }
 
@@ -174,7 +174,7 @@ select:disabled {
 }
 
 .brand-badge--green {
-  background: #2f7a4c;
+  background: var(--sun);
   color: #fff;
 }
 
@@ -184,7 +184,7 @@ select:disabled {
 }
 
 .brand-badge--aqua {
-  background: #4ec9ee;
+  background: #38d3ec;
   color: #fff;
 }
 
@@ -195,8 +195,8 @@ select:disabled {
 
 .brand-grid {
   background-image:
-    linear-gradient(to right, rgba(16, 27, 23, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(16, 27, 23, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -279,28 +279,28 @@ h2 {
 .brand-control {
   position: relative;
   isolation: isolate;
-  box-shadow: 0 8px 20px rgba(16, 27, 23, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .brand-control:hover {
-  box-shadow: 0 12px 26px rgba(16, 27, 23, 0.14);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
 }
 
 .brand-control:active {
   transform: translateY(1px) scale(0.99);
-  box-shadow: 0 6px 14px rgba(16, 27, 23, 0.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
 .brand-control:focus-visible {
-  outline: 2px solid rgba(47, 122, 76, 0.42);
+  outline: 2px solid rgba(12, 192, 223, 0.55);
   outline-offset: 2px;
 }
 
 .grain-panel {
   background-image:
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.75) 0, rgba(255, 255, 255, 0) 42%),
-    radial-gradient(circle at 80% 0%, rgba(141, 187, 92, 0.16) 0, rgba(141, 187, 92, 0) 38%),
-    linear-gradient(180deg, #ffffff, #f1f5ee);
+    radial-gradient(circle at 80% 0%, rgba(12, 192, 223, 0.22) 0, rgba(12, 192, 223, 0) 38%),
+    linear-gradient(180deg, #ffffff, #eefbff);
 }
 
 h1,
