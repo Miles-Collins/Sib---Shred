@@ -296,7 +296,7 @@ export default async function Home() {
                   <td className="px-3 py-3">Planning + shopping + cooking</td>
                 </tr>
                 <tr className="bg-[var(--sun)] text-[var(--ink)]">
-                  <td className="px-3 py-3 font-black">Sibshred Kitchen</td>
+                  <td className="px-3 py-3 font-black">Sib Method</td>
                   <td className="px-3 py-3 font-semibold">~5 min</td>
                   <td className="px-3 py-3 font-semibold">From $8.75</td>
                   <td className="px-3 py-3 font-semibold">Heat, eat, move on</td>

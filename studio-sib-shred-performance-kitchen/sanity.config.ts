@@ -5,7 +5,7 @@ import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
   name: 'default',
-  title: 'Sib & Shred Performance Kitchen',
+  title: 'Sib Method Performance Kitchen',
 
   projectId: 'nd3npka5',
   dataset: 'production',

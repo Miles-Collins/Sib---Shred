@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project for Sibshred Kitchen.
+This is a [Next.js](https://nextjs.org) project for Sib Method.
 
 ## Getting Started
 

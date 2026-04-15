@@ -50,7 +50,7 @@ export default function AboutPage() {
               </h1>
 
               <p className="mt-5 text-[1rem] leading-[1.8] text-[#4f5551]">
-                Sibshred Kitchen started as a way to make healthy eating feel realistic,
+                Sib Method started as a way to make healthy eating feel realistic,
                 even on packed weeks. Instead of another generic subscription experience,
                 I built something personal: I cook, portion, and package each meal myself
                 so the quality stays consistent from the first order to the final bite.

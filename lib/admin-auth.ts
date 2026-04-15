@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-export const ADMIN_COOKIE_NAME = "sibshred_admin";
+export const ADMIN_COOKIE_NAME = "sib-method-admin";
 
 export async function isAdminAuthenticated() {
   const cookieStore = await cookies();

@@ -18,7 +18,7 @@ type AddToCartPanelProps = {
 };
 
 function readCart(): CartItem[] {
-  const raw = localStorage.getItem("sibshred-cart");
+  const raw = localStorage.getItem("sib-method-cart");
   if (!raw) {
     return [];
   }
@@ -54,8 +54,8 @@ export function AddToCartPanel({ meal, compact = false }: AddToCartPanelProps) {
       });
     }
 
-    localStorage.setItem("sibshred-cart", JSON.stringify(cart));
-    window.dispatchEvent(new Event("sibshred-cart-updated"));
+    localStorage.setItem("sib-method-cart", JSON.stringify(cart));
+    window.dispatchEvent(new Event("sib-method-cart-updated"));
     setStatus(`Added ${quantity} to cart`);
   };
 

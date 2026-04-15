@@ -20,7 +20,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Sibshred Kitchen | Meal Prep Template",
+  title: "Sib Method | Meal Prep Template",
   description: "Starter landing template for a modern meal prep service.",
 };
 

@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-[var(--line)] bg-white/70">
       <div className="mx-auto grid w-full max-w-6xl gap-5 px-5 py-8 text-sm text-[var(--muted)] sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
         <div>
-          <p className="text-lg font-black text-[var(--ink)]">SIBSHRED</p>
+          <p className="text-lg font-black text-[var(--ink)]">SIB METHOD</p>
           <p className="mt-1">Healthy Meals Delivered by Alysha</p>
         </div>
         <div className="space-y-1">
@@ -16,8 +16,16 @@ export default function Footer() {
           <a href="/about#my-story" className="block">
             FAQ
           </a>
-          <a href="mailto:info@sibshredkitchen.com" className="block">
+          <a href="mailto:info@sibmethod.com" className="block">
             Contact Us
+          </a>
+          <a
+            href="https://www.instagram.com/sibmethod/"
+            target="_blank"
+            rel="noreferrer"
+            className="block"
+          >
+            Instagram
           </a>
         </div>
         <div className="space-y-1">
@@ -32,11 +40,11 @@ export default function Footer() {
         <div className="space-y-1">
           <p className="font-semibold text-[var(--ink)]">Support</p>
           <p>(866) 442-3287</p>
-          <p>info@sibshredkitchen.com</p>
+          <p>info@sibmethod.com</p>
         </div>
       </div>
       <div className="border-t border-[var(--line)] px-5 py-4 text-center text-xs text-[var(--muted)] sm:px-8">
-        © 2026 Sibshred Kitchen - All Rights Reserved.
+        © 2026 Sib Method - All Rights Reserved.
       </div>
     </footer>
   );

@@ -13,7 +13,7 @@ export function Header() {
     }
 
     try {
-      const raw = localStorage.getItem("sibshred-cart");
+      const raw = localStorage.getItem("sib-method-cart");
       if (!raw) {
         return 0;
       }
@@ -29,7 +29,7 @@ export function Header() {
 
   const readCartCount = () => {
     try {
-      const raw = localStorage.getItem("sibshred-cart");
+      const raw = localStorage.getItem("sib-method-cart");
       if (!raw) {
         setCartCount(0);
         return;
@@ -48,19 +48,19 @@ export function Header() {
 
   useEffect(() => {
     const handleStorage = (event: StorageEvent) => {
-      if (!event.key || event.key === "sibshred-cart") {
+      if (!event.key || event.key === "sib-method-cart") {
         readCartCount();
       }
     };
 
     window.addEventListener("storage", handleStorage);
     window.addEventListener("focus", readCartCount);
-    window.addEventListener("sibshred-cart-updated", readCartCount);
+    window.addEventListener("sib-method-cart-updated", readCartCount);
 
     return () => {
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("focus", readCartCount);
-      window.removeEventListener("sibshred-cart-updated", readCartCount);
+      window.removeEventListener("sib-method-cart-updated", readCartCount);
     };
   }, []);
 
@@ -105,15 +105,22 @@ export function Header() {
             (866) 442-3287
           </a>
           <a
-            href="mailto:info@sibshredkitchen.com"
+            href="mailto:info@sibmethod.com"
             className="brand-control rounded-full border border-[var(--line)] bg-white px-3 py-1.5 hover:text-[var(--ink)]"
           >
-            info@sibshredkitchen.com
+            info@sibmethod.com
           </a>
         </div>
         <div className="flex items-center justify-center gap-4 text-[10px] sm:text-[11px] lg:justify-end">
           <Link href="/about">About</Link>
-          <a href="mailto:info@sibshredkitchen.com">Contact</a>
+          <a href="mailto:info@sibmethod.com">Contact</a>
+          <a
+            href="https://www.instagram.com/sibmethod/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Instagram
+          </a>
         </div>
       </div>
 
@@ -122,13 +129,13 @@ export function Header() {
         <Link href="/" className="flex items-center gap-3 shrink-0">
           <Image
             src="/brand-logo.png"
-            alt="Sibshred Kitchen"
+            alt="Sib Method"
             width={46}
             height={46}
             priority
           />
           <div>
-            <p className="brand-section-title text-2xl leading-none">SIB & SHRED</p>
+            <p className="brand-section-title text-2xl leading-none">SIB METHOD</p>
             <p className="brand-kicker text-[10px] text-[var(--muted)]">
               Meal Prep
             </p>
