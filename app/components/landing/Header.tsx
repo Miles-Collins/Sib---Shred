@@ -92,7 +92,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/90 backdrop-blur-md">
-      <div className="bg-[var(--deep)] px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
+      <div className="tropical-ribbon px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
         Fresh weekly drop by Alysha + free local delivery
       </div>
 
@@ -117,7 +117,7 @@ export function Header() {
           <a
             href="https://www.instagram.com/sibmethod/"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             Instagram
           </a>

@@ -22,7 +22,7 @@ export default function Footer() {
           <a
             href="https://www.instagram.com/sibmethod/"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="block"
           >
             Instagram
