@@ -115,7 +115,7 @@ export default async function Home() {
             <div>
               <p className="brand-kicker text-[var(--muted)]">Alysha&apos;s kitchen standard</p>
               <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-                Premium meal prep should feel personal, not mass-produced.
+                Refined meal prep should feel personal, not mass-produced.
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
                 Every menu drop is intentionally small-batch. The recipes, packaging,
@@ -245,7 +245,7 @@ export default async function Home() {
               The convenience of big meal kits, with one-on-one kitchen quality.
             </h2>
             <p className="mt-4 max-w-xl text-[var(--muted)]">
-              Enjoy premium flavors, clean ingredients, and delivery that respects
+              Enjoy elevated flavors, clean ingredients, and delivery that respects
               your week. It is a smarter way to eat well without spending nights
               shopping, prepping, and cleaning.
             </p>

@@ -111,12 +111,12 @@ select:disabled {
   box-shadow: var(--shadow-card);
 }
 
-.premium-sheen {
+.tropical-sheen {
   position: relative;
   overflow: hidden;
 }
 
-.premium-sheen::after {
+.tropical-sheen::after {
   content: "";
   position: absolute;
   inset: -160% auto auto -50%;
@@ -133,7 +133,7 @@ select:disabled {
   transition: transform 620ms ease;
 }
 
-.premium-sheen:hover::after {
+.tropical-sheen:hover::after {
   transform: rotate(24deg) translateX(330%);
 }
 

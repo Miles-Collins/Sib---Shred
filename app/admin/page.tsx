@@ -52,7 +52,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
             <button
               type="submit"
-              className="brand-control premium-sheen inline-flex w-full items-center justify-center rounded-full bg-[var(--sun)] px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
+              className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-[var(--sun)] px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
             >
               Enter Studio
             </button>

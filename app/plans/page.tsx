@@ -152,7 +152,7 @@ export default function PlansPage() {
 
         <section className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
-            <p className="brand-kicker text-[var(--muted)]">Why it feels premium</p>
+            <p className="brand-kicker text-[var(--muted)]">Why it feels elevated</p>
             <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
               The plan gets more efficient as your week gets busier.
             </h2>

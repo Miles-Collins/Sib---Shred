@@ -30,13 +30,13 @@ export function Hero() {
           <div className="mt-6 grid gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
             <Link
               href="/menu"
-              className="brand-control premium-sheen inline-flex w-full justify-center rounded-md bg-[var(--sun)] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition hover:brightness-95 sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
+              className="brand-control tropical-sheen inline-flex w-full justify-center rounded-md bg-[var(--sun)] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition hover:brightness-95 sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
             >
               Choose Meals
             </Link>
             <Link
               href="/plans"
-              className="brand-control premium-sheen inline-flex w-full justify-center rounded-md border border-[var(--ink)] bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.1em] transition hover:bg-[var(--ink)] hover:text-white sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
+              className="brand-control tropical-sheen inline-flex w-full justify-center rounded-md border border-[var(--ink)] bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.1em] transition hover:bg-[var(--ink)] hover:text-white sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
             >
               View Plans
             </Link>
@@ -48,7 +48,7 @@ export function Hero() {
             </p>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
               Every menu is curated and packed by Alysha. If it does not taste
-              premium, it does not ship.
+              refined, it does not ship.
             </p>
           </div>
 
@@ -97,7 +97,7 @@ export function Hero() {
               Concierge Experience
             </p>
             <p className="mt-2 text-base font-semibold leading-tight sm:text-lg">
-              Premium prep with local delivery windows tailored for busy schedules.
+              High-touch prep with local delivery windows tailored for busy schedules.
             </p>
             <p className="mt-3 text-sm text-white/80">
               Clean labels, clear macros, and dependable weekly rhythm.

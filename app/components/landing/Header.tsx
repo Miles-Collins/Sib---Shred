@@ -166,13 +166,13 @@ export function Header() {
         <div className="flex items-center gap-3 shrink-0">
           <Link
             href="/menu"
-            className="hidden brand-control premium-sheen rounded-md border border-[var(--line)] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition sm:block"
+            className="hidden brand-control tropical-sheen rounded-md border border-[var(--line)] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition sm:block"
           >
             Explore Meals
           </Link>
           <Link
             href="/checkout"
-            className="brand-control premium-sheen inline-flex items-center justify-center gap-2 rounded-md bg-[var(--sun)] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-md bg-[var(--sun)] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
           >
             <span className="hidden sm:inline">Start</span> Order
             {cartCount > 0 ? (
