@@ -80,38 +80,23 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section id="my-story" className="brand-shell grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_0.9fr]">
-          <div>
-            <p className="brand-kicker text-[var(--muted)]">My story</p>
-            <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-              Alysha wanted healthy food to feel simple, personal, and worth repeating.
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-              Sibshred started from the idea that meal prep should taste like something you would
-              actually look forward to opening in the fridge. Alysha keeps the menu focused, uses
-              ingredients she would serve to people she cares about, and builds every box with the
-              same attention she would want for her own meals.
-            </p>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-              The goal is not to feel like a giant chain. It is to feel like a thoughtful kitchen you
-              can trust every week. Alysha keeps the ordering straightforward, the ingredients clear,
-              and the meals balanced so you can eat well without extra work.
-            </p>
-          </div>
-          <div className="grid gap-3">
-            <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
-              <p className="brand-kicker text-[var(--berry)]">What to expect</p>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                A small-batch menu, direct communication, and meals that are packed with care.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
-              <p className="brand-kicker text-[var(--berry)]">My promise</p>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                If it goes out under Alysha&apos;s name, it has to taste good, look good, and make sense for your week.
-              </p>
-            </div>
-          </div>
+        <section id="my-story" className="brand-shell p-6 sm:p-8">
+          <p className="brand-kicker text-[var(--muted)]">About me</p>
+
+          <h2 className="brand-section-title mt-3 text-3xl sm:text-4xl">Who I Am</h2>
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+            My name is Alysha. I am a passionate cook, advocate for wellness, and an official nutrition coach of the National Academy of Sports Medicine. Having spent the last fifteen years exploring how nutrition works for the body, starting from my years as an athlete practicing hockey, gymnastics, and living an extremely busy life. It all started out as something needed but later turned into something I loved doing, which is preparing meals that not only taste great but also nourish one&apos;s body.
+          </p>
+
+          <h2 className="brand-section-title mt-8 text-3xl sm:text-4xl">Why Did I Start?</h2>
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+            The business has been established based on my understanding of the difficulties associated with healthy nutrition. There are always too many conflicting pieces of advice, too complicated lives, and too big ambitions. The point is to make this journey easier. My intention is to get rid of the guessing when it comes to eating healthy by providing people with delicious food that is going to help them feel great.
+          </p>
+
+          <h2 className="brand-section-title mt-8 text-3xl sm:text-4xl">Who Is This For?</h2>
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+            The service will be perfect for everyone who cares about their health but does not have enough time or knowledge to take good care of themselves. If your purpose is to gain muscles, burn fat, remain consistent, or simply improve your eating habits without stressing yourself, this is for you.
+          </p>
         </section>
 
         <section className="brand-panel p-6 sm:p-8">
