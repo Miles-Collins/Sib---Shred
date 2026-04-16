@@ -7,6 +7,9 @@ import { formatCents } from "@/lib/checkout-pricing";
 import { getOrderReceiptByNumberAndToken } from "@/lib/order-receipts";
 import { buildPageMetadata } from "@/lib/seo";
 
+type SuccessfulOrder = NonNullable<Awaited<ReturnType<typeof getOrderReceiptByNumberAndToken>>>;
+type SuccessfulOrderItem = SuccessfulOrder["items"][number];
+
 export const metadata: Metadata = buildPageMetadata({
   title: "Checkout | Complete Your Meal Prep Order",
   description:
@@ -28,7 +31,7 @@ const checkoutSteps = [
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = await searchParams;
   const isSuccess = params.success === "1";
-  const successfulOrder = isSuccess && params.order && params.t
+  const successfulOrder: SuccessfulOrder | null = isSuccess && params.order && params.t
     ? await getOrderReceiptByNumberAndToken(params.order, params.t)
     : null;
 
@@ -80,7 +83,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             </div>
 
             <div className="mt-5 grid gap-3">
-              {successfulOrder.items.map((item) => (
+              {successfulOrder.items.map((item: SuccessfulOrderItem) => (
                 <article key={item.id} className="rounded-2xl border border-(--line) bg-white p-4">
                   <div className="flex items-center justify-between gap-4">
                     <div>
