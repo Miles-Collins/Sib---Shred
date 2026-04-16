@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { createCheckoutOrder } from "./actions";
+import { calculateCheckoutTotals, formatCents, priceToCents } from "@/lib/checkout-pricing";
 
 type CartItem = {
   slug: string;
@@ -31,12 +32,13 @@ function readCart(): CartItem[] {
   }
 }
 
-function priceToCents(price: string) {
-  return Math.round(Number.parseFloat(price.replace(/[^0-9.]/g, "")) * 100);
-}
+function writeCart(items: CartItem[]) {
+  if (typeof window === "undefined") {
+    return;
+  }
 
-function formatCents(value: number) {
-  return `$${(value / 100).toFixed(2)}`;
+  window.localStorage.setItem("sib-method-cart", JSON.stringify(items));
+  window.dispatchEvent(new Event("sib-method-cart-updated"));
 }
 
 export function CheckoutOrderForm() {
@@ -57,13 +59,36 @@ export function CheckoutOrderForm() {
     };
   }, []);
 
+  const updateItemQty = (slug: string, nextQty: number) => {
+    setCartItems((current) => {
+      const normalizedQty = Math.max(1, Math.min(24, Math.trunc(nextQty)));
+      const updated = current.map((item) =>
+        item.slug === slug
+          ? {
+              ...item,
+              qty: normalizedQty,
+            }
+          : item,
+      );
+
+      writeCart(updated);
+      return updated;
+    });
+  };
+
+  const removeItem = (slug: string) => {
+    setCartItems((current) => {
+      const updated = current.filter((item) => item.slug !== slug);
+      writeCart(updated);
+      return updated;
+    });
+  };
+
   const cartSubtotal = useMemo(
     () => cartItems.reduce((acc, item) => acc + priceToCents(item.price) * item.qty, 0),
     [cartItems],
   );
-  const deliveryFeeCents = 800;
-  const discountCents = cartSubtotal >= 10000 ? 1000 : 0;
-  const totalCents = cartSubtotal + deliveryFeeCents - discountCents;
+  const { deliveryFeeCents, discountCents, totalCents } = calculateCheckoutTotals(cartSubtotal);
 
   return (
     <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
@@ -161,7 +186,32 @@ export function CheckoutOrderForm() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-bold uppercase tracking-widest text-(--ink)">{item.name}</p>
-                    <p className="mt-1 text-sm text-(--muted)">Qty {item.qty}</p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => updateItemQty(item.slug, item.qty - 1)}
+                        className="brand-control inline-flex h-7 w-7 items-center justify-center rounded-md border border-(--line) bg-(--paper-soft) text-sm font-bold"
+                        aria-label={`Decrease ${item.name}`}
+                      >
+                        -
+                      </button>
+                      <span className="min-w-8 text-center text-sm font-bold text-(--muted)">{item.qty}</span>
+                      <button
+                        type="button"
+                        onClick={() => updateItemQty(item.slug, item.qty + 1)}
+                        className="brand-control inline-flex h-7 w-7 items-center justify-center rounded-md border border-(--line) bg-(--paper-soft) text-sm font-bold"
+                        aria-label={`Increase ${item.name}`}
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.slug)}
+                        className="brand-control ml-2 text-xs font-bold uppercase tracking-widest text-(--berry)"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                   <p className="text-base font-black text-(--ink)">{formatCents(priceToCents(item.price) * item.qty)}</p>
                 </div>
@@ -181,7 +231,11 @@ export function CheckoutOrderForm() {
           </div>
           <div className="flex items-center justify-between text-(--berry)">
             <span>Subscriber discount</span>
-            <span>{discountCents ? "-$10.00" : "$0.00"}</span>
+            <span>{discountCents ? `-${formatCents(discountCents)}` : "$0.00"}</span>
+          </div>
+          <div className="flex items-center justify-between text-(--muted)">
+            <span>Delivery fee</span>
+            <span>{formatCents(deliveryFeeCents)}</span>
           </div>
           <div className="flex items-center justify-between text-base font-black text-(--ink)">
             <span>Total due now</span>

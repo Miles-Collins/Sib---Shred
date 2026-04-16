@@ -4,11 +4,8 @@ import { redirect } from "next/navigation";
 
 import { plans } from "../components/landing/data";
 import { getMealBySlug, getPlanBySlug } from "@/lib/meal-catalog";
+import { calculateCheckoutTotals, priceToCents } from "@/lib/checkout-pricing";
 import { prisma } from "@/lib/prisma";
-
-function priceToCents(price: string) {
-  return Math.round(Number.parseFloat(price.replace(/[^0-9.]/g, "")) * 100);
-}
 
 type CartItemInput = {
   slug: string;
@@ -17,6 +14,9 @@ type CartItemInput = {
   image: string;
   qty: number;
 };
+
+const MAX_DISTINCT_CART_ITEMS = 20;
+const MAX_ITEM_QTY = 24;
 
 function parseCart(formData: FormData): CartItemInput[] {
   const rawCart = String(formData.get("cartJson") || "").trim();
@@ -27,17 +27,39 @@ function parseCart(formData: FormData): CartItemInput[] {
 
   try {
     const parsed = JSON.parse(rawCart) as CartItemInput[];
-    return Array.isArray(parsed)
-      ? parsed
-          .filter((item) => item && typeof item.slug === "string" && Number.isFinite(item.qty))
-          .map((item) => ({
-            slug: String(item.slug),
-            name: String(item.name || item.slug),
-            price: String(item.price || "$0"),
-            image: String(item.image || ""),
-            qty: Math.max(1, Math.trunc(item.qty)),
-          }))
-      : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    const bySlug = new Map<string, CartItemInput>();
+
+    for (const item of parsed) {
+      if (!item || typeof item.slug !== "string" || !Number.isFinite(item.qty)) {
+        continue;
+      }
+
+      const slug = item.slug.trim();
+      if (!slug) {
+        continue;
+      }
+
+      const normalizedQty = Math.max(1, Math.min(MAX_ITEM_QTY, Math.trunc(item.qty)));
+      const existing = bySlug.get(slug);
+
+      if (existing) {
+        existing.qty = Math.min(MAX_ITEM_QTY, existing.qty + normalizedQty);
+      } else {
+        bySlug.set(slug, {
+          slug,
+          name: String(item.name || slug),
+          price: String(item.price || "$0"),
+          image: String(item.image || ""),
+          qty: normalizedQty,
+        });
+      }
+    }
+
+    return Array.from(bySlug.values()).slice(0, MAX_DISTINCT_CART_ITEMS);
   } catch {
     return [];
   }
@@ -65,40 +87,53 @@ export async function createCheckoutOrder(formData: FormData) {
     redirect("/checkout?error=empty-cart");
   }
 
+  if (cart.length > MAX_DISTINCT_CART_ITEMS) {
+    redirect("/checkout?error=invalid-cart");
+  }
+
   const selectedPlan = (await getPlanBySlug(planSlug)) ?? plans[1];
   const mealRows = await Promise.all(
     cart.map(async (item) => {
       const sourceMeal = await getMealBySlug(item.slug);
 
+      if (!sourceMeal) {
+        return null;
+      }
+
+      const trustedUnitPriceCents = priceToCents(sourceMeal.price);
+
       return {
         slug: item.slug,
-        name: sourceMeal?.name ?? item.name,
-        subtitle: sourceMeal?.subtitle ?? null,
-        description: sourceMeal?.description ?? `${item.name} prepared for Sib Method orders.`,
-        priceCents: priceToCents(item.price),
-        calories: sourceMeal?.calories ?? 0,
-        proteinGrams: Number.parseInt(sourceMeal?.protein ?? "0", 10) || 0,
-        carbsGrams: Number.parseInt(sourceMeal?.carbs ?? "0", 10) || 0,
-        fatGrams: Number.parseInt(sourceMeal?.fat ?? "0", 10) || 0,
-        sodiumMg: Number.parseInt(sourceMeal?.sodium ?? "0", 10) || null,
-        allergens: sourceMeal?.allergens ?? null,
-        facilityNote: sourceMeal?.facilityNote ?? null,
-        imageUrl: sourceMeal?.image ?? item.image,
-        tag: sourceMeal?.tag ?? "Chef Pick",
-        dietaryTags: sourceMeal?.dietaryTags ?? [],
-        ingredients: sourceMeal?.ingredients ?? [],
-        isGlutenFree: sourceMeal?.isGlutenFree ?? false,
+        name: sourceMeal.name,
+        subtitle: sourceMeal.subtitle ?? null,
+        description: sourceMeal.description,
+        priceCents: trustedUnitPriceCents,
+        calories: sourceMeal.calories,
+        proteinGrams: Number.parseInt(sourceMeal.protein, 10) || 0,
+        carbsGrams: Number.parseInt(sourceMeal.carbs, 10) || 0,
+        fatGrams: Number.parseInt(sourceMeal.fat, 10) || 0,
+        sodiumMg: Number.parseInt(sourceMeal.sodium ?? "0", 10) || null,
+        allergens: sourceMeal.allergens ?? null,
+        facilityNote: sourceMeal.facilityNote ?? null,
+        imageUrl: sourceMeal.image,
+        tag: sourceMeal.tag,
+        dietaryTags: sourceMeal.dietaryTags,
+        ingredients: sourceMeal.ingredients,
+        isGlutenFree: sourceMeal.isGlutenFree,
         quantity: item.qty,
-        unitPriceCents: priceToCents(item.price),
-        totalCents: priceToCents(item.price) * item.qty,
+        unitPriceCents: trustedUnitPriceCents,
+        totalCents: trustedUnitPriceCents * item.qty,
       };
     }),
   );
 
-  const subtotalCents = mealRows.reduce((acc, item) => acc + item.totalCents, 0);
-  const deliveryFeeCents = 800;
-  const discountCents = subtotalCents >= 10000 ? 1000 : 0;
-  const totalCents = subtotalCents + deliveryFeeCents - discountCents;
+  if (mealRows.some((item) => item === null)) {
+    redirect("/checkout?error=invalid-cart");
+  }
+
+  const safeMealRows = mealRows.filter((item): item is NonNullable<typeof item> => item !== null);
+  const subtotalCents = safeMealRows.reduce((acc, item) => acc + item.totalCents, 0);
+  const { deliveryFeeCents, discountCents, totalCents } = calculateCheckoutTotals(subtotalCents);
 
   const orderNumber = `SM-${Date.now().toString(36).toUpperCase()}`;
 
@@ -144,7 +179,7 @@ export async function createCheckoutOrder(formData: FormData) {
       },
     });
 
-    for (const item of mealRows) {
+    for (const item of safeMealRows) {
       const mealRecord = await tx.meal.upsert({
         where: { slug: item.slug },
         update: {
