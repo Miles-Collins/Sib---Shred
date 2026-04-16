@@ -123,7 +123,7 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8">
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
         <Link href="/" className="group flex items-center gap-3 shrink-0">
           <div className="hidden h-px w-7 bg-(--line) sm:block" />
           <div>
@@ -136,12 +136,12 @@ export function Header() {
         </Link>
 
         {/* Center Navigation Links */}
-        <div className="hidden gap-8 text-sm font-semibold uppercase tracking-[0.08em] text-(--muted) lg:flex lg:items-center">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-6 text-sm font-semibold uppercase tracking-[0.08em] text-(--muted) lg:flex xl:gap-8">
           {navLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`transition-colors relative ${
+              className={`relative shrink-0 whitespace-nowrap transition-colors ${
                 isActive(item.href)
                   ? "text-(--ink) font-bold"
                   : "hover:text-(--ink)"
