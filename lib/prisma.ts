@@ -5,20 +5,18 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-const connectionString = process.env.DATABASE_URL;
+function createPrismaClient() {
+  const connectionString = process.env.DATABASE_URL ?? process.env.DIRECT_URL;
 
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not set. Add it to your environment before using Prisma.");
+  return new PrismaClient({
+    ...(connectionString ? { adapter: new PrismaPg({ connectionString }) } : {}),
+    log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
+  });
 }
-
-const adapter = new PrismaPg({ connectionString });
 
 export const prisma =
   global.prisma ||
-  new PrismaClient({
-    adapter,
-    log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
-  });
+  createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   global.prisma = prisma;
