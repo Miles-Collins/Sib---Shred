@@ -93,6 +93,13 @@ export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart
     });
   };
 
+  const clearCart = () => {
+    setCartItems(() => {
+      writeCart([]);
+      return [];
+    });
+  };
+
   const cartSubtotal = useMemo(
     () => cartItems.reduce((acc, item) => acc + priceToCents(item.price) * item.qty, 0),
     [cartItems],
@@ -111,6 +118,74 @@ export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart
             Edit meals
           </Link>
         </div>
+
+        <section className="mt-6 rounded-2xl border border-(--line) bg-white p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">Your cart</p>
+              <p className="mt-1 text-sm text-(--muted)">
+                {cartItems.length > 0 ? `${cartItems.length} item${cartItems.length === 1 ? "" : "s"} in your order` : "No meals added yet"}
+              </p>
+            </div>
+
+            {cartItems.length > 0 ? (
+              <button
+                type="button"
+                onClick={clearCart}
+                className="brand-control rounded-full border border-(--line) px-4 py-2 text-xs font-bold uppercase tracking-widest text-(--berry)"
+              >
+                Clear cart
+              </button>
+            ) : null}
+          </div>
+
+          <div className="mt-4 grid gap-3">
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <article key={`editor-${item.slug}`} className="rounded-xl border border-(--line) bg-(--paper-soft) p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-widest text-(--ink)">{item.name}</p>
+                      <p className="mt-1 text-xs text-(--muted)">{formatCents(priceToCents(item.price))} each</p>
+                    </div>
+                    <p className="text-base font-black text-(--ink)">{formatCents(priceToCents(item.price) * item.qty)}</p>
+                  </div>
+
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => updateItemQty(item.slug, item.qty - 1)}
+                      className="brand-control inline-flex h-8 w-8 items-center justify-center rounded-md border border-(--line) bg-white text-sm font-bold"
+                      aria-label={`Decrease ${item.name}`}
+                    >
+                      -
+                    </button>
+                    <span className="min-w-8 text-center text-sm font-bold text-(--muted)">{item.qty}</span>
+                    <button
+                      type="button"
+                      onClick={() => updateItemQty(item.slug, item.qty + 1)}
+                      className="brand-control inline-flex h-8 w-8 items-center justify-center rounded-md border border-(--line) bg-white text-sm font-bold"
+                      aria-label={`Increase ${item.name}`}
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(item.slug)}
+                      className="brand-control ml-2 text-xs font-bold uppercase tracking-widest text-(--berry)"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <p className="rounded-xl border border-(--line) bg-(--paper-soft) p-4 text-sm text-(--muted)">
+                Your cart is empty. Add meals from the menu to build your order.
+              </p>
+            )}
+          </div>
+        </section>
 
         <form action={createCheckoutOrder} className="mt-6 grid gap-4">
           <input type="hidden" name="planSlug" value="momentum" />
@@ -195,32 +270,7 @@ export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-bold uppercase tracking-widest text-(--ink)">{item.name}</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => updateItemQty(item.slug, item.qty - 1)}
-                        className="brand-control inline-flex h-7 w-7 items-center justify-center rounded-md border border-(--line) bg-(--paper-soft) text-sm font-bold"
-                        aria-label={`Decrease ${item.name}`}
-                      >
-                        -
-                      </button>
-                      <span className="min-w-8 text-center text-sm font-bold text-(--muted)">{item.qty}</span>
-                      <button
-                        type="button"
-                        onClick={() => updateItemQty(item.slug, item.qty + 1)}
-                        className="brand-control inline-flex h-7 w-7 items-center justify-center rounded-md border border-(--line) bg-(--paper-soft) text-sm font-bold"
-                        aria-label={`Increase ${item.name}`}
-                      >
-                        +
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => removeItem(item.slug)}
-                        className="brand-control ml-2 text-xs font-bold uppercase tracking-widest text-(--berry)"
-                      >
-                        Remove
-                      </button>
-                    </div>
+                    <p className="mt-1 text-sm text-(--muted)">Qty {item.qty}</p>
                   </div>
                   <p className="text-base font-black text-(--ink)">{formatCents(priceToCents(item.price) * item.qty)}</p>
                 </div>
