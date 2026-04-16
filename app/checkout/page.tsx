@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import { Header } from "../components/landing/Header";
 import { CheckoutOrderForm } from "./CheckoutOrderForm";
+import { formatCents } from "@/lib/checkout-pricing";
+import { prisma } from "@/lib/prisma";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -24,6 +26,31 @@ const checkoutSteps = [
 
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = await searchParams;
+  const isSuccess = params.success === "1";
+  const successfulOrder = isSuccess && params.order
+    ? await prisma.order.findUnique({
+        where: { orderNumber: params.order },
+        include: {
+          plan: {
+            select: {
+              name: true,
+            },
+          },
+          items: {
+            orderBy: {
+              createdAt: "asc",
+            },
+            include: {
+              meal: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+    : null;
 
   const orderProgress = [
     { label: "Choose meals", state: "complete" },
@@ -36,13 +63,64 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
       <Header />
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
-        {params.success === "1" ? (
+        {isSuccess ? (
           <section className="rounded-2xl border border-(--sun) bg-(--mint)/45 px-5 py-4 shadow-[0_10px_26px_rgba(16,27,23,0.06)]">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">Order received</p>
             <p className="mt-2 text-lg font-black">Thanks, your order {params.order || ""} has been created.</p>
             <p className="mt-1 text-sm text-(--muted)">
-              This is now stored in Prisma. Next step is to add status tracking and item-level meal selection.
+              Your cart has been cleared and your order details are ready below.
             </p>
+          </section>
+        ) : null}
+
+        {isSuccess && successfulOrder ? (
+          <section className="brand-shell p-6 sm:p-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="brand-kicker text-(--muted)">Order snapshot</p>
+                <h2 className="mt-2 text-3xl font-black tracking-tight">{successfulOrder.orderNumber}</h2>
+                <p className="mt-2 text-sm text-(--muted)">
+                  {successfulOrder.plan?.name ? `${successfulOrder.plan.name} plan` : "Weekly meal order"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-(--line) bg-white px-4 py-3 text-right">
+                <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">Total charged</p>
+                <p className="mt-1 text-2xl font-black text-(--ink)">{formatCents(successfulOrder.totalCents)}</p>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-3">
+              {successfulOrder.items.map((item) => (
+                <article key={item.id} className="rounded-2xl border border-(--line) bg-white p-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-widest text-(--ink)">{item.meal.name}</p>
+                      <p className="mt-1 text-sm text-(--muted)">Qty {item.quantity} x {formatCents(item.unitPriceCents)}</p>
+                    </div>
+                    <p className="text-base font-black text-(--ink)">{formatCents(item.totalCents)}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-5 space-y-2 border-t border-(--line) pt-4 text-sm">
+              <div className="flex items-center justify-between text-(--muted)">
+                <span>Subtotal</span>
+                <span>{formatCents(successfulOrder.subtotalCents)}</span>
+              </div>
+              <div className="flex items-center justify-between text-(--muted)">
+                <span>Delivery fee</span>
+                <span>{formatCents(successfulOrder.deliveryFeeCents)}</span>
+              </div>
+              <div className="flex items-center justify-between text-(--berry)">
+                <span>Discount</span>
+                <span>{successfulOrder.discountCents > 0 ? `-${formatCents(successfulOrder.discountCents)}` : "$0.00"}</span>
+              </div>
+              <div className="flex items-center justify-between text-base font-black text-(--ink)">
+                <span>Total</span>
+                <span>{formatCents(successfulOrder.totalCents)}</span>
+              </div>
+            </div>
           </section>
         ) : null}
 
@@ -109,7 +187,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           </div>
         </section>
 
-        <CheckoutOrderForm />
+        <CheckoutOrderForm shouldClearCart={isSuccess} />
 
         <section className="brand-panel p-6 sm:p-8">
           <p className="brand-kicker text-(--muted)">Why customers stay</p>

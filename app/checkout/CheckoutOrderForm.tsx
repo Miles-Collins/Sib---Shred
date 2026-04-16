@@ -41,7 +41,7 @@ function writeCart(items: CartItem[]) {
   window.dispatchEvent(new Event("sib-method-cart-updated"));
 }
 
-export function CheckoutOrderForm() {
+export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart?: boolean }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -58,6 +58,15 @@ export function CheckoutOrderForm() {
       window.removeEventListener("sib-method-cart-updated", syncCart);
     };
   }, []);
+
+  useEffect(() => {
+    if (!shouldClearCart || typeof window === "undefined") {
+      return;
+    }
+
+    window.localStorage.removeItem("sib-method-cart");
+    window.dispatchEvent(new Event("sib-method-cart-updated"));
+  }, [shouldClearCart]);
 
   const updateItemQty = (slug: string, nextQty: number) => {
     setCartItems((current) => {
