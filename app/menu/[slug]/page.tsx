@@ -4,24 +4,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Header } from "../../components/landing/Header";
-import { featuredMeals, getMealBySlug } from "../../components/landing/data";
 import { AddToCartPanel } from "../../components/product/AddToCartPanel";
 import { ProductDescription } from "../../components/product/ProductDescription";
 import { TinyShareButton } from "../../components/product/TinyShareButton";
 import { YouMightAlsoLikeCarousel } from "../../components/product/YouMightAlsoLikeCarousel";
+import { getMealBySlug, getMealCatalog } from "@/lib/meal-catalog";
 import { buildPageMetadata } from "@/lib/seo";
 
 type MealPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return featuredMeals.map((meal) => ({ slug: meal.slug }));
+export async function generateStaticParams() {
+  const meals = await getMealCatalog();
+  return meals.map((meal) => ({ slug: meal.slug }));
 }
 
 export async function generateMetadata({ params }: MealPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const meal = getMealBySlug(slug);
+  const meal = await getMealBySlug(slug);
 
   if (!meal) {
     return buildPageMetadata({
@@ -83,7 +84,8 @@ function dietBadgeClass(tag: string) {
 
 export default async function MealPage({ params }: MealPageProps) {
   const { slug } = await params;
-  const meal = getMealBySlug(slug);
+  const meal = await getMealBySlug(slug);
+  const relatedMeals = await getMealCatalog();
 
   if (!meal) {
     notFound();
@@ -198,7 +200,7 @@ export default async function MealPage({ params }: MealPageProps) {
           </div>
         </section>
 
-        <YouMightAlsoLikeCarousel currentMealSlug={meal.slug} meals={featuredMeals} />
+        <YouMightAlsoLikeCarousel currentMealSlug={meal.slug} meals={relatedMeals} />
       </main>
     </div>
   );

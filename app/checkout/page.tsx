@@ -52,6 +52,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           </section>
         ) : null}
 
+        {params.error === "empty-cart" ? (
+          <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
+            <p className="text-sm font-semibold text-[#8d3f31]">Your cart is empty. Add at least one meal before checkout.</p>
+          </section>
+        ) : null}
+
         <section className="motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="brand-kicker text-(--muted)">Order progress</p>

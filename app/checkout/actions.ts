@@ -2,16 +2,9 @@
 
 import { redirect } from "next/navigation";
 
-import { featuredMeals, plans } from "../components/landing/data";
+import { plans } from "../components/landing/data";
+import { getMealBySlug, getPlanBySlug } from "@/lib/meal-catalog";
 import { prisma } from "@/lib/prisma";
-
-function slugify(input: string) {
-  return input
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 function priceToCents(price: string) {
   return Math.round(Number.parseFloat(price.replace(/[^0-9.]/g, "")) * 100);
@@ -72,29 +65,35 @@ export async function createCheckoutOrder(formData: FormData) {
     redirect("/checkout?error=empty-cart");
   }
 
-  const selectedPlan = plans.find((plan) => slugify(plan.title) === planSlug) ?? plans[1];
-  const mealRows = cart.map((item) => {
-    const sourceMeal = featuredMeals.find((meal) => meal.slug === item.slug);
+  const selectedPlan = (await getPlanBySlug(planSlug)) ?? plans[1];
+  const mealRows = await Promise.all(
+    cart.map(async (item) => {
+      const sourceMeal = await getMealBySlug(item.slug);
 
-    return {
-      slug: item.slug,
-      name: sourceMeal?.name ?? item.name,
-      subtitle: sourceMeal?.subtitle ?? null,
-      description: sourceMeal?.description ?? `${item.name} prepared for Sib Method orders.`,
-      priceCents: priceToCents(item.price),
-      calories: sourceMeal?.calories ?? 0,
-      proteinGrams: Number.parseInt(sourceMeal?.protein ?? "0", 10) || 0,
-      carbsGrams: Number.parseInt(sourceMeal?.carbs ?? "0", 10) || 0,
-      fatGrams: Number.parseInt(sourceMeal?.fat ?? "0", 10) || 0,
-      sodiumMg: Number.parseInt(sourceMeal?.sodium ?? "0", 10) || null,
-      allergens: sourceMeal?.allergens ?? null,
-      facilityNote: sourceMeal?.facilityNote ?? null,
-      imageUrl: sourceMeal?.image ?? item.image,
-      quantity: item.qty,
-      unitPriceCents: priceToCents(item.price),
-      totalCents: priceToCents(item.price) * item.qty,
-    };
-  });
+      return {
+        slug: item.slug,
+        name: sourceMeal?.name ?? item.name,
+        subtitle: sourceMeal?.subtitle ?? null,
+        description: sourceMeal?.description ?? `${item.name} prepared for Sib Method orders.`,
+        priceCents: priceToCents(item.price),
+        calories: sourceMeal?.calories ?? 0,
+        proteinGrams: Number.parseInt(sourceMeal?.protein ?? "0", 10) || 0,
+        carbsGrams: Number.parseInt(sourceMeal?.carbs ?? "0", 10) || 0,
+        fatGrams: Number.parseInt(sourceMeal?.fat ?? "0", 10) || 0,
+        sodiumMg: Number.parseInt(sourceMeal?.sodium ?? "0", 10) || null,
+        allergens: sourceMeal?.allergens ?? null,
+        facilityNote: sourceMeal?.facilityNote ?? null,
+        imageUrl: sourceMeal?.image ?? item.image,
+        tag: sourceMeal?.tag ?? "Chef Pick",
+        dietaryTags: sourceMeal?.dietaryTags ?? [],
+        ingredients: sourceMeal?.ingredients ?? [],
+        isGlutenFree: sourceMeal?.isGlutenFree ?? false,
+        quantity: item.qty,
+        unitPriceCents: priceToCents(item.price),
+        totalCents: priceToCents(item.price) * item.qty,
+      };
+    }),
+  );
 
   const subtotalCents = mealRows.reduce((acc, item) => acc + item.totalCents, 0);
   const deliveryFeeCents = 800;
@@ -161,6 +160,10 @@ export async function createCheckoutOrder(formData: FormData) {
           allergens: item.allergens,
           facilityNote: item.facilityNote,
           imageUrl: item.imageUrl,
+          tag: item.tag,
+          dietaryTags: item.dietaryTags,
+          ingredients: item.ingredients,
+          isGlutenFree: item.isGlutenFree,
           isActive: true,
         },
         create: {
@@ -177,6 +180,10 @@ export async function createCheckoutOrder(formData: FormData) {
           allergens: item.allergens,
           facilityNote: item.facilityNote,
           imageUrl: item.imageUrl,
+          tag: item.tag,
+          dietaryTags: item.dietaryTags,
+          ingredients: item.ingredients,
+          isGlutenFree: item.isGlutenFree,
           isActive: true,
         },
       });

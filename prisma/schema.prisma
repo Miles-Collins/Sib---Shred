@@ -54,6 +54,10 @@ model Meal {
   allergens    String?
   facilityNote String?
   imageUrl     String
+  tag          String
+  dietaryTags  String[]    @default([])
+  ingredients  String[]    @default([])
+  isGlutenFree Boolean     @default(false)
   isActive     Boolean     @default(true)
   orderItems   OrderItem[]
   createdAt    DateTime    @default(now())

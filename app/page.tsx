@@ -6,13 +6,13 @@ import { Hero } from "./components/landing/Hero";
 import { MealCard } from "./components/landing/MealCard";
 import {
   blogPosts,
-  featuredMeals,
   goals,
   mealOptions,
   plans,
   testimonials,
 } from "./components/landing/data";
 import { getHomepagePostsFromSanity } from "@/sanity/lib/queries";
+import { getMealCatalog } from "@/lib/meal-catalog";
 import { buildPageMetadata, siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -41,6 +41,7 @@ function slugify(input: string) {
 }
 
 export default async function Home() {
+  const mealCatalog = await getMealCatalog();
   const categoryHighlights = [
     {
       title: "Under 500",
@@ -184,7 +185,7 @@ export default async function Home() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {featuredMeals.map((meal, index) => (
+            {mealCatalog.map((meal, index) => (
               <MealCard key={meal.name} meal={meal} delayMs={index * 90} />
             ))}
           </div>
