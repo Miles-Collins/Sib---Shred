@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/prisma";
 
-export async function getOrderReceiptByNumber(orderNumber: string) {
+export async function getOrderReceiptByNumberAndToken(orderNumber: string, receiptAccessToken: string) {
   return prisma.order.findUnique({
-    where: { orderNumber },
+    where: {
+      orderNumber,
+      receiptAccessToken,
+    },
     include: {
       plan: {
         select: {

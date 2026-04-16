@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Header } from "../components/landing/Header";
 import { CheckoutOrderForm } from "./CheckoutOrderForm";
 import { formatCents } from "@/lib/checkout-pricing";
-import { getOrderReceiptByNumber } from "@/lib/order-receipts";
+import { getOrderReceiptByNumberAndToken } from "@/lib/order-receipts";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -16,7 +16,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 type CheckoutPageProps = {
-  searchParams: Promise<{ success?: string; order?: string; error?: string }>;
+  searchParams: Promise<{ success?: string; order?: string; t?: string; error?: string }>;
 };
 
 const checkoutSteps = [
@@ -28,8 +28,8 @@ const checkoutSteps = [
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = await searchParams;
   const isSuccess = params.success === "1";
-  const successfulOrder = isSuccess && params.order
-    ? await getOrderReceiptByNumber(params.order)
+  const successfulOrder = isSuccess && params.order && params.t
+    ? await getOrderReceiptByNumberAndToken(params.order, params.t)
     : null;
 
   const orderProgress = [
@@ -50,10 +50,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             <p className="mt-1 text-sm text-(--muted)">
               Your cart has been cleared and your order details are ready below.
             </p>
-            {params.order ? (
+            {successfulOrder ? (
               <p className="mt-3">
                 <Link
-                  href={`/orders/${encodeURIComponent(params.order)}`}
+                  href={`/orders/${encodeURIComponent(successfulOrder.orderNumber)}?t=${encodeURIComponent(successfulOrder.receiptAccessToken)}`}
                   className="text-sm font-bold uppercase tracking-widest text-(--ink) underline decoration-(--ink) underline-offset-4"
                 >
                   View permanent receipt

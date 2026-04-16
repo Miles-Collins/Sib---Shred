@@ -237,5 +237,7 @@ export async function createCheckoutOrder(formData: FormData) {
     return order;
   });
 
-  redirect(`/checkout?success=1&order=${encodeURIComponent(createdOrder.orderNumber)}`);
+  redirect(
+    `/checkout?success=1&order=${encodeURIComponent(createdOrder.orderNumber)}&t=${encodeURIComponent(createdOrder.receiptAccessToken)}`,
+  );
 }

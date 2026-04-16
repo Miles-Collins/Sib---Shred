@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 
 import { Header } from "../../components/landing/Header";
 import { formatCents } from "@/lib/checkout-pricing";
-import { getOrderReceiptByNumber } from "@/lib/order-receipts";
+import { getOrderReceiptByNumberAndToken } from "@/lib/order-receipts";
 
 type OrderReceiptPageProps = {
   params: Promise<{ orderNumber: string }>;
+  searchParams: Promise<{ t?: string }>;
 };
 
 export async function generateMetadata({ params }: OrderReceiptPageProps): Promise<Metadata> {
@@ -27,9 +28,15 @@ export async function generateMetadata({ params }: OrderReceiptPageProps): Promi
   };
 }
 
-export default async function OrderReceiptPage({ params }: OrderReceiptPageProps) {
+export default async function OrderReceiptPage({ params, searchParams }: OrderReceiptPageProps) {
   const { orderNumber } = await params;
-  const order = await getOrderReceiptByNumber(orderNumber);
+  const query = await searchParams;
+
+  if (!query.t) {
+    notFound();
+  }
+
+  const order = await getOrderReceiptByNumberAndToken(orderNumber, query.t);
 
   if (!order) {
     notFound();

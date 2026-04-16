@@ -76,6 +76,7 @@ model Meal {
 model Order {
   id                 String      @id @default(cuid())
   orderNumber        String      @unique
+  receiptAccessToken String      @default(cuid())
   status             OrderStatus @default(pending)
   paymentStatus      PaymentStatus @default(unpaid)
   paymentProvider    String?
