@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -125,21 +124,15 @@ export function Header() {
       </div>
 
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0">
-          <Image
-            src="/brand-logo.png"
-            alt="Sib Method"
-            width={46}
-            height={46}
-            priority
-          />
+        <Link href="/" className="group flex items-center gap-3 shrink-0">
+          <div className="hidden h-px w-7 bg-(--line) sm:block" />
           <div>
-            <p className="brand-section-title text-2xl leading-none">SIB METHOD</p>
-            <p className="brand-kicker text-[10px] text-(--muted)">
-              Meal Prep
+            <p className="brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
+              SIB METHOD
             </p>
+            <p className="brand-kicker text-[10px] text-(--muted)">Meal Prep</p>
           </div>
+          <div className="h-px w-4 bg-(--line) transition-colors group-hover:bg-(--ink)" />
         </Link>
 
         {/* Center Navigation Links */}
