@@ -61,39 +61,39 @@ export function AddToCartPanel({ meal, compact = false }: AddToCartPanelProps) {
 
   return (
     <div className="space-y-3 pt-3">
-      <p className={`${compact ? "text-3xl" : "text-5xl"} font-black leading-none text-[var(--berry)]`}>
+      <p className={`${compact ? "text-3xl" : "text-5xl"} font-black leading-none text-(--berry)`}>
         {meal.price}
       </p>
-      <p className="text-sm font-medium text-[var(--muted)]">In stock and ready to schedule</p>
+      <p className="text-sm font-medium text-(--muted)">In stock and ready to schedule</p>
       <div className="grid gap-3 sm:grid-cols-[auto_auto_1fr] sm:items-center">
         <button
           type="button"
           onClick={decrease}
-          className="brand-control inline-flex h-11 items-center justify-center rounded-md border border-[var(--line)] bg-white px-4 font-semibold sm:w-11"
+          className="brand-control inline-flex h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 font-semibold sm:w-11"
         >
           -
         </button>
-        <span className="inline-flex h-11 items-center justify-center rounded-md border border-[var(--line)] bg-white px-5 font-semibold">
+        <span className="inline-flex h-11 items-center justify-center rounded-md border border-(--line) bg-white px-5 font-semibold">
           {quantity}
         </span>
         <button
           type="button"
           onClick={increase}
-          className="brand-control inline-flex h-11 items-center justify-center rounded-md border border-[var(--line)] bg-white px-4 font-semibold sm:w-11"
+          className="brand-control inline-flex h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 font-semibold sm:w-11"
         >
           +
         </button>
         <button
           type="button"
           onClick={addToCart}
-          className={`brand-control inline-flex h-11 items-center justify-center rounded-md bg-[var(--sun)] font-bold text-white ${
+          className={`brand-control inline-flex h-11 items-center justify-center rounded-md bg-(--sun) font-bold text-white ${
             compact ? "px-5 py-2" : "px-6 py-2.5"
           }`}
         >
           Add to cart
         </button>
       </div>
-      {status ? <p className="text-sm font-semibold text-[var(--berry)]">{status}</p> : null}
+      {status ? <p className="text-sm font-semibold text-(--berry)">{status}</p> : null}
     </div>
   );
 }

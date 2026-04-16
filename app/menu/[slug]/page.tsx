@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +9,7 @@ import { AddToCartPanel } from "../../components/product/AddToCartPanel";
 import { ProductDescription } from "../../components/product/ProductDescription";
 import { TinyShareButton } from "../../components/product/TinyShareButton";
 import { YouMightAlsoLikeCarousel } from "../../components/product/YouMightAlsoLikeCarousel";
+import { buildPageMetadata } from "@/lib/seo";
 
 type MealPageProps = {
   params: Promise<{ slug: string }>;
@@ -15,6 +17,25 @@ type MealPageProps = {
 
 export function generateStaticParams() {
   return featuredMeals.map((meal) => ({ slug: meal.slug }));
+}
+
+export async function generateMetadata({ params }: MealPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const meal = getMealBySlug(slug);
+
+  if (!meal) {
+    return buildPageMetadata({
+      title: "Meal Details | Sib Method",
+      description: "Chef-prepared meal details from Sib Method.",
+      path: "/menu",
+    });
+  }
+
+  return buildPageMetadata({
+    title: `${meal.name} | Sib Method Menu`,
+    description: `${meal.description} Browse nutrition details and add this chef-prepared meal to your order.`,
+    path: `/menu/${meal.slug}`,
+  });
 }
 
 function nutritionRows(meal: {
@@ -72,11 +93,11 @@ export default async function MealPage({ params }: MealPageProps) {
   const [leftIngredients, rightIngredients] = splitIngredients(meal.ingredients);
 
   return (
-    <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
+    <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-6 sm:px-8">
-        <div className="text-[15px] text-[var(--muted)]">
+        <div className="text-[15px] text-(--muted)">
           <Link href="/" className="hover:underline">
             Home
           </Link>{" "}
@@ -94,14 +115,14 @@ export default async function MealPage({ params }: MealPageProps) {
                 <h1 className="max-w-3xl text-[clamp(2rem,2.8vw,3.1rem)] leading-[1.05] font-black tracking-tight">
                   {meal.name}
                 </h1>
-                <p className="mt-2 max-w-2xl text-[1.05rem] leading-relaxed text-[var(--muted)] sm:text-[1.1rem]">
+                <p className="mt-2 max-w-2xl text-[1.05rem] leading-relaxed text-(--muted) sm:text-[1.1rem]">
                   {meal.subtitle}
                 </p>
               </div>
               <TinyShareButton title={meal.name} />
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--line)] shadow-[0_10px_24px_rgba(16,27,23,0.08)]">
+            <div className="mt-5 overflow-hidden rounded-2xl border border-(--line) shadow-[0_10px_24px_rgba(16,27,23,0.08)]">
               <Image
                 src={meal.image}
                 alt={meal.name}
@@ -127,7 +148,7 @@ export default async function MealPage({ params }: MealPageProps) {
           </article>
 
           <aside className="brand-shell p-5 sm:p-6 lg:p-7">
-            <p className="brand-kicker text-[var(--muted)]">Nutrition snapshot</p>
+            <p className="brand-kicker text-(--muted)">Nutrition snapshot</p>
             <h2 className="mt-2 text-[clamp(1.9rem,2.2vw,2.8rem)] font-black tracking-tight">
               Per serving
             </h2>
@@ -138,11 +159,11 @@ export default async function MealPage({ params }: MealPageProps) {
                   className="flex items-center justify-between border-t border-[#d7d8d1] py-3 text-[0.95rem] sm:text-[1rem]"
                 >
                   <span className="font-semibold">{label}</span>
-                  <span className="font-medium text-[var(--ink)]">{value}</span>
+                  <span className="font-medium text-(--ink)">{value}</span>
                 </div>
               ))}
             </div>
-            <p className="mt-5 text-[0.9rem] leading-relaxed text-[var(--muted)]">
+            <p className="mt-5 text-[0.9rem] leading-relaxed text-(--muted)">
               Nutritional info may vary slightly by time of delivery.
             </p>
           </aside>
@@ -157,7 +178,7 @@ export default async function MealPage({ params }: MealPageProps) {
           <p className="mt-3 text-[1.05rem] leading-relaxed">
             Allergens: {meal.allergens}
           </p>
-          <p className="mt-1 text-[0.95rem] font-semibold leading-relaxed text-[var(--muted)]">
+          <p className="mt-1 text-[0.95rem] font-semibold leading-relaxed text-(--muted)">
             {meal.facilityNote}
           </p>
 

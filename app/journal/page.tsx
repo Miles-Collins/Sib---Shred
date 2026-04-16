@@ -1,8 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Header } from "../components/landing/Header";
 import { blogPosts } from "../components/landing/data";
 import { getAllJournalPostsFromSanity } from "@/sanity/lib/queries";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Journal | Meal Prep Tips & Nutrition Notes",
+  description:
+    "Read practical meal prep tips, nutrition notes, and updates from Alysha's kitchen.",
+  path: "/journal",
+});
 
 function slugify(input: string) {
   return input

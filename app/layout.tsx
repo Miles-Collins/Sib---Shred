@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/landing/Footer";
+import { rootMetadata } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,10 +19,7 @@ const cormorant = Cormorant_Garamond({
   weight: ["500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "Sib Method | Meal Prep Template",
-  description: "Starter landing template for a modern meal prep service.",
-};
+export const metadata = rootMetadata;
 
 export default function RootLayout({
   children,

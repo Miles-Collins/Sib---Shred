@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import { Header } from "../components/landing/Header";
 import { featuredMeals } from "../components/landing/data";
 import { MenuCatalog } from "../components/menu/MenuCatalog";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Weekly Menu | Chef-Prepared Meal Prep",
+  description:
+    "Browse Sib Method's weekly menu of chef-prepared meals, dietary filters, nutrition details, and local delivery options.",
+  path: "/menu",
+});
 
 export default function MenuPage() {
   const orderProgress = [

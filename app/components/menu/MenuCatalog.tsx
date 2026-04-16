@@ -76,7 +76,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
 
   return (
     <div className="space-y-7">
-      <section className="motion-sticky rounded-2xl border border-[var(--line)] bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+      <section className="motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0 lg:pb-0">
             {FILTERS.map((filter) => {
@@ -90,8 +90,8 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                   onClick={() => toggleFilter(filter)}
                   className={`brand-chip inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase ${
                     active
-                      ? "border-[var(--ink)] bg-[var(--ink)] text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)] translate-y-px"
-                      : "border-[var(--line)] bg-white text-[var(--ink)] shadow-[0_4px_10px_rgba(16,27,23,0.04)]"
+                      ? "border-(--ink) bg-(--ink) text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)] translate-y-px"
+                      : "border-(--line) bg-white text-(--ink) shadow-[0_4px_10px_rgba(16,27,23,0.04)]"
                   }`}
                 >
                   <Image
@@ -110,7 +110,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               <button
                 type="button"
                 onClick={() => setActiveFilters([])}
-                className="ml-1 text-xs font-bold uppercase tracking-[0.08em] text-[var(--muted)] underline"
+                className="ml-1 text-xs font-bold uppercase tracking-[0.08em] text-(--muted) underline"
               >
                 Clear
               </button>
@@ -122,14 +122,15 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search meals"
-              className="brand-control w-full rounded-md border border-[var(--line)] bg-white px-3 py-2 text-sm outline-none ring-[var(--sun)] placeholder:text-[var(--muted)] focus:ring-2"
+              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) placeholder:text-(--muted) focus:ring-2"
             />
             <select
+              aria-label="Sort meals"
               value={sortBy}
               onChange={(event) =>
                 setSortBy(event.target.value as "popular" | "price" | "calories")
               }
-              className="brand-control w-full rounded-md border border-[var(--line)] bg-white px-3 py-2 text-sm outline-none ring-[var(--sun)] focus:ring-2 sm:w-auto"
+              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2 sm:w-auto"
             >
               <option value="popular">Sort: Popular</option>
               <option value="price">Sort: Price</option>
@@ -143,8 +144,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         {filteredMeals.map((meal, index) => (
           <article
             key={meal.slug}
-            className="motion-stagger brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-[var(--line)] bg-white shadow-[var(--shadow-card)]"
-            style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+            className={`motion-stagger stagger-delay-${Math.min(index, 8)} brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-(--line) bg-white shadow-(--shadow-card)`}
           >
             <Link href={`/menu/${meal.slug}`}>
               <Image
@@ -175,22 +175,22 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 <Link href={`/menu/${meal.slug}`}>{meal.name}</Link>
               </h2>
 
-              <p className="text-sm leading-relaxed text-[var(--muted)]">
+              <p className="text-sm leading-relaxed text-(--muted)">
                 {meal.description}
               </p>
 
-              <div className="grid grid-cols-2 gap-2 text-sm text-[var(--muted)]">
+              <div className="grid grid-cols-2 gap-2 text-sm text-(--muted)">
                 <p>Calories: {meal.calories}</p>
                 <p>Protein: {meal.protein}</p>
                 <p>Carbs: {meal.carbs}</p>
                 <p>Fat: {meal.fat}</p>
               </div>
 
-              <div className="flex items-center justify-between border-t border-[var(--line)] pt-3">
-                <p className="text-[1.85rem] font-black text-[var(--berry)]">{meal.price}</p>
+              <div className="flex items-center justify-between border-t border-(--line) pt-3">
+                <p className="text-[1.85rem] font-black text-(--berry)">{meal.price}</p>
                 <Link
                   href={`/menu/${meal.slug}`}
-                  className="brand-control rounded-md bg-[var(--sun)] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
+                  className="brand-control rounded-md bg-(--sun) px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
                 >
                   View Meal
                 </Link>
@@ -201,7 +201,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
       </section>
 
       {!filteredMeals.length ? (
-        <div className="rounded-xl border border-[var(--line)] bg-white p-6 text-center text-[var(--muted)]">
+        <div className="rounded-xl border border-(--line) bg-white p-6 text-center text-(--muted)">
           No meals match these filters. Try clearing one filter.
         </div>
       ) : null}

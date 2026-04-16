@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,6 +8,7 @@ import {
   getAllJournalPostsFromSanity,
   getJournalPostBySlugFromSanity,
 } from "@/sanity/lib/queries";
+import { buildPageMetadata } from "@/lib/seo";
 
 type JournalPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -47,6 +49,26 @@ export async function generateStaticParams() {
   }
 
   return blogPosts.map((post) => ({ slug: slugify(post.title) }));
+}
+
+export async function generateMetadata({ params }: JournalPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const sanityPost = await getJournalPostBySlugFromSanity(slug);
+  const post = sanityPost || fallbackPostBySlug(slug);
+
+  if (!post) {
+    return buildPageMetadata({
+      title: "Journal Post | Sib Method",
+      description: "Meal prep and nutrition notes from Sib Method.",
+      path: "/journal",
+    });
+  }
+
+  return buildPageMetadata({
+    title: `${post.title} | Sib Method Journal`,
+    description: post.excerpt,
+    path: `/journal/${post.slug}`,
+  });
 }
 
 export default async function JournalPostPage({ params }: JournalPostPageProps) {

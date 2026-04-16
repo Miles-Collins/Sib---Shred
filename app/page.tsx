@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Header } from "./components/landing/Header";
@@ -12,6 +13,24 @@ import {
   testimonials,
 } from "./components/landing/data";
 import { getHomepagePostsFromSanity } from "@/sanity/lib/queries";
+import { buildPageMetadata, siteUrl } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Sib Method | Tropical Meal Prep Delivery",
+  description:
+    "Fresh, chef-prepared weekly meal prep with flexible plans, local delivery, and a high-touch experience.",
+  path: "/",
+});
+
+const homeStructuredData = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "WebSite"],
+  name: "Sib Method",
+  url: siteUrl,
+  description:
+    "Fresh, chef-prepared weekly meal prep with flexible plans, local delivery, and a high-touch experience.",
+  sameAs: ["https://www.instagram.com/sibmethod/"],
+};
 
 function slugify(input: string) {
   return input
@@ -74,8 +93,12 @@ export default async function Home() {
         }));
 
   return (
-    <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
+    <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
+      />
 
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8">
         <Hero />
@@ -84,14 +107,13 @@ export default async function Home() {
           {categoryHighlights.map((item, index) => (
             <article
               key={item.title}
-              className="motion-lift motion-stagger rounded-[1.4rem] border border-[var(--line)] bg-white/95 p-5"
-              style={{ animationDelay: `${index * 70}ms` }}
+              className={`motion-lift motion-stagger rounded-[1.4rem] border border-(--line) bg-white/95 p-5 stagger-delay-${index}`}
             >
-              <p className="brand-kicker text-[var(--berry)]">
+              <p className="brand-kicker text-(--berry)">
                 category
               </p>
               <h3 className="brand-section-title mt-2 text-2xl">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+              <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
             </article>
           ))}
         </section>
@@ -103,21 +125,21 @@ export default async function Home() {
             </h2>
             <a
               href="#reviews"
-              className="brand-control w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-[var(--ink)]"
+              className="brand-control w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-(--ink)"
             >
               View Reviews
             </a>
           </div>
         </section>
 
-        <section className="motion-reveal texture-dots overflow-hidden rounded-3xl border border-[var(--line)] p-6 sm:p-8">
+        <section className="motion-reveal texture-dots overflow-hidden rounded-3xl border border-(--line) p-6 sm:p-8">
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="brand-kicker text-[var(--muted)]">Alysha&apos;s kitchen standard</p>
+              <p className="brand-kicker text-(--muted)">Alysha&apos;s kitchen standard</p>
               <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
                 Refined meal prep should feel personal, not mass-produced.
               </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-(--muted) sm:text-base">
                 Every menu drop is intentionally small-batch. The recipes, packaging,
                 and final quality check are handled by Alysha so each delivery feels
                 like a thoughtful weekly reset, not a generic subscription box.
@@ -134,9 +156,9 @@ export default async function Home() {
                   text: "Questions go directly to Alysha, not a ticket queue.",
                 },
               ].map((item) => (
-                <article key={item.label} className="rounded-2xl border border-[var(--line)] bg-white p-5">
-                  <p className="brand-kicker text-[var(--berry)]">{item.label}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+                <article key={item.label} className="rounded-2xl border border-(--line) bg-white p-5">
+                  <p className="brand-kicker text-(--berry)">{item.label}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
                 </article>
               ))}
             </div>
@@ -146,7 +168,7 @@ export default async function Home() {
         <section id="menu" className="motion-reveal space-y-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="brand-kicker text-[var(--muted)]">
+              <p className="brand-kicker text-(--muted)">
                 Weekly spotlight
               </p>
               <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
@@ -155,7 +177,7 @@ export default async function Home() {
             </div>
             <Link
               href="/menu"
-              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-(--ink) underline-offset-4 hover:underline"
             >
               View all 40+ meals
             </Link>
@@ -171,14 +193,14 @@ export default async function Home() {
         <section className="motion-reveal brand-shell space-y-5 p-6 sm:p-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="brand-kicker text-[var(--muted)]">
+              <p className="brand-kicker text-(--muted)">
                 Meal options
               </p>
               <h2 className="brand-section-title mt-1 text-3xl">Pick your path</h2>
             </div>
             <Link
               href="/menu"
-              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-(--ink) underline-offset-4 hover:underline"
             >
               See full menu
             </Link>
@@ -188,7 +210,7 @@ export default async function Home() {
               <Link
                 key={option}
                 href="/menu"
-                className="rounded-full border border-[var(--line)] bg-[var(--bg-cream)] px-4 py-2 text-sm font-semibold"
+                className="rounded-full border border-(--line) bg-(--bg-cream) px-4 py-2 text-sm font-semibold"
               >
                 {option}
               </Link>
@@ -197,7 +219,7 @@ export default async function Home() {
         </section>
 
         <section id="how" className="motion-reveal space-y-5">
-          <p className="brand-kicker text-[var(--muted)]">
+          <p className="brand-kicker text-(--muted)">
             Meal prep made easy
           </p>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -221,14 +243,13 @@ export default async function Home() {
             ].map((step, index) => (
               <article
                 key={step.title}
-                className="motion-lift motion-stagger brand-panel p-5"
-                style={{ animationDelay: `${index * 60}ms` }}
+                className={`motion-lift motion-stagger brand-panel p-5 stagger-delay-${index}`}
               >
-                <p className="brand-kicker text-[var(--berry)]">
+                <p className="brand-kicker text-(--berry)">
                   Step {index + 1}
                 </p>
                 <h3 className="brand-section-title mt-2 text-2xl">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+                <p className="mt-3 text-sm leading-relaxed text-(--muted)">
                   {step.text}
                 </p>
               </article>
@@ -238,13 +259,13 @@ export default async function Home() {
 
         <section className="motion-reveal brand-shell grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <p className="brand-kicker text-[var(--muted)]">
+            <p className="brand-kicker text-(--muted)">
               Why it stands out
             </p>
             <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
               The convenience of big meal kits, with one-on-one kitchen quality.
             </h2>
-            <p className="mt-4 max-w-xl text-[var(--muted)]">
+            <p className="mt-4 max-w-xl text-(--muted)">
               Enjoy elevated flavors, clean ingredients, and delivery that respects
               your week. It is a smarter way to eat well without spending nights
               shopping, prepping, and cleaning.
@@ -273,7 +294,7 @@ export default async function Home() {
             </p>
           </div>
           <div className="mt-6 overflow-x-auto">
-            <table className="w-full min-w-[650px] border-separate border-spacing-y-2 text-left text-sm">
+            <table className="menu-table w-full border-separate border-spacing-y-2 text-left text-sm">
               <thead>
                 <tr className="text-white/75">
                   <th className="px-3 py-2">Option</th>
@@ -295,7 +316,7 @@ export default async function Home() {
                   <td className="px-3 py-3">$7 to $11</td>
                   <td className="px-3 py-3">Planning + shopping + cooking</td>
                 </tr>
-                <tr className="bg-[var(--sun)] text-[var(--ink)]">
+                <tr className="bg-(--sun) text-(--ink)">
                   <td className="px-3 py-3 font-black">Sib Method</td>
                   <td className="px-3 py-3 font-semibold">~5 min</td>
                   <td className="px-3 py-3 font-semibold">From $8.75</td>
@@ -309,7 +330,7 @@ export default async function Home() {
         <section id="plans" className="motion-reveal space-y-6">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="brand-kicker text-[var(--muted)]">
+              <p className="brand-kicker text-(--muted)">
                 Subscribe and save
               </p>
               <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
@@ -318,7 +339,7 @@ export default async function Home() {
             </div>
             <Link
               href="/plans"
-              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-(--ink) underline-offset-4 hover:underline"
             >
               Compare plans
             </Link>
@@ -330,20 +351,20 @@ export default async function Home() {
                 key={plan.title}
                 className="motion-lift brand-panel p-6"
               >
-                <p className="brand-kicker text-[var(--muted)]">
+                <p className="brand-kicker text-(--muted)">
                   {plan.title}
                 </p>
                 <p className="mt-2 text-lg font-semibold">{plan.detail}</p>
                 <p className="mt-5 text-4xl font-black tracking-tight">{plan.price}</p>
-                <p className="text-sm text-[var(--muted)]">per week</p>
-                <ul className="mt-4 space-y-1 text-sm text-[var(--muted)]">
+                <p className="text-sm text-(--muted)">per week</p>
+                <ul className="mt-4 space-y-1 text-sm text-(--muted)">
                   <li>Chef-prepared weekly menus</li>
                   <li>Pause or skip anytime</li>
                   <li>Fresh local delivery</li>
                 </ul>
                 <Link
                   href="/checkout"
-                  className="brand-control mt-6 inline-block w-full rounded-full bg-[var(--ink)] px-4 py-3 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
+                  className="brand-control mt-6 inline-block w-full rounded-full bg-(--ink) px-4 py-3 text-center text-sm font-bold uppercase tracking-widest text-white"
                 >
                   Select Plan
                 </Link>
@@ -356,14 +377,13 @@ export default async function Home() {
           {valueBlocks.map((item, index) => (
             <article
               key={item.title}
-              className="motion-lift motion-stagger brand-panel p-5"
-              style={{ animationDelay: `${index * 70}ms` }}
+                className={`motion-lift motion-stagger brand-panel p-5 stagger-delay-${index}`}
             >
               <h3 className="brand-section-title text-xl">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+              <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
               <a
                 href="/about#my-story"
-                className="mt-4 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
+                className="mt-4 inline-block text-xs font-bold uppercase tracking-widest text-(--berry)"
               >
                 Learn more
               </a>
@@ -375,7 +395,7 @@ export default async function Home() {
           id="reviews"
           className="motion-reveal brand-shell p-6 sm:p-9"
         >
-          <p className="brand-kicker text-[var(--muted)]">
+          <p className="brand-kicker text-(--muted)">
             Testimonials
           </p>
           <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
@@ -385,7 +405,7 @@ export default async function Home() {
             {testimonials.map((quote) => (
               <blockquote
                 key={quote}
-                className="rounded-2xl bg-[var(--bg-cream)] p-5 text-sm leading-relaxed"
+                className="rounded-2xl bg-(--bg-cream) p-5 text-sm leading-relaxed"
               >
                 &ldquo;{quote}&rdquo;
               </blockquote>
@@ -396,7 +416,7 @@ export default async function Home() {
         <section id="blog" className="motion-reveal space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="brand-kicker text-[var(--muted)]">
+              <p className="brand-kicker text-(--muted)">
                 From the journal
               </p>
               <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
@@ -405,7 +425,7 @@ export default async function Home() {
             </div>
             <Link
               href="/journal"
-              className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--ink)] underline-offset-4 hover:underline"
+              className="text-sm font-bold uppercase tracking-[0.12em] text-(--ink) underline-offset-4 hover:underline"
             >
               Read all posts
             </Link>
@@ -417,7 +437,7 @@ export default async function Home() {
                 key={post.title}
                 className="motion-lift brand-panel p-5"
               >
-                <p className="brand-kicker text-[var(--muted)]">
+                <p className="brand-kicker text-(--muted)">
                   {post.date}
                 </p>
                 <h3 className="mt-3 text-xl leading-tight font-extrabold">
@@ -425,7 +445,7 @@ export default async function Home() {
                 </h3>
                 <Link
                   href={post.href}
-                  className="mt-5 inline-block text-xs font-bold uppercase tracking-[0.1em] text-[var(--berry)]"
+                  className="mt-5 inline-block text-xs font-bold uppercase tracking-widest text-(--berry)"
                 >
                   Read article
                 </Link>
@@ -434,10 +454,10 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-[var(--line)] bg-[var(--mint)]/45 p-7 sm:p-10">
+        <section className="rounded-3xl border border-(--line) bg-(--mint)/45 p-7 sm:p-10">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
                 Start today
               </p>
               <h2 className="mt-2 text-3xl leading-tight font-black tracking-tight sm:text-5xl">
@@ -446,7 +466,7 @@ export default async function Home() {
             </div>
             <Link
               href="/checkout"
-              className="rounded-full bg-[var(--ink)] px-8 py-4 text-sm font-bold uppercase tracking-[0.1em] text-white"
+              className="rounded-full bg-(--ink) px-8 py-4 text-sm font-bold uppercase tracking-widest text-white"
             >
               Build My First Box
             </Link>

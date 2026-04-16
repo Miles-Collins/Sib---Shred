@@ -279,6 +279,46 @@ h2 {
   animation: reveal 0.55s ease both;
 }
 
+.stagger-delay-0 {
+  animation-delay: 0ms;
+}
+
+.stagger-delay-1 {
+  animation-delay: 70ms;
+}
+
+.stagger-delay-2 {
+  animation-delay: 140ms;
+}
+
+.stagger-delay-3 {
+  animation-delay: 210ms;
+}
+
+.stagger-delay-4 {
+  animation-delay: 280ms;
+}
+
+.stagger-delay-5 {
+  animation-delay: 350ms;
+}
+
+.stagger-delay-6 {
+  animation-delay: 420ms;
+}
+
+.stagger-delay-7 {
+  animation-delay: 490ms;
+}
+
+.stagger-delay-8 {
+  animation-delay: 560ms;
+}
+
+.menu-table {
+  min-width: 40.625rem;
+}
+
 .brand-nav-link,
 .brand-chip,
 .brand-control {
@@ -336,7 +376,16 @@ h1,
 h2,
 h3,
 h4 {
-  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+@supports (text-wrap: balance) {
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

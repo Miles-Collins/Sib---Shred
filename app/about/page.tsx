@@ -1,17 +1,26 @@
+import type { Metadata } from "next";
 import { Caveat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Header } from "../components/landing/Header";
+import { buildPageMetadata } from "@/lib/seo";
 
 const signatureFont = Caveat({
   subsets: ["latin"],
   weight: ["500"],
 });
 
+export const metadata: Metadata = buildPageMetadata({
+  title: "About Alysha | Nutrition Coach & Meal Prep Founder",
+  description:
+    "Learn how Alysha built Sib Method around wellness, nutrition coaching, and practical meal prep that fits busy schedules.",
+  path: "/about",
+});
+
 export default function AboutPage() {
   return (
-    <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
+    <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
@@ -24,7 +33,7 @@ export default function AboutPage() {
                   alt="Portrait of Alysha"
                   width={940}
                   height={1040}
-                  className="h-full max-h-[42rem] w-full object-cover"
+                  className="h-full max-h-168 w-full object-cover"
                   priority
                 />
               </div>
@@ -36,7 +45,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <article className="relative border-t-2 border-[#adb3aa] bg-[#f1f2ef] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-14 lg:max-w-[42rem] lg:p-10">
+            <article className="relative border-t-2 border-[#adb3aa] bg-[#f1f2ef] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-14 lg:max-w-2xl lg:p-10">
               <p className="text-[12px] font-bold tracking-[0.24em] text-[#4f5551] uppercase">
                 It&apos;s nice to meet you.
                 <span className={`${signatureFont.className} ml-2 text-[2.15rem] normal-case tracking-normal text-[#c59385]`}>
@@ -65,13 +74,13 @@ export default function AboutPage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/menu"
-                  className="brand-control rounded-full bg-[var(--ink)] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
+                  className="brand-control rounded-full bg-(--ink) px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
                 >
                   Explore Menu
                 </Link>
                 <Link
                   href="/plans"
-                  className="brand-control rounded-full border border-[var(--ink)] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
+                  className="brand-control rounded-full border border-(--ink) px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
                 >
                   View Plans
                 </Link>
@@ -81,26 +90,26 @@ export default function AboutPage() {
         </section>
 
         <section id="my-story" className="brand-shell p-6 sm:p-8">
-          <p className="brand-kicker text-[var(--muted)]">About me</p>
+          <p className="brand-kicker text-(--muted)">About me</p>
 
           <h2 className="brand-section-title mt-3 text-3xl sm:text-4xl">Who I Am</h2>
-          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-            My name is Alysha. I am a passionate cook, advocate for wellness, and an official nutrition coach of the National Academy of Sports Medicine. Having spent the last fifteen years exploring how nutrition works for the body, starting from my years as an athlete practicing hockey, gymnastics, and living an extremely busy life. It all started out as something needed but later turned into something I loved doing, which is preparing meals that not only taste great but also nourish one&apos;s body.
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-(--muted) sm:text-base">
+            My name is Alysha. I am a passionate cook, advocate for wellness, and an official nutrition coach of the National Academy of Sports Medicine. Having spent the last fifteen years exploring how nutrition works for the body, starting from my years as an athlete practicing hockey, gymnastics, and living an extremely busy life. It all started out as something needed but later turned into something I loved doing, which is preparing meals that not only taste great but also nourish one's body.
           </p>
 
           <h2 className="brand-section-title mt-8 text-3xl sm:text-4xl">Why Did I Start?</h2>
-          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-(--muted) sm:text-base">
             The business has been established based on my understanding of the difficulties associated with healthy nutrition. There are always too many conflicting pieces of advice, too complicated lives, and too big ambitions. The point is to make this journey easier. My intention is to get rid of the guessing when it comes to eating healthy by providing people with delicious food that is going to help them feel great.
           </p>
 
           <h2 className="brand-section-title mt-8 text-3xl sm:text-4xl">Who Is This For?</h2>
-          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-(--muted) sm:text-base">
             The service will be perfect for everyone who cares about their health but does not have enough time or knowledge to take good care of themselves. If your purpose is to gain muscles, burn fat, remain consistent, or simply improve your eating habits without stressing yourself, this is for you.
           </p>
         </section>
 
         <section className="brand-panel p-6 sm:p-8">
-          <p className="brand-kicker text-[var(--muted)]">How it works</p>
+          <p className="brand-kicker text-(--muted)">How it works</p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {[
               "Pick your meals from the weekly menu",
@@ -109,10 +118,10 @@ export default function AboutPage() {
             ].map((item, index) => (
               <div
                 key={item}
-                className="rounded-2xl border border-[var(--line)] bg-white p-5"
+                className="rounded-2xl border border-(--line) bg-white p-5"
               >
-                <p className="brand-kicker text-[var(--berry)]">Step {index + 1}</p>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]">{item}</p>
+                <p className="brand-kicker text-(--berry)">Step {index + 1}</p>
+                <p className="mt-2 text-sm leading-relaxed text-(--ink)">{item}</p>
               </div>
             ))}
           </div>
@@ -133,17 +142,17 @@ export default function AboutPage() {
               text: "Simple ordering, clear labels, and meals that are ready when you need them.",
             },
           ].map((item) => (
-            <article key={item.label} className="rounded-2xl border border-[var(--line)] bg-white p-5">
-              <p className="brand-kicker text-[var(--muted)]">{item.label}</p>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+            <article key={item.label} className="rounded-2xl border border-(--line) bg-white p-5">
+              <p className="brand-kicker text-(--muted)">{item.label}</p>
+              <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
             </article>
           ))}
         </section>
 
-        <section className="rounded-3xl border border-[var(--line)] bg-[var(--mint)]/45 p-7 sm:p-10">
+        <section className="rounded-3xl border border-(--line) bg-(--mint)/45 p-7 sm:p-10">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
                 Get in touch
               </p>
               <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
@@ -152,7 +161,7 @@ export default function AboutPage() {
             </div>
             <Link
               href="/checkout"
-              className="brand-control rounded-full bg-[var(--ink)] px-8 py-4 text-center text-sm font-bold uppercase tracking-[0.1em] text-white"
+              className="brand-control rounded-full bg-(--ink) px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-white"
             >
               Start an order
             </Link>
