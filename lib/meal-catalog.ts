@@ -4,6 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { featuredMeals, plans as fallbackPlans } from "@/app/components/landing/data";
 import type { Meal, Plan } from "@/app/components/landing/types";
 
+function canQueryDatabase() {
+  return Boolean(process.env.DATABASE_URL || process.env.DIRECT_URL);
+}
+
 function centsToPrice(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
 }
@@ -67,10 +71,20 @@ function parseMeals(): Meal[] {
 }
 
 export async function getMealCatalog(): Promise<Meal[]> {
-  const records = await prisma.meal.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "asc" },
-  });
+  if (!canQueryDatabase()) {
+    return parseMeals();
+  }
+
+  let records: Awaited<ReturnType<typeof prisma.meal.findMany>> = [];
+
+  try {
+    records = await prisma.meal.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "asc" },
+    });
+  } catch {
+    return parseMeals();
+  }
 
   if (records.length === 0) {
     return parseMeals();
@@ -80,7 +94,17 @@ export async function getMealCatalog(): Promise<Meal[]> {
 }
 
 export async function getMealBySlug(slug: string): Promise<Meal | null> {
-  const record = await prisma.meal.findUnique({ where: { slug } });
+  if (!canQueryDatabase()) {
+    return featuredMeals.find((meal) => meal.slug === slug) ?? null;
+  }
+
+  let record: Awaited<ReturnType<typeof prisma.meal.findUnique>> = null;
+
+  try {
+    record = await prisma.meal.findUnique({ where: { slug } });
+  } catch {
+    return featuredMeals.find((meal) => meal.slug === slug) ?? null;
+  }
 
   if (record) {
     return toMeal(record);
@@ -90,10 +114,20 @@ export async function getMealBySlug(slug: string): Promise<Meal | null> {
 }
 
 export async function getPlanCatalog(): Promise<Plan[]> {
-  const records = await prisma.plan.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "asc" },
-  });
+  if (!canQueryDatabase()) {
+    return fallbackPlans;
+  }
+
+  let records: Awaited<ReturnType<typeof prisma.plan.findMany>> = [];
+
+  try {
+    records = await prisma.plan.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "asc" },
+    });
+  } catch {
+    return fallbackPlans;
+  }
 
   if (records.length === 0) {
     return fallbackPlans;
@@ -103,7 +137,17 @@ export async function getPlanCatalog(): Promise<Plan[]> {
 }
 
 export async function getPlanBySlug(slug: string): Promise<Plan | null> {
-  const record = await prisma.plan.findUnique({ where: { slug } });
+  if (!canQueryDatabase()) {
+    return fallbackPlans.find((plan) => plan.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") === slug) ?? null;
+  }
+
+  let record: Awaited<ReturnType<typeof prisma.plan.findUnique>> = null;
+
+  try {
+    record = await prisma.plan.findUnique({ where: { slug } });
+  } catch {
+    return fallbackPlans.find((plan) => plan.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") === slug) ?? null;
+  }
 
   if (record) {
     return toPlan(record);
