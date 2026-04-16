@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const siteName = "Sib Method";
 
@@ -39,7 +39,6 @@ export const rootMetadata: Metadata = {
   metadataBase,
   applicationName: siteName,
   keywords: ["meal prep", "meal prep delivery", "chef-prepared meals", "nutrition coaching", "weekly meals"],
-  themeColor: "#0cc0df",
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
@@ -82,6 +81,10 @@ export const rootMetadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+};
+
+export const rootViewport: Viewport = {
+  themeColor: "#0cc0df",
 };
 
 type PageMetadataOptions = {

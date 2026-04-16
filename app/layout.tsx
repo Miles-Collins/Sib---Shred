@@ -1,7 +1,7 @@
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/landing/Footer";
-import { rootMetadata } from "@/lib/seo";
+import { rootMetadata, rootViewport } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,6 +20,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata = rootMetadata;
+export const viewport = rootViewport;
 
 export default function RootLayout({
   children,
