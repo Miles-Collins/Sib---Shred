@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { Header } from "../components/landing/Header";
 import { CheckoutOrderForm } from "./CheckoutOrderForm";
 import { formatCents } from "@/lib/checkout-pricing";
-import { prisma } from "@/lib/prisma";
+import { getOrderReceiptByNumber } from "@/lib/order-receipts";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -28,28 +29,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const params = await searchParams;
   const isSuccess = params.success === "1";
   const successfulOrder = isSuccess && params.order
-    ? await prisma.order.findUnique({
-        where: { orderNumber: params.order },
-        include: {
-          plan: {
-            select: {
-              name: true,
-            },
-          },
-          items: {
-            orderBy: {
-              createdAt: "asc",
-            },
-            include: {
-              meal: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      })
+    ? await getOrderReceiptByNumber(params.order)
     : null;
 
   const orderProgress = [
@@ -70,6 +50,16 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             <p className="mt-1 text-sm text-(--muted)">
               Your cart has been cleared and your order details are ready below.
             </p>
+            {params.order ? (
+              <p className="mt-3">
+                <Link
+                  href={`/orders/${encodeURIComponent(params.order)}`}
+                  className="text-sm font-bold uppercase tracking-widest text-(--ink) underline decoration-(--ink) underline-offset-4"
+                >
+                  View permanent receipt
+                </Link>
+              </p>
+            ) : null}
           </section>
         ) : null}
 
