@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import type { Prisma } from "@prisma/client";
 
 import { plans } from "../components/landing/data";
 import { getMealBySlug, getPlanBySlug } from "@/lib/meal-catalog";
@@ -17,6 +18,14 @@ type CartItemInput = {
 
 const MAX_DISTINCT_CART_ITEMS = 20;
 const MAX_ITEM_QTY = 24;
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 function parseCart(formData: FormData): CartItemInput[] {
   const rawCart = String(formData.get("cartJson") || "").trim();
@@ -137,7 +146,7 @@ export async function createCheckoutOrder(formData: FormData) {
 
   const orderNumber = `SM-${Date.now().toString(36).toUpperCase()}`;
 
-  const createdOrder = await prisma.$transaction(async (tx) => {
+  const createdOrder = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const planRecord = await tx.plan.upsert({
       where: { slug: slugify(selectedPlan.title) },
       update: {
