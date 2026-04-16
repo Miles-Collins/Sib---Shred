@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  preparing
+  out_for_delivery
+  delivered
+  canceled
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  phone     String?
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Plan {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  weeklyMeals Int
+  priceCents  Int
+  isActive    Boolean  @default(true)
+  orders      Order[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Meal {
+  id           String      @id @default(cuid())
+  slug         String      @unique
+  name         String
+  subtitle     String?
+  description  String
+  priceCents   Int
+  calories     Int
+  proteinGrams Int
+  carbsGrams   Int
+  fatGrams     Int
+  sodiumMg     Int?
+  allergens    String?
+  facilityNote String?
+  imageUrl     String
+  isActive     Boolean     @default(true)
+  orderItems   OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Order {
+  id                 String      @id @default(cuid())
+  orderNumber        String      @unique
+  status             OrderStatus @default(pending)
+  userId             String?
+  planId             String?
+  customerFirstName  String
+  customerLastName   String
+  customerEmail      String
+  customerPhone      String?
+  deliveryAddress1   String
+  deliveryAddress2   String?
+  deliveryCity       String
+  deliveryState      String?
+  deliveryPostalCode String
+  deliveryNotes      String?
+  subtotalCents      Int
+  discountCents      Int         @default(0)
+  deliveryFeeCents   Int         @default(0)
+  totalCents         Int
+  scheduledFor       DateTime?
+  user               User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  plan               Plan?       @relation(fields: [planId], references: [id], onDelete: SetNull)
+  items              OrderItem[]
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  @@index([status, createdAt])
+  @@index([customerEmail])
+}
+
+model OrderItem {
+  id             String   @id @default(cuid())
+  orderId        String
+  mealId         String
+  quantity       Int      @default(1)
+  unitPriceCents Int
+  totalCents     Int
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  meal           Meal     @relation(fields: [mealId], references: [id], onDelete: Restrict)
+  createdAt      DateTime @default(now())
+
+  @@unique([orderId, mealId])
+  @@index([mealId])
+}
