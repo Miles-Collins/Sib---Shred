@@ -6,6 +6,9 @@ import { Header } from "../../components/landing/Header";
 import { formatCents } from "@/lib/checkout-pricing";
 import { getOrderReceiptByNumberAndToken } from "@/lib/order-receipts";
 
+type ReceiptOrder = NonNullable<Awaited<ReturnType<typeof getOrderReceiptByNumberAndToken>>>;
+type ReceiptOrderItem = ReceiptOrder["items"][number];
+
 type OrderReceiptPageProps = {
   params: Promise<{ orderNumber: string }>;
   searchParams: Promise<{ t?: string }>;
@@ -36,7 +39,7 @@ export default async function OrderReceiptPage({ params, searchParams }: OrderRe
     notFound();
   }
 
-  const order = await getOrderReceiptByNumberAndToken(orderNumber, query.t);
+  const order: ReceiptOrder | null = await getOrderReceiptByNumberAndToken(orderNumber, query.t);
 
   if (!order) {
     notFound();
@@ -66,7 +69,7 @@ export default async function OrderReceiptPage({ params, searchParams }: OrderRe
           </div>
 
           <div className="mt-6 grid gap-3">
-            {order.items.map((item) => (
+            {order.items.map((item: ReceiptOrderItem) => (
               <article key={item.id} className="rounded-2xl border border-(--line) bg-white p-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
