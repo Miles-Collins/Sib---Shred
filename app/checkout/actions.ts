@@ -1,12 +1,17 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import type { Prisma } from "@prisma/client";
 
 import { plans } from "../components/landing/data";
 import { getMealBySlug, getPlanBySlug } from "@/lib/meal-catalog";
 import { calculateCheckoutTotals, priceToCents } from "@/lib/checkout-pricing";
 import { prisma } from "@/lib/prisma";
+
+type TransactionCallback = Extract<
+  Parameters<typeof prisma.$transaction>[0],
+  (...args: unknown[]) => unknown
+>;
+type TransactionClient = Parameters<TransactionCallback>[0];
 
 type CartItemInput = {
   slug: string;
@@ -146,7 +151,7 @@ export async function createCheckoutOrder(formData: FormData) {
 
   const orderNumber = `SM-${Date.now().toString(36).toUpperCase()}`;
 
-  const createdOrder = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+  const createdOrder = await prisma.$transaction(async (tx: TransactionClient) => {
     const planRecord = await tx.plan.upsert({
       where: { slug: slugify(selectedPlan.title) },
       update: {
