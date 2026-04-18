@@ -1,83 +1,114 @@
-This is a [Next.js](https://nextjs.org) project for Sib Method.
+# Sib Method Website
 
-## Getting Started
+This is the main website for Sib Method, built with Next.js.
 
-First, run the development server:
+It includes:
+
+- The public marketing and menu pages
+- Checkout and order receipt pages
+- A Prisma-backed data layer
+- A private Sanity Studio setup for content editing
+
+## Quick Start
+
+1. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Sanity CMS Setup (Private Admin)
-
-This project includes Sanity CMS with a private admin flow:
-
-- Private admin login page: `/admin`
-- Sanity Studio route: `/studio`
-
-### 1. Configure environment variables
-
-Copy `.env.example` to `.env.local` and fill in your values:
+2. Create your local env file:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Required variables:
+3. Start the app:
+
+```bash
+npm run dev
+```
+
+4. Open http://localhost:3000
+
+## Environment Variables
+
+At minimum, make sure these are set in `.env.local`:
 
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION`
-- `ADMIN_PASSCODE` (used by the private `/admin` login)
+- `ADMIN_PASSCODE`
 
-### 2. Start the app and login
+If you are using database-backed menu/catalog features, also configure:
 
-1. Run `npm run dev`
-2. Open `/admin`
-3. Enter `ADMIN_PASSCODE`
+- `DATABASE_URL` or `DIRECT_URL`
+
+## Private Admin + Sanity Studio
+
+This project has a private admin gate before Studio:
+
+- Admin login: `/admin`
+- Studio: `/studio`
+
+Flow:
+
+1. Run the app with `npm run dev`
+2. Visit `/admin`
+3. Enter your `ADMIN_PASSCODE`
 4. You will be redirected to `/studio`
 
-### 3. CMS schema included
+If Sanity env values are missing, the public site still works with fallback content and Studio will show a configuration message instead of crashing.
 
-- `post` document type for homepage journal/blog content.
-- Homepage reads Sanity featured posts with fallback to local static data.
-- Public journal routes:
-	- `/journal` (listing)
-	- `/journal/[slug]` (article detail)
-	- If no Sanity content is available yet, routes still work using local fallback content.
+## Content Model Notes
 
-### 4. Useful Sanity commands
+Sanity currently includes a `post` document type for journal content.
+
+- Journal list route: `/journal`
+- Journal detail route: `/journal/[slug]`
+
+If no Sanity posts exist yet, the site falls back to local content so these pages still render.
+
+## Useful Commands
 
 ```bash
+# App
+npm run dev
+npm run build
+npm run start
+npm run lint
+
+# Prisma
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:deploy
+npm run prisma:studio
+npm run prisma:seed
+
+# Sanity (root project)
 npm run sanity:dev
 npm run sanity:deploy
+
+# Standalone studio workspace
+npm run studio:dev
+npm run studio:build
+npm run studio:start
 ```
 
-If Sanity environment values are missing, the site still runs with fallback content and Studio shows a configuration message.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js 16
+- React 19
+- TypeScript
+- Prisma + Postgres
+- Sanity CMS
 
-## Learn More
+## Deploying
 
-To learn more about Next.js, take a look at the following resources:
+Deploy it like a standard Next.js app (Vercel works great, but anything that supports Next.js is fine).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Before deploying, double-check:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Production environment variables are set
+- Prisma migrations are applied
+- Sanity project and dataset values point to the correct environment
