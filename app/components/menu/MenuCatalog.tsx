@@ -41,12 +41,15 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"popular" | "price" | "calories">("popular");
   const [hasHydrated, setHasHydrated] = useState(false);
+  const [showRestoredChip, setShowRestoredChip] = useState(false);
   const restoredScrollRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
+
+    let restoredFromSession = false;
 
     try {
       const raw = window.sessionStorage.getItem(MENU_STATE_KEY);
@@ -58,6 +61,9 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         };
 
         if (Array.isArray(parsed.activeFilters)) {
+          if (parsed.activeFilters.length > 0) {
+            restoredFromSession = true;
+          }
           setActiveFilters(
             parsed.activeFilters.filter((item) =>
               FILTERS.includes(item as (typeof FILTERS)[number]),
@@ -66,6 +72,9 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         }
 
         if (typeof parsed.search === "string") {
+          if (parsed.search.trim().length > 0) {
+            restoredFromSession = true;
+          }
           setSearch(parsed.search);
         }
 
@@ -74,15 +83,35 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
           parsed.sortBy === "price" ||
           parsed.sortBy === "calories"
         ) {
+          if (parsed.sortBy !== "popular") {
+            restoredFromSession = true;
+          }
           setSortBy(parsed.sortBy);
         }
       }
     } catch {
       // Ignore invalid persisted state.
     } finally {
+      if (restoredFromSession) {
+        setShowRestoredChip(true);
+      }
       setHasHydrated(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!showRestoredChip) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShowRestoredChip(false);
+    }, 1800);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [showRestoredChip]);
 
   useEffect(() => {
     if (!hasHydrated || typeof window === "undefined") {
@@ -181,6 +210,12 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
 
   return (
     <div className="space-y-7">
+      {showRestoredChip ? (
+        <div className="inline-flex items-center rounded-full border border-(--line) bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-(--muted) shadow-[0_6px_16px_rgba(16,27,23,0.06)]">
+          Restored your last menu view
+        </div>
+      ) : null}
+
       <section className="tablet-menu-controls motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0 lg:pb-0">
