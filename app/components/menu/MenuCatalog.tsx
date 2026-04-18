@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { Meal } from "../landing/types";
 
@@ -11,6 +11,8 @@ type MenuCatalogProps = {
 };
 
 const FILTERS = ["GF", "VEGAN", "SPICY", "HIGH PROTEIN"] as const;
+const MENU_STATE_KEY = "sib-method-menu-state-v1";
+const MENU_SCROLL_KEY = "sib-method-menu-scroll-v1";
 
 const TAG_META: Record<
   string,
@@ -38,6 +40,97 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"popular" | "price" | "calories">("popular");
+  const [hasHydrated, setHasHydrated] = useState(false);
+  const restoredScrollRef = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const raw = window.sessionStorage.getItem(MENU_STATE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as {
+          activeFilters?: string[];
+          search?: string;
+          sortBy?: "popular" | "price" | "calories";
+        };
+
+        if (Array.isArray(parsed.activeFilters)) {
+          setActiveFilters(
+            parsed.activeFilters.filter((item) =>
+              FILTERS.includes(item as (typeof FILTERS)[number]),
+            ),
+          );
+        }
+
+        if (typeof parsed.search === "string") {
+          setSearch(parsed.search);
+        }
+
+        if (
+          parsed.sortBy === "popular" ||
+          parsed.sortBy === "price" ||
+          parsed.sortBy === "calories"
+        ) {
+          setSortBy(parsed.sortBy);
+        }
+      }
+    } catch {
+      // Ignore invalid persisted state.
+    } finally {
+      setHasHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydrated || typeof window === "undefined") {
+      return;
+    }
+
+    window.sessionStorage.setItem(
+      MENU_STATE_KEY,
+      JSON.stringify({ activeFilters, search, sortBy }),
+    );
+  }, [activeFilters, hasHydrated, search, sortBy]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || restoredScrollRef.current) {
+      return;
+    }
+
+    const rawScroll = window.sessionStorage.getItem(MENU_SCROLL_KEY);
+    const scrollY = rawScroll ? Number.parseInt(rawScroll, 10) : NaN;
+
+    if (Number.isFinite(scrollY) && scrollY > 0) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: scrollY, behavior: "auto" });
+        });
+      });
+    }
+
+    restoredScrollRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const persistScroll = () => {
+      window.sessionStorage.setItem(MENU_SCROLL_KEY, String(Math.round(window.scrollY)));
+    };
+
+    window.addEventListener("pagehide", persistScroll);
+    window.addEventListener("beforeunload", persistScroll);
+
+    return () => {
+      window.removeEventListener("pagehide", persistScroll);
+      window.removeEventListener("beforeunload", persistScroll);
+    };
+  }, []);
 
   const toggleFilter = (filter: string) => {
     setActiveFilters((current) =>
@@ -74,9 +167,21 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
     return result;
   }, [activeFilters, meals, search, sortBy]);
 
+  const preserveMenuStateForDetail = () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.sessionStorage.setItem(
+      MENU_STATE_KEY,
+      JSON.stringify({ activeFilters, search, sortBy }),
+    );
+    window.sessionStorage.setItem(MENU_SCROLL_KEY, String(Math.round(window.scrollY)));
+  };
+
   return (
     <div className="space-y-7">
-      <section className="motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+      <section className="tablet-menu-controls motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0 lg:pb-0">
             {FILTERS.map((filter) => {
@@ -110,7 +215,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               <button
                 type="button"
                 onClick={() => setActiveFilters([])}
-                className="ml-1 text-xs font-bold uppercase tracking-[0.08em] text-(--muted) underline"
+                className="brand-control ml-1 rounded-full border border-(--line) bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-(--muted) underline"
               >
                 Clear
               </button>
@@ -122,7 +227,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search meals"
-              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) placeholder:text-(--muted) focus:ring-2"
+              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) placeholder:text-(--muted) focus:ring-2 md:min-h-12"
             />
             <select
               aria-label="Sort meals"
@@ -130,7 +235,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               onChange={(event) =>
                 setSortBy(event.target.value as "popular" | "price" | "calories")
               }
-              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2 sm:w-auto"
+              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2 sm:w-auto md:min-h-12"
             >
               <option value="popular">Sort: Popular</option>
               <option value="price">Sort: Price</option>
@@ -146,7 +251,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
             key={meal.slug}
             className={`motion-stagger stagger-delay-${Math.min(index, 8)} brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-(--line) bg-white shadow-(--shadow-card)`}
           >
-            <Link href={`/menu/${meal.slug}`}>
+            <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>
               <Image
                 src={meal.image}
                 alt={meal.name}
@@ -172,7 +277,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               </div>
 
               <h2 className="brand-section-title text-[1.45rem] leading-tight">
-                <Link href={`/menu/${meal.slug}`}>{meal.name}</Link>
+                <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>{meal.name}</Link>
               </h2>
 
               <p className="text-sm leading-relaxed text-(--muted)">
@@ -190,6 +295,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 <p className="text-[1.85rem] font-black text-(--berry)">{meal.price}</p>
                 <Link
                   href={`/menu/${meal.slug}`}
+                  onClick={preserveMenuStateForDetail}
                   className="brand-control rounded-md bg-(--sun) px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
                 >
                   View Meal

@@ -43,6 +43,8 @@ function writeCart(items: CartItem[]) {
 
 export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart?: boolean }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const fieldClass =
+    "brand-control min-h-12 rounded-md border border-(--line) bg-white px-3 py-2 text-[15px] outline-none ring-(--sun) focus:ring-2";
 
   useEffect(() => {
     const syncCart = () => setCartItems(readCart());
@@ -155,16 +157,16 @@ export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart
                     <button
                       type="button"
                       onClick={() => updateItemQty(item.slug, item.qty - 1)}
-                      className="brand-control inline-flex h-8 w-8 items-center justify-center rounded-md border border-(--line) bg-white text-sm font-bold"
+                      className="brand-control inline-flex h-10 w-10 items-center justify-center rounded-md border border-(--line) bg-white text-base font-bold md:h-11 md:w-11"
                       aria-label={`Decrease ${item.name}`}
                     >
                       -
                     </button>
-                    <span className="min-w-8 text-center text-sm font-bold text-(--muted)">{item.qty}</span>
+                    <span className="min-w-10 text-center text-base font-bold text-(--muted)">{item.qty}</span>
                     <button
                       type="button"
                       onClick={() => updateItemQty(item.slug, item.qty + 1)}
-                      className="brand-control inline-flex h-8 w-8 items-center justify-center rounded-md border border-(--line) bg-white text-sm font-bold"
+                      className="brand-control inline-flex h-10 w-10 items-center justify-center rounded-md border border-(--line) bg-white text-base font-bold md:h-11 md:w-11"
                       aria-label={`Increase ${item.name}`}
                     >
                       +
@@ -191,38 +193,47 @@ export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart
           <input type="hidden" name="planSlug" value="momentum" />
           <input type="hidden" name="cartJson" value={JSON.stringify(cartItems)} />
 
+          <div className="rounded-2xl border border-(--line) bg-white p-4">
+            <p className="brand-kicker text-(--muted)">Contact info</p>
+            <p className="mt-1 text-sm text-(--muted)">We use this for delivery coordination and updates.</p>
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="grid gap-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">First name</span>
-              <input name="firstName" defaultValue="Alysha" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" required />
+              <input name="firstName" defaultValue="Alysha" autoComplete="given-name" enterKeyHint="next" className={fieldClass} required />
             </label>
             <label className="grid gap-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">Last name</span>
-              <input name="lastName" defaultValue="Shred" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" required />
+              <input name="lastName" defaultValue="Shred" autoComplete="family-name" enterKeyHint="next" className={fieldClass} required />
             </label>
             <label className="grid gap-2 sm:col-span-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">Email</span>
-              <input name="email" type="email" defaultValue="alysha@example.com" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" required />
+              <input name="email" type="email" defaultValue="alysha@example.com" autoComplete="email" inputMode="email" enterKeyHint="next" className={fieldClass} required />
             </label>
             <label className="grid gap-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">Phone</span>
-              <input name="phone" defaultValue="(866) 442-3287" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" />
+              <input name="phone" type="tel" defaultValue="(866) 442-3287" autoComplete="tel" inputMode="tel" enterKeyHint="next" className={fieldClass} />
             </label>
+            <div className="sm:col-span-2 rounded-2xl border border-(--line) bg-white p-4">
+              <p className="brand-kicker text-(--muted)">Delivery address</p>
+              <p className="mt-1 text-sm text-(--muted)">Use the exact drop-off location for faster handoff.</p>
+            </div>
             <label className="grid gap-2 sm:col-span-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">Address</span>
-              <input name="address1" defaultValue="123 Meal Prep Ave" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" required />
+              <input name="address1" defaultValue="123 Meal Prep Ave" autoComplete="address-line1" enterKeyHint="next" className={fieldClass} required />
             </label>
             <label className="grid gap-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">City</span>
-              <input name="city" defaultValue="Localtown" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" required />
+              <input name="city" defaultValue="Localtown" autoComplete="address-level2" enterKeyHint="next" className={fieldClass} required />
             </label>
             <label className="grid gap-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">ZIP</span>
-              <input name="postalCode" defaultValue="10001" className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" required />
+              <input name="postalCode" defaultValue="10001" autoComplete="postal-code" inputMode="numeric" enterKeyHint="next" className={fieldClass} required />
             </label>
             <label className="grid gap-2 sm:col-span-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-(--muted)">Delivery notes</span>
-              <textarea name="deliveryNotes" rows={3} className="brand-control rounded-xl border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2" placeholder="Gate code, drop-off instructions, or preferences" />
+              <textarea name="deliveryNotes" rows={3} className="brand-control min-h-24 rounded-xl border border-(--line) bg-white px-3 py-2 text-[15px] outline-none ring-(--sun) focus:ring-2" placeholder="Gate code, drop-off instructions, or preferences" />
             </label>
           </div>
 
@@ -249,13 +260,15 @@ export function CheckoutOrderForm({ shouldClearCart = false }: { shouldClearCart
             </Link>
           </div>
 
-          <button
-            type="submit"
-            disabled={cartItems.length === 0}
-            className="brand-control mt-2 inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-center text-sm font-bold uppercase tracking-widest text-white disabled:opacity-50"
-          >
-            Complete checkout
-          </button>
+          <div className="md:sticky md:bottom-24 md:z-20 md:rounded-2xl md:border md:border-(--line) md:bg-white/95 md:p-3 md:backdrop-blur-sm xl:static xl:border-0 xl:bg-transparent xl:p-0">
+            <button
+              type="submit"
+              disabled={cartItems.length === 0}
+              className="brand-control mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-center text-sm font-bold uppercase tracking-widest text-white disabled:opacity-50"
+            >
+              Complete checkout
+            </button>
+          </div>
         </form>
       </article>
 

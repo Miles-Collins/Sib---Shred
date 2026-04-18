@@ -45,7 +45,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8 md:pb-28 xl:pb-10">
         {isSuccess ? (
           <section className="rounded-2xl border border-(--sun) bg-(--mint)/45 px-5 py-4 shadow-[0_10px_26px_rgba(16,27,23,0.06)]">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">Order received</p>
