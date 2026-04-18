@@ -78,6 +78,16 @@ export function Header() {
     [],
   );
 
+  const tabletSectionTabs = useMemo(
+    () => [
+      { href: "/menu", label: "Menu" },
+      { href: "/plans", label: "Plans" },
+      { href: "/journal", label: "Journal" },
+      { href: "/#how", label: "How It Works" },
+    ],
+    [],
+  );
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -173,12 +183,12 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-(--line) bg-white/90 backdrop-blur-md">
+    <header className="tablet-landscape-header sticky top-0 z-50 border-b border-(--line) bg-white/90 backdrop-blur-md">
       <div className="tropical-ribbon px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
         Fresh weekly drop by Alysha + free local delivery
       </div>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-(--muted) sm:px-8 lg:flex-row lg:items-center lg:justify-between">
+      <div className="tablet-contact-row mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-(--muted) sm:px-8 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
           <a
             href="tel:+18664423287"
@@ -206,11 +216,11 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8 xl:gap-6">
+      <nav className="tablet-main-nav mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8 xl:gap-6">
         <Link href="/" className="group flex items-center gap-3 shrink-0">
           <div className="hidden h-px w-7 bg-(--line) sm:block" />
           <div>
-            <p className="brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
+            <p className="tablet-brand-title brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
               SIB METHOD
             </p>
             <p className="brand-kicker text-[10px] text-(--muted)">Meal Prep</p>
@@ -289,6 +299,24 @@ export function Header() {
         </div>
       </nav>
 
+      <div className="mx-auto hidden w-full max-w-7xl px-4 pb-2 sm:px-8 md:block xl:hidden">
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+          {tabletSectionTabs.map((item) => (
+            <Link
+              key={`tablet-tab-${item.href}`}
+              href={item.href}
+              className={`brand-control inline-flex min-h-11 items-center justify-center rounded-md border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition ${
+                isActive(item.href)
+                  ? "border-(--sun) bg-(--sun) text-white"
+                  : "border-(--line) bg-white text-(--muted) hover:text-(--ink)"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <button
         type="button"
         aria-label="Close navigation menu"
@@ -345,6 +373,37 @@ export function Header() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-30 hidden border-t border-(--line) bg-white/95 px-4 pb-[calc(env(safe-area-inset-bottom)+0.55rem)] pt-2 shadow-[0_-10px_30px_rgba(0,0,0,0.09)] md:block xl:hidden">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-2">
+          <Link
+            href="/menu"
+            className={`brand-control inline-flex min-h-12 items-center justify-center rounded-md border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] ${
+              isActive("/menu")
+                ? "border-(--sun) bg-(--sun) text-white"
+                : "border-(--line) bg-white text-(--muted)"
+            }`}
+          >
+            Menu
+          </Link>
+          <Link
+            href="/plans"
+            className={`brand-control inline-flex min-h-12 items-center justify-center rounded-md border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] ${
+              isActive("/plans")
+                ? "border-(--sun) bg-(--sun) text-white"
+                : "border-(--line) bg-white text-(--muted)"
+            }`}
+          >
+            Plans
+          </Link>
+          <Link
+            href="/checkout"
+            className="brand-control tropical-sheen inline-flex min-h-12 items-center justify-center rounded-md bg-(--sun) px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white"
+          >
+            Start Order
+          </Link>
         </div>
       </div>
     </header>

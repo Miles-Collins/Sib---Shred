@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="grain-panel relative overflow-hidden rounded-3xl border border-(--line) p-5 sm:p-10 lg:p-11">
+    <section className="tablet-hero-shell grain-panel relative overflow-hidden rounded-3xl border border-(--line) p-5 sm:p-10 lg:p-11">
       <div
         aria-hidden
         className="pointer-events-none absolute -top-20 -right-16 h-52 w-52 rounded-full bg-(--sun)/20 blur-3xl sm:-top-24 sm:-right-20 sm:h-64 sm:w-64"
@@ -17,11 +17,11 @@ export function Hero() {
           <span className="inline-flex items-center rounded-full border border-(--line) bg-white/85 px-2.5 py-1 text-[9px] font-bold tracking-[0.14em] uppercase text-(--muted) sm:px-3 sm:text-[10px] sm:tracking-[0.16em]">
             Tropical Luxury Meal Prep
           </span>
-          <h1 className="mt-3 max-w-3xl text-[2.1rem] font-black leading-[1.04] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
+          <h1 className="tablet-hero-title mt-3 max-w-3xl text-[2.1rem] font-black leading-[1.04] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
             <span className="block sm:inline">Island-fresh flavor,</span>
             <span className="block sm:ml-2 sm:inline">private-chef precision.</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-[0.98rem] leading-relaxed text-(--muted) sm:mt-5 sm:text-lg">
+          <p className="tablet-readable mt-4 max-w-2xl text-[0.98rem] leading-relaxed text-(--muted) sm:mt-5 sm:text-lg">
             Built for high performers who want clean nutrition without the kitchen
             time sink. Pick your meals, Alysha prepares each box, and your week
             runs smoother in minutes.
@@ -68,7 +68,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 lg:grid-cols-1">
+        <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-1">
           <div className="rounded-xl border border-(--line) bg-[linear-gradient(160deg,rgba(255,255,255,0.96),rgba(228,248,253,0.96))] p-4 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-(--muted)">
               Popular Tracks

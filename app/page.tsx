@@ -101,7 +101,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
       />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8 md:pb-28 xl:pb-20">
         <Hero />
 
         <section className="motion-reveal brand-grid brand-panel grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
@@ -346,7 +346,7 @@ export default async function Home() {
             </Link>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {plans.map((plan) => (
               <article
                 key={plan.title}
