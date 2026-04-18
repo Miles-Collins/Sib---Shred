@@ -52,6 +52,7 @@ export function validateRuntimeEnv() {
   const errors: string[] = [];
   const nodeEnv = process.env.NODE_ENV ?? "development";
   const isProd = nodeEnv === "production";
+  const isProductionBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
 
   const databaseUrl = process.env.DATABASE_URL;
   const directUrl = process.env.DIRECT_URL;
@@ -67,11 +68,11 @@ export function validateRuntimeEnv() {
     validatePostgresUrl("DIRECT_URL", directUrl as string, errors);
   }
 
-  if (isProd && isBlank(databaseUrl) && isBlank(directUrl)) {
+  if (isProd && !isProductionBuildPhase && isBlank(databaseUrl) && isBlank(directUrl)) {
     errors.push("Set DATABASE_URL or DIRECT_URL in production.");
   }
 
-  if (isProd && isBlank(adminPasscode)) {
+  if (isProd && !isProductionBuildPhase && isBlank(adminPasscode)) {
     errors.push("ADMIN_PASSCODE is required in production.");
   }
 
