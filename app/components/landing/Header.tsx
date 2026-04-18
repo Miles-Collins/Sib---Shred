@@ -216,86 +216,121 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="tablet-main-nav mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8 xl:gap-6">
-        <Link href="/" className="group flex items-center gap-3 shrink-0">
-          <div className="hidden h-px w-7 bg-(--line) sm:block" />
-          <div>
-            <p className="tablet-brand-title brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
+      <nav className="tablet-main-nav mx-auto w-full max-w-7xl px-4 py-4 sm:px-8">
+        <div className="flex w-full items-center justify-between xl:hidden">
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-controls="primary-tablet-nav"
+            data-expanded={isMenuOpen ? "true" : "false"}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-(--ink) transition-colors hover:bg-black/5"
+          >
+            <span className="sr-only">Menu</span>
+            <span className="relative block h-4 w-5">
+              <span
+                className={`absolute left-0 top-0 h-0.5 w-5 bg-current transition-transform duration-200 motion-reduce:transition-none ${
+                  isMenuOpen ? "translate-y-1.75 rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-1.75 h-0.5 w-5 bg-current transition-opacity duration-200 motion-reduce:transition-none ${
+                  isMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-3.5 h-0.5 w-5 bg-current transition-transform duration-200 motion-reduce:transition-none ${
+                  isMenuOpen ? "-translate-y-1.75 -rotate-45" : ""
+                }`}
+              />
+            </span>
+          </button>
+
+          <Link href="/" className="-ml-2 flex flex-col items-center text-center">
+            <p className="tablet-brand-title brand-section-title text-[1.7rem] leading-none tracking-[0.035em]">
               SIB METHOD
             </p>
             <p className="brand-kicker text-[10px] text-(--muted)">Meal Prep</p>
-          </div>
-          <div className="h-px w-4 bg-(--line) transition-colors group-hover:bg-(--ink)" />
-        </Link>
-
-        <button
-          ref={menuButtonRef}
-          type="button"
-          aria-label="Toggle navigation menu"
-          aria-controls="primary-tablet-nav"
-          data-expanded={isMenuOpen ? "true" : "false"}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="brand-control relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-(--line) bg-white text-(--ink) shadow-[0_6px_18px_rgba(16,27,23,0.05)] xl:hidden"
-        >
-          <span className="sr-only">Menu</span>
-          <span className="relative block h-4 w-5">
-            <span
-              className={`absolute left-0 top-0 h-0.5 w-5 bg-current transition-transform duration-200 motion-reduce:transition-none ${
-                isMenuOpen ? "translate-y-1.75 rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-1.75 h-0.5 w-5 bg-current transition-opacity duration-200 motion-reduce:transition-none ${
-                isMenuOpen ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-3.5 h-0.5 w-5 bg-current transition-transform duration-200 motion-reduce:transition-none ${
-                isMenuOpen ? "-translate-y-1.75 -rotate-45" : ""
-              }`}
-            />
-          </span>
-        </button>
-
-        {/* Center Navigation Links */}
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-5 text-[13px] font-semibold uppercase tracking-[0.06em] text-(--muted) xl:flex xl:gap-6">
-          {navLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`relative inline-flex shrink-0 items-center whitespace-nowrap transition-colors ${
-                isActive(item.href)
-                  ? "text-(--ink) font-bold"
-                  : "hover:text-(--ink)"
-              }`}
-            >
-              <span className="whitespace-nowrap">{item.label}</span>
-              {isActive(item.href) && (
-                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-(--ink)" />
-              )}
-            </Link>
-          ))}
-        </div>
-
-        {/* Right CTA Buttons */}
-        <div className="ml-2 flex shrink-0 items-center gap-2.5 sm:ml-4 xl:gap-3">
-          <Link
-            href="/menu"
-            className="hidden brand-control tropical-sheen rounded-md border border-(--line) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition sm:block"
-          >
-            Explore Meals
           </Link>
+
           <Link
             href="/checkout"
-            className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-md bg-(--sun) px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            aria-label="Open cart"
+            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-(--ink) transition-colors hover:bg-black/5"
           >
-            <span className="hidden sm:inline">Start</span> Order
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="9" cy="20" r="1.5" />
+              <circle cx="17" cy="20" r="1.5" />
+              <path d="M2 3h3l2.3 11.1a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6" />
+            </svg>
             {cartCount > 0 ? (
-              <span className="inline-flex min-w-[1.4rem] items-center justify-center rounded-full bg-(--ink) px-1.5 py-0.5 text-[10px] font-black leading-none text-white">
-                {cartCount}
-              </span>
+              <span className="absolute right-2 top-2.5 h-2.5 w-2.5 rounded-full bg-[#c41717]" />
             ) : null}
           </Link>
+        </div>
+
+        <div className="hidden w-full items-center justify-between gap-4 xl:flex xl:gap-6">
+          <Link href="/" className="group flex items-center gap-3 shrink-0">
+            <div className="hidden h-px w-7 bg-(--line) sm:block" />
+            <div>
+              <p className="tablet-brand-title brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
+                SIB METHOD
+              </p>
+              <p className="brand-kicker text-[10px] text-(--muted)">Meal Prep</p>
+            </div>
+            <div className="h-px w-4 bg-(--line) transition-colors group-hover:bg-(--ink)" />
+          </Link>
+
+          {/* Center Navigation Links */}
+          <div className="min-w-0 flex-1 items-center justify-center gap-5 text-[13px] font-semibold uppercase tracking-[0.06em] text-(--muted) xl:flex xl:gap-6">
+            {navLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative inline-flex shrink-0 items-center whitespace-nowrap transition-colors ${
+                  isActive(item.href)
+                    ? "text-(--ink) font-bold"
+                    : "hover:text-(--ink)"
+                }`}
+              >
+                <span className="whitespace-nowrap">{item.label}</span>
+                {isActive(item.href) && (
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-(--ink)" />
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Right CTA Buttons */}
+          <div className="ml-2 flex shrink-0 items-center gap-2.5 sm:ml-4 xl:gap-3">
+            <Link
+              href="/menu"
+              className="brand-control tropical-sheen rounded-md border border-(--line) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition"
+            >
+              Explore Meals
+            </Link>
+            <Link
+              href="/checkout"
+              className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-md bg-(--sun) px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+            >
+              Start Order
+              {cartCount > 0 ? (
+                <span className="inline-flex min-w-[1.4rem] items-center justify-center rounded-full bg-(--ink) px-1.5 py-0.5 text-[10px] font-black leading-none text-white">
+                  {cartCount}
+                </span>
+              ) : null}
+            </Link>
+          </div>
         </div>
       </nav>
 
