@@ -1,6 +1,7 @@
 declare global {
   // Prevent duplicate validation in dev reloads and across module imports.
   var __sibMethodEnvValidated: boolean | undefined;
+  var __sibMethodEnvWarnedMissingSslMode: boolean | undefined;
 }
 
 function isBlank(value: string | undefined) {
@@ -36,8 +37,10 @@ function validatePostgresUrl(name: string, value: string, errors: string[]) {
     return;
   }
 
-  if (!/sslmode=require/i.test(value)) {
-    errors.push(`${name} should include sslmode=require for secure DB connections.`);
+  if (!/sslmode=require/i.test(value) && !global.__sibMethodEnvWarnedMissingSslMode) {
+    // Keep this as a warning so build/import-time evaluation is not blocked.
+    console.warn(`${name} should include sslmode=require for secure DB connections.`);
+    global.__sibMethodEnvWarnedMissingSslMode = true;
   }
 }
 
