@@ -188,34 +188,6 @@ export function Header() {
         Fresh weekly drop by Alysha + free local delivery
       </div>
 
-      <div className="tablet-contact-row mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-(--muted) sm:px-8 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
-          <a
-            href="tel:+18664423287"
-            className="brand-control rounded-full border border-(--line) bg-white px-3 py-1.5 hover:text-(--ink)"
-          >
-            (866) 442-3287
-          </a>
-          <a
-            href="mailto:info@sibmethod.com"
-            className="brand-control rounded-full border border-(--line) bg-white px-3 py-1.5 hover:text-(--ink)"
-          >
-            info@sibmethod.com
-          </a>
-        </div>
-        <div className="flex items-center justify-center gap-4 text-[10px] sm:text-[11px] lg:justify-end">
-          <Link href="/about">About</Link>
-          <a href="mailto:info@sibmethod.com">Contact</a>
-          <a
-            href="https://www.instagram.com/sibmethod/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Instagram
-          </a>
-        </div>
-      </div>
-
       <nav className="tablet-main-nav mx-auto w-full max-w-7xl px-4 py-4 sm:px-8">
         <div className="flex w-full items-center justify-between xl:hidden">
           <button
