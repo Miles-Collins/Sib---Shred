@@ -1,7 +1,10 @@
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/landing/Footer";
+import { validateRuntimeEnv } from "@/lib/env-validation";
 import { rootMetadata, rootViewport } from "@/lib/seo";
+
+validateRuntimeEnv();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
