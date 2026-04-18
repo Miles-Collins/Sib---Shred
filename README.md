@@ -42,7 +42,15 @@ At minimum, make sure these are set in `.env.local`:
 
 If you are using database-backed menu/catalog features, also configure:
 
-- `DATABASE_URL` or `DIRECT_URL`
+- `DATABASE_URL` (runtime, recommended Supabase pooler URL)
+- `DIRECT_URL` (migrations, direct Supabase URL)
+
+For Supabase + Prisma, the usual pattern is:
+
+- `DATABASE_URL`: pooler host (port `6543`) with `pgbouncer=true`, `connection_limit=1`, and `sslmode=require`
+- `DIRECT_URL`: direct host (port `5432`) with `sslmode=require`
+
+See [.env.example](.env.example) for the exact template format.
 
 ## Private Admin + Sanity Studio
 
