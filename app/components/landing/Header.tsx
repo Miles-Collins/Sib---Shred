@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export function Header() {
   const pathname = usePathname();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [cartCount, setCartCount] = useState(() => {
     if (typeof window === "undefined") {
       return 0;
@@ -76,6 +78,87 @@ export function Header() {
     [],
   );
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return;
+    }
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        menuRef.current?.contains(target) ||
+        menuButtonRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setIsMenuOpen(false);
+    };
+
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onEscape);
+
+    return () => {
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onEscape);
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const desktopQuery = window.matchMedia("(min-width: 1280px)");
+    const onDesktopChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (desktopQuery.matches) {
+      setIsMenuOpen(false);
+    }
+
+    desktopQuery.addEventListener("change", onDesktopChange);
+
+    return () => {
+      desktopQuery.removeEventListener("change", onDesktopChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    const body = document.body;
+    const prevOverflow = body.style.overflow;
+    const prevTouchAction = body.style.touchAction;
+
+    if (isMenuOpen) {
+      body.style.overflow = "hidden";
+      body.style.touchAction = "none";
+    }
+
+    return () => {
+      body.style.overflow = prevOverflow;
+      body.style.touchAction = prevTouchAction;
+    };
+  }, [isMenuOpen]);
+
   const isActive = (href: string) => {
     // Don't highlight hash links (they're sections, not pages)
     if (href.startsWith("/#")) {
@@ -123,7 +206,7 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-4 py-4 sm:px-8">
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8 xl:gap-6">
         <Link href="/" className="group flex items-center gap-3 shrink-0">
           <div className="hidden h-px w-7 bg-(--line) sm:block" />
           <div>
@@ -135,8 +218,37 @@ export function Header() {
           <div className="h-px w-4 bg-(--line) transition-colors group-hover:bg-(--ink)" />
         </Link>
 
+        <button
+          ref={menuButtonRef}
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-controls="primary-tablet-nav"
+          data-expanded={isMenuOpen ? "true" : "false"}
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="brand-control relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-(--line) bg-white text-(--ink) shadow-[0_6px_18px_rgba(16,27,23,0.05)] xl:hidden"
+        >
+          <span className="sr-only">Menu</span>
+          <span className="relative block h-4 w-5">
+            <span
+              className={`absolute left-0 top-0 h-0.5 w-5 bg-current transition-transform duration-200 motion-reduce:transition-none ${
+                isMenuOpen ? "translate-y-1.75 rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-1.75 h-0.5 w-5 bg-current transition-opacity duration-200 motion-reduce:transition-none ${
+                isMenuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-3.5 h-0.5 w-5 bg-current transition-transform duration-200 motion-reduce:transition-none ${
+                isMenuOpen ? "-translate-y-1.75 -rotate-45" : ""
+              }`}
+            />
+          </span>
+        </button>
+
         {/* Center Navigation Links */}
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-5 text-[13px] font-semibold uppercase tracking-[0.06em] text-(--muted) lg:flex xl:gap-6">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-5 text-[13px] font-semibold uppercase tracking-[0.06em] text-(--muted) xl:flex xl:gap-6">
           {navLinks.map((item) => (
             <Link
               key={item.href}
@@ -156,7 +268,7 @@ export function Header() {
         </div>
 
         {/* Right CTA Buttons */}
-        <div className="ml-4 flex shrink-0 items-center gap-2.5 xl:gap-3">
+        <div className="ml-2 flex shrink-0 items-center gap-2.5 sm:ml-4 xl:gap-3">
           <Link
             href="/menu"
             className="hidden brand-control tropical-sheen rounded-md border border-(--line) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition sm:block"
@@ -176,6 +288,65 @@ export function Header() {
           </Link>
         </div>
       </nav>
+
+      <button
+        type="button"
+        aria-label="Close navigation menu"
+        onClick={() => setIsMenuOpen(false)}
+        className={`fixed inset-0 z-40 bg-black/25 backdrop-blur-[1px] transition-opacity duration-200 motion-reduce:transition-none xl:hidden ${
+          isMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
+      <div
+        id="primary-tablet-nav"
+        ref={menuRef}
+        className="relative z-50 mx-auto w-full max-w-7xl px-4 pb-3 sm:px-8 xl:hidden"
+      >
+        <div
+          className={`grid overflow-hidden transition-[grid-template-rows,opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none ${
+            isMenuOpen
+              ? "grid-rows-[1fr] opacity-100 translate-y-0"
+              : "pointer-events-none grid-rows-[0fr] opacity-0 -translate-y-2"
+          }`}
+        >
+          <div className="min-h-0">
+            <div className="brand-shell overflow-hidden rounded-2xl bg-white/95 p-3 sm:p-4">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
+                {navLinks.map((item) => (
+                  <Link
+                    key={`tablet-${item.href}`}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`brand-control inline-flex min-h-11 items-center rounded-md border border-(--line) px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] transition sm:min-h-12 ${
+                      isActive(item.href)
+                        ? "bg-(--sun) text-white border-(--sun)"
+                        : "bg-white text-(--muted) hover:text-(--ink)"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:mt-4 sm:grid-cols-2 sm:gap-3">
+                <a
+                  href="tel:+18664423287"
+                  className="brand-control inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
+                >
+                  Call Us
+                </a>
+                <a
+                  href="mailto:info@sibmethod.com"
+                  className="brand-control inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
+                >
+                  Email Us
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
