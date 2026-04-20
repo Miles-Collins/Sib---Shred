@@ -104,7 +104,7 @@ export const mealType = defineType({
     defineField({
       name: "price",
       title: "Price",
-      description: "Example: $15.49",
+      description: "Example: 15.49 (the site adds $ automatically)",
       type: "string",
       validation: (rule) => rule.required(),
     }),

@@ -13,6 +13,15 @@ function centsToPrice(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
+function normalizeDisplayPrice(price: string | undefined) {
+  const numericPrice = Number.parseFloat(String(price ?? "").replace(/[^0-9.]/g, ""));
+  if (!Number.isFinite(numericPrice)) {
+    return "$0.00";
+  }
+
+  return `$${numericPrice.toFixed(2)}`;
+}
+
 function toMeal(record: {
   slug: string;
   name: string;
@@ -90,7 +99,7 @@ export async function getMealCatalog(): Promise<Meal[]> {
       ingredients: Array.isArray(meal.ingredients) ? meal.ingredients : [],
       isGlutenFree: Boolean(meal.isGlutenFree),
       tag: meal.tag,
-      price: meal.price,
+      price: normalizeDisplayPrice(meal.price),
       image: meal.imageUrl ?? "/meal-chipotle.svg",
     }));
   }
@@ -138,7 +147,7 @@ export async function getMealBySlug(slug: string): Promise<Meal | null> {
         ingredients: Array.isArray(meal.ingredients) ? meal.ingredients : [],
         isGlutenFree: Boolean(meal.isGlutenFree),
         tag: meal.tag,
-        price: meal.price,
+        price: normalizeDisplayPrice(meal.price),
         image: meal.imageUrl ?? "/meal-chipotle.svg",
       };
     }
