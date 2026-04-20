@@ -13,6 +13,7 @@ type MenuCatalogProps = {
 const FILTERS = ["GF", "VEGAN", "SPICY", "HIGH PROTEIN"] as const;
 const MENU_STATE_KEY = "sib-method-menu-state-v1";
 const MENU_SCROLL_KEY = "sib-method-menu-scroll-v1";
+const MENU_CARD_DESCRIPTION_LIMIT = 150;
 
 const TAG_META: Record<
   string,
@@ -34,6 +35,15 @@ const TAG_META: Record<
 
 function parseMoney(price: string) {
   return Number.parseFloat(price.replace("$", ""));
+}
+
+function truncateWithEllipsis(text: string, limit: number) {
+  const normalized = text.trim();
+  if (normalized.length <= limit) {
+    return normalized;
+  }
+
+  return `${normalized.slice(0, limit).trimEnd()}...`;
 }
 
 export function MenuCatalog({ meals }: MenuCatalogProps) {
@@ -315,8 +325,8 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>{meal.name}</Link>
               </h2>
 
-              <p className="text-sm leading-relaxed text-(--muted)">
-                {meal.description}
+              <p className="text-sm leading-relaxed text-(--muted)" title={meal.description}>
+                {truncateWithEllipsis(meal.description, MENU_CARD_DESCRIPTION_LIMIT)}
               </p>
 
               <div className="grid grid-cols-2 gap-2 text-sm text-(--muted)">
