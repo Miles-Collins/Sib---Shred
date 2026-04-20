@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated Studio build artifacts should not be linted.
+    "studio-sib-shred-performance-kitchen/dist/**",
   ]),
 ]);
 
