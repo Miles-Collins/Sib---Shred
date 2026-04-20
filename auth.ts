@@ -4,7 +4,11 @@ import Google from "next-auth/providers/google";
 import { getAdminRoleForEmail } from "@/lib/admin-rbac";
 
 export function isGoogleAuthConfigured() {
-  return Boolean(process.env.AUTH_GOOGLE_ID?.trim() && process.env.AUTH_GOOGLE_SECRET?.trim());
+  return Boolean(
+    process.env.AUTH_SECRET?.trim() &&
+      process.env.AUTH_GOOGLE_ID?.trim() &&
+      process.env.AUTH_GOOGLE_SECRET?.trim(),
+  );
 }
 
 export const authOptions: NextAuthOptions = {
@@ -38,6 +42,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/admin",
+    error: "/admin",
   },
   secret: process.env.AUTH_SECRET,
 };
