@@ -33,6 +33,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const errorMessage =
     error === "auth-required"
       ? "Please sign in first."
+      : error === "google"
+        ? "Google provider is not available in this runtime. Open /api/auth/providers and confirm \"google\" is listed."
       : error === "Configuration"
         ? "Auth configuration is invalid. Check AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, and callback URLs."
       : error === "OAuthSignin"
@@ -51,7 +53,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         ? "Email is required to assign a role."
       : error === "invalid-role"
         ? "Role must be OWNER, STAFF, or VIEWER."
-        : "";
+        : error
+          ? `Auth error: ${error}`
+          : "";
 
   const successMessage = success === "role-updated" ? "Role updated." : "";
 
