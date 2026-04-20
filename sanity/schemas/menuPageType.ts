@@ -14,7 +14,14 @@ export const menuPageType = defineType({
     }),
     defineField({ name: "headerKicker", title: "Header Kicker", type: "string" }),
     defineField({ name: "headerTitle", title: "Header Title", type: "string" }),
-    defineField({ name: "headerDescription", title: "Header Description", type: "text", rows: 4 }),
+    defineField({
+      name: "headerDescription",
+      title: "Header Description",
+      type: "text",
+      rows: 4,
+      description: "Max 150 characters.",
+      validation: (rule) => rule.max(150),
+    }),
   ],
   preview: {
     prepare() {
