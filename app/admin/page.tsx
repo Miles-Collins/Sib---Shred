@@ -5,7 +5,7 @@ import { isGoogleAuthConfigured } from "@/auth";
 import { Header } from "../components/landing/Header";
 import { getAdminActor } from "@/lib/admin-access";
 import { roleHasPermission } from "@/lib/admin-rbac";
-import { assignAdminRole, loginAdmin, logoutAdmin } from "./actions";
+import { assignAdminRole, logoutAdmin } from "./actions";
 import { buildPageMetadata } from "@/lib/seo";
 import { isSanityConfigured } from "@/sanity/env";
 
@@ -23,6 +23,7 @@ export const metadata: Metadata = buildPageMetadata({
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const { next, error, success } = await searchParams;
   const nextPath = next?.startsWith("/") ? next : "/studio";
+  const signInHref = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(nextPath)}`;
   const actor = await getAdminActor();
   const authConfigured = isGoogleAuthConfigured();
   const sanityConfigured = isSanityConfigured();
@@ -96,16 +97,24 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             </div>
 
             {!actor ? (
-              <form action={loginAdmin} className="grid gap-3">
-                <input type="hidden" name="next" value={nextPath} />
-                <button
-                  type="submit"
-                  disabled={!authConfigured}
-                  className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white disabled:opacity-50"
-                >
-                  Sign in with Google
-                </button>
-              </form>
+              <div className="grid gap-3">
+                {authConfigured ? (
+                  <Link
+                    href={signInHref}
+                    className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white"
+                  >
+                    Sign in with Google
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    disabled
+                    className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white disabled:opacity-50"
+                  >
+                    Sign in with Google
+                  </button>
+                )}
+              </div>
             ) : (
               <div className="grid gap-3">
                 <p className="text-sm text-(--muted)">
