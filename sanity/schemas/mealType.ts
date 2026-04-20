@@ -29,7 +29,8 @@ export const mealType = defineType({
       title: "Description",
       type: "text",
       rows: 4,
-      validation: (rule) => rule.required().max(500),
+      description: "Long-form copy supported (up to 2000 characters).",
+      validation: (rule) => rule.required().max(2000),
     }),
     defineField({
       name: "allergens",
