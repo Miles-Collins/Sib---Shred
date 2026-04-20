@@ -6,7 +6,7 @@ import { loginAdmin } from "./actions";
 import { buildPageMetadata } from "@/lib/seo";
 
 type AdminPageProps = {
-  searchParams: Promise<{ next?: string; error?: string }>;
+  searchParams: Promise<{ next?: string; error?: string; retryAfter?: string }>;
 };
 
 export const metadata: Metadata = buildPageMetadata({
@@ -17,12 +17,20 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
-  const { next, error } = await searchParams;
+  const { next, error, retryAfter } = await searchParams;
   const nextPath = next?.startsWith("/") ? next : "/studio";
+  const retryAfterSeconds = Number.parseInt(retryAfter ?? "", 10);
+  const retryAfterMessage = Number.isFinite(retryAfterSeconds)
+    ? `Please wait about ${Math.max(1, retryAfterSeconds)} seconds before trying again.`
+    : "Please wait a few minutes before trying again.";
 
   const errorMessage =
     error === "missing-passcode"
       ? "ADMIN_PASSCODE is not configured yet."
+      : error === "missing-session-secret"
+        ? "ADMIN_SESSION_SECRET is not configured yet."
+        : error === "too-many-attempts"
+          ? `Too many login attempts. ${retryAfterMessage}`
       : error === "invalid-passcode"
         ? "Incorrect passcode."
         : "";

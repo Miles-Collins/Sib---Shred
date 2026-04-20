@@ -57,6 +57,7 @@ export function validateRuntimeEnv() {
   const databaseUrl = process.env.DATABASE_URL;
   const directUrl = process.env.DIRECT_URL;
   const adminPasscode = process.env.ADMIN_PASSCODE;
+  const adminSessionSecret = process.env.ADMIN_SESSION_SECRET;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const sanityApiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION;
 
@@ -74,6 +75,10 @@ export function validateRuntimeEnv() {
 
   if (isProd && !isProductionBuildPhase && isBlank(adminPasscode)) {
     errors.push("ADMIN_PASSCODE is required in production.");
+  }
+
+  if (isProd && !isProductionBuildPhase && isBlank(adminSessionSecret)) {
+    errors.push("ADMIN_SESSION_SECRET is required in production.");
   }
 
   if (!isBlank(siteUrl)) {

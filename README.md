@@ -39,6 +39,7 @@ At minimum, make sure these are set in `.env.local`:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION`
 - `ADMIN_PASSCODE`
+- `ADMIN_SESSION_SECRET`
 
 If you are using database-backed menu/catalog features, also configure:
 
