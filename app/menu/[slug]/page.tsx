@@ -10,6 +10,7 @@ import { TinyShareButton } from "../../components/product/TinyShareButton";
 import { YouMightAlsoLikeCarousel } from "../../components/product/YouMightAlsoLikeCarousel";
 import { getMealBySlug, getMealCatalog } from "@/lib/meal-catalog";
 import { buildPageMetadata } from "@/lib/seo";
+import { getMealDetailPageContentFromSanity } from "@/sanity/lib/queries";
 
 type MealPageProps = {
   params: Promise<{ slug: string }>;
@@ -86,6 +87,7 @@ export default async function MealPage({ params }: MealPageProps) {
   const { slug } = await params;
   const meal = await getMealBySlug(slug);
   const relatedMeals = await getMealCatalog();
+  const mealDetailContent = await getMealDetailPageContentFromSanity();
 
   if (!meal) {
     notFound();
@@ -136,7 +138,14 @@ export default async function MealPage({ params }: MealPageProps) {
             </div>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {Array.from(new Set([...meal.dietaryTags, "CALORIE SMART", "FIBER FILLED"])).map((tag) => (
+              {Array.from(
+                new Set([
+                  ...meal.dietaryTags,
+                  ...(mealDetailContent?.autoDietaryTags?.length
+                    ? mealDetailContent.autoDietaryTags
+                    : ["CALORIE SMART", "FIBER FILLED"]),
+                ]),
+              ).map((tag) => (
                 <span
                   key={tag}
                   className={`brand-badge motion-badge rounded-[0.2rem] px-2.5 py-1 ${dietBadgeClass(tag)}`}
@@ -150,9 +159,11 @@ export default async function MealPage({ params }: MealPageProps) {
           </article>
 
           <aside className="brand-shell p-5 sm:p-6 lg:p-7">
-            <p className="brand-kicker text-(--muted)">Nutrition snapshot</p>
+            <p className="brand-kicker text-(--muted)">
+              {mealDetailContent?.nutritionKicker || "Nutrition snapshot"}
+            </p>
             <h2 className="mt-2 text-[clamp(1.9rem,2.2vw,2.8rem)] font-black tracking-tight">
-              Per serving
+              {mealDetailContent?.nutritionTitle || "Per serving"}
             </h2>
             <div className="mt-5 space-y-0.5">
               {rows.map(([label, value]) => (
@@ -166,7 +177,7 @@ export default async function MealPage({ params }: MealPageProps) {
               ))}
             </div>
             <p className="mt-5 text-[0.9rem] leading-relaxed text-(--muted)">
-              Nutritional info may vary slightly by time of delivery.
+              {mealDetailContent?.nutritionFootnote || "Nutritional info may vary slightly by time of delivery."}
             </p>
           </aside>
         </section>
@@ -175,10 +186,11 @@ export default async function MealPage({ params }: MealPageProps) {
 
         <section className="brand-shell p-6 sm:p-8 lg:p-9">
           <h2 className="text-[clamp(1.8rem,2.2vw,2.5rem)] font-black tracking-tight">
-            Ingredients
+            {mealDetailContent?.ingredientsTitle || "Ingredients"}
           </h2>
           <p className="mt-3 text-[1.05rem] leading-relaxed">
-            Allergens: {meal.allergens}
+            {(mealDetailContent?.allergensPrefix || "Allergens:") + " "}
+            {meal.allergens}
           </p>
           <p className="mt-1 text-[0.95rem] font-semibold leading-relaxed text-(--muted)">
             {meal.facilityNote}

@@ -4,10 +4,39 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
+type SiteLink = {
+  label: string;
+  href: string;
+};
+
+type SiteSettingsResponse = {
+  settings?: {
+    topRibbonText?: string;
+    brandName?: string;
+    brandSubtitle?: string;
+    primaryNavLinks?: SiteLink[];
+    headerCtaPrimary?: string;
+    headerCtaSecondary?: string;
+    supportPhone?: string;
+    supportEmail?: string;
+  } | null;
+};
+
+const FALLBACK_NAV_LINKS: SiteLink[] = [
+  { href: "/menu", label: "Menu" },
+  { href: "/plans", label: "Plans" },
+  { href: "/journal", label: "Journal" },
+  { href: "/#how", label: "How It Works" },
+  { href: "/#reviews", label: "Testimonials" },
+  { href: "/about", label: "About" },
+  { href: "/#blog", label: "Blog" },
+];
+
 export function Header() {
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const [siteSettings, setSiteSettings] = useState<SiteSettingsResponse["settings"]>(null);
   const [cartCount, setCartCount] = useState(() => {
     if (typeof window === "undefined") {
       return 0;
@@ -48,6 +77,34 @@ export function Header() {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
+    const loadSiteSettings = async () => {
+      try {
+        const response = await fetch("/api/site-settings", { cache: "no-store" });
+        if (!response.ok) {
+          return;
+        }
+
+        const payload = (await response.json()) as SiteSettingsResponse;
+        if (isMounted) {
+          setSiteSettings(payload.settings || null);
+        }
+      } catch {
+        if (isMounted) {
+          setSiteSettings(null);
+        }
+      }
+    };
+
+    loadSiteSettings();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
     const handleStorage = (event: StorageEvent) => {
       if (!event.key || event.key === "sib-method-cart") {
         readCartCount();
@@ -65,34 +122,32 @@ export function Header() {
     };
   }, []);
 
-  const navLinks = useMemo(
-    () => [
-      { href: "/menu", label: "Menu" },
-      { href: "/plans", label: "Plans" },
-      { href: "/journal", label: "Journal" },
-      { href: "/#how", label: "How It Works" },
-      { href: "/#reviews", label: "Testimonials" },
-      { href: "/about", label: "About" },
-      { href: "/#blog", label: "Blog" },
-    ],
-    [],
-  );
+  const navLinks = useMemo(() => {
+    const source = siteSettings?.primaryNavLinks;
+    if (!Array.isArray(source) || source.length === 0) {
+      return FALLBACK_NAV_LINKS;
+    }
+
+    const filtered = source.filter((item) => item?.label && item?.href);
+    return filtered.length > 0 ? filtered : FALLBACK_NAV_LINKS;
+  }, [siteSettings?.primaryNavLinks]);
 
   const tabletSectionTabs = useMemo(
-    () => [
-      { href: "/menu", label: "Menu" },
-      { href: "/plans", label: "Plans" },
-      { href: "/journal", label: "Journal" },
-      { href: "/#how", label: "How It Works" },
-    ],
-    [],
+    () => navLinks.slice(0, 4),
+    [navLinks],
   );
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const topRibbonText =
+    siteSettings?.topRibbonText || "Fresh weekly drop by Alysha + free local delivery";
+  const brandName = siteSettings?.brandName || "SIB METHOD";
+  const brandSubtitle = siteSettings?.brandSubtitle || "Meal Prep";
+  const headerCtaPrimary = siteSettings?.headerCtaPrimary || "Explore Meals";
+  const headerCtaSecondary = siteSettings?.headerCtaSecondary || "Start Order";
+  const supportPhone = siteSettings?.supportPhone || "(866) 442-3287";
+  const supportEmail = siteSettings?.supportEmail || "info@sibmethod.com";
+  const supportPhoneHref = `tel:${supportPhone.replace(/[^+\d]/g, "")}`;
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -138,10 +193,6 @@ export function Header() {
       }
     };
 
-    if (desktopQuery.matches) {
-      setIsMenuOpen(false);
-    }
-
     desktopQuery.addEventListener("change", onDesktopChange);
 
     return () => {
@@ -185,7 +236,7 @@ export function Header() {
   return (
     <header className="tablet-landscape-header sticky top-0 z-50 border-b border-(--line) bg-white/90 backdrop-blur-md">
       <div className="tropical-ribbon px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
-        Fresh weekly drop by Alysha + free local delivery
+        {topRibbonText}
       </div>
 
       <nav className="tablet-main-nav mx-auto w-full max-w-7xl px-4 py-4 sm:px-8">
@@ -221,9 +272,9 @@ export function Header() {
 
           <Link href="/" className="-ml-2 flex flex-col items-center text-center">
             <p className="tablet-brand-title brand-section-title text-[1.7rem] leading-none tracking-[0.035em]">
-              SIB METHOD
+              {brandName}
             </p>
-            <p className="brand-kicker text-[10px] text-(--muted)">Meal Prep</p>
+            <p className="brand-kicker text-[10px] text-(--muted)">{brandSubtitle}</p>
           </Link>
 
           <Link
@@ -256,9 +307,9 @@ export function Header() {
             <div className="hidden h-px w-7 bg-(--line) sm:block" />
             <div>
               <p className="tablet-brand-title brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
-                SIB METHOD
+                {brandName}
               </p>
-              <p className="brand-kicker text-[10px] text-(--muted)">Meal Prep</p>
+              <p className="brand-kicker text-[10px] text-(--muted)">{brandSubtitle}</p>
             </div>
             <div className="h-px w-4 bg-(--line) transition-colors group-hover:bg-(--ink)" />
           </Link>
@@ -289,13 +340,13 @@ export function Header() {
               href="/menu"
               className="brand-control tropical-sheen rounded-md border border-(--line) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition"
             >
-              Explore Meals
+              {headerCtaPrimary}
             </Link>
             <Link
               href="/checkout"
               className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-md bg-(--sun) px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
             >
-              Start Order
+              {headerCtaSecondary}
               {cartCount > 0 ? (
                 <span className="inline-flex min-w-[1.4rem] items-center justify-center rounded-full bg-(--ink) px-1.5 py-0.5 text-[10px] font-black leading-none text-white">
                   {cartCount}
@@ -366,16 +417,16 @@ export function Header() {
 
               <div className="mt-3 grid grid-cols-1 gap-2 sm:mt-4 sm:grid-cols-2 sm:gap-3">
                 <a
-                  href="tel:+18664423287"
+                  href={supportPhoneHref}
                   className="brand-control inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
                 >
-                  Call Us
+                  {supportPhone}
                 </a>
                 <a
-                  href="mailto:info@sibmethod.com"
+                  href={`mailto:${supportEmail}`}
                   className="brand-control inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
                 >
-                  Email Us
+                  {supportEmail}
                 </a>
               </div>
             </div>
@@ -409,7 +460,7 @@ export function Header() {
             href="/checkout"
             className="brand-control tropical-sheen inline-flex min-h-12 items-center justify-center rounded-md bg-(--sun) px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white"
           >
-            Start Order
+            {headerCtaSecondary}
           </Link>
         </div>
       </div>

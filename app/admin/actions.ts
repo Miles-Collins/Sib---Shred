@@ -3,10 +3,15 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { isGoogleAuthConfigured } from "@/auth";
 import { requireAdminPermission } from "@/lib/admin-access";
 import { isAdminRoleName, upsertAdminRole } from "@/lib/admin-rbac";
 
 export async function loginAdmin(formData: FormData) {
+  if (!isGoogleAuthConfigured()) {
+    redirect("/admin?error=auth-not-configured");
+  }
+
   const next = String(formData.get("next") || "/studio");
   const nextPath = next.startsWith("/") ? next : "/studio";
   redirect(`/api/auth/signin/google?callbackUrl=${encodeURIComponent(nextPath)}`);

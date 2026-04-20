@@ -6,6 +6,7 @@ import { CheckoutOrderForm } from "./CheckoutOrderForm";
 import { formatCents } from "@/lib/checkout-pricing";
 import { getOrderReceiptByNumberAndToken } from "@/lib/order-receipts";
 import { buildPageMetadata } from "@/lib/seo";
+import { getCheckoutPageContentFromSanity } from "@/sanity/lib/queries";
 
 type SuccessfulOrder = NonNullable<Awaited<ReturnType<typeof getOrderReceiptByNumberAndToken>>>;
 type SuccessfulOrderItem = SuccessfulOrder["items"][number];
@@ -30,16 +31,45 @@ const checkoutSteps = [
 
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = await searchParams;
+  const checkoutContent = await getCheckoutPageContentFromSanity();
   const isSuccess = params.success === "1";
   const successfulOrder: SuccessfulOrder | null = isSuccess && params.order && params.t
     ? await getOrderReceiptByNumberAndToken(params.order, params.t)
     : null;
 
+  const progressLabels =
+    checkoutContent?.progressSteps && checkoutContent.progressSteps.length >= 3
+      ? checkoutContent.progressSteps.slice(0, 3)
+      : ["Choose meals", "Set delivery", "Checkout"];
+
   const orderProgress = [
-    { label: "Choose meals", state: "complete" },
-    { label: "Set delivery", state: "complete" },
-    { label: "Checkout", state: "active" },
+    { label: progressLabels[0], state: "complete" },
+    { label: progressLabels[1], state: "complete" },
+    { label: progressLabels[2], state: "active" },
   ] as const;
+
+  const checkoutStepsContent =
+    checkoutContent?.checkoutSteps && checkoutContent.checkoutSteps.length > 0
+      ? checkoutContent.checkoutSteps
+      : checkoutSteps;
+
+  const retentionCards =
+    checkoutContent?.retentionCards && checkoutContent.retentionCards.length > 0
+      ? checkoutContent.retentionCards
+      : [
+          {
+            title: "Transparent pricing",
+            text: "No surprise add-ons during checkout.",
+          },
+          {
+            title: "Personal support",
+            text: "Questions go directly to Alysha, not a call center.",
+          },
+          {
+            title: "Weekly flexibility",
+            text: "Adjust your meals as your schedule changes.",
+          },
+        ];
 
   return (
     <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
@@ -48,8 +78,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8 md:pb-28 xl:pb-10">
         {isSuccess ? (
           <section className="rounded-2xl border border-(--sun) bg-(--mint)/45 px-5 py-4 shadow-[0_10px_26px_rgba(16,27,23,0.06)]">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">Order received</p>
-            <p className="mt-2 text-lg font-black">Thanks, your order {params.order || ""} has been created.</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
+              {checkoutContent?.successKicker || "Order received"}
+            </p>
+            <p className="mt-2 text-lg font-black">
+              {checkoutContent?.successMessage || `Thanks, your order ${params.order || ""} has been created.`}
+            </p>
             <p className="mt-1 text-sm text-(--muted)">
               Your cart has been cleared and your order details are ready below.
             </p>
@@ -119,25 +153,33 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
         {params.error === "missing-fields" ? (
           <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
-            <p className="text-sm font-semibold text-[#8d3f31]">Please complete the required delivery fields before submitting.</p>
+            <p className="text-sm font-semibold text-[#8d3f31]">
+              {checkoutContent?.missingFieldsError || "Please complete the required delivery fields before submitting."}
+            </p>
           </section>
         ) : null}
 
         {params.error === "empty-cart" ? (
           <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
-            <p className="text-sm font-semibold text-[#8d3f31]">Your cart is empty. Add at least one meal before checkout.</p>
+            <p className="text-sm font-semibold text-[#8d3f31]">
+              {checkoutContent?.emptyCartError || "Your cart is empty. Add at least one meal before checkout."}
+            </p>
           </section>
         ) : null}
 
         {params.error === "invalid-cart" ? (
           <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
-            <p className="text-sm font-semibold text-[#8d3f31]">We could not validate one or more cart items. Please review your cart and try again.</p>
+            <p className="text-sm font-semibold text-[#8d3f31]">
+              {checkoutContent?.invalidCartError || "We could not validate one or more cart items. Please review your cart and try again."}
+            </p>
           </section>
         ) : null}
 
         <section className="motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="brand-kicker text-(--muted)">Order progress</p>
+            <p className="brand-kicker text-(--muted)">
+              {checkoutContent?.headerKicker || "Order progress"}
+            </p>
             <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-bold uppercase tracking-[0.09em] sm:w-md">
               {orderProgress.map((step, index) => (
                 <div
@@ -160,18 +202,18 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
         <section className="brand-shell p-6 sm:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
-            Checkout
+            {checkoutContent?.headerKicker || "Checkout"}
           </p>
           <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
-            Finish your weekly order
+            {checkoutContent?.headerTitle || "Finish your weekly order"}
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-(--muted) sm:text-base">
-            One final step before Alysha starts prepping your meals. Review your plan,
-            confirm delivery details, and place your order.
+            {checkoutContent?.headerDescription ||
+              "One final step before Alysha starts prepping your meals. Review your plan, confirm delivery details, and place your order."}
           </p>
 
           <div className="mt-6 grid gap-3 md:grid-cols-3">
-            {checkoutSteps.map((step, index) => (
+            {checkoutStepsContent.map((step, index) => (
               <div key={step} className="rounded-2xl border border-(--line) bg-white p-4">
                 <p className="brand-kicker text-(--berry)">Step {index + 1}</p>
                 <p className="mt-2 text-sm font-semibold text-(--ink)">{step}</p>
@@ -183,22 +225,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         <CheckoutOrderForm shouldClearCart={isSuccess} />
 
         <section className="brand-panel p-6 sm:p-8">
-          <p className="brand-kicker text-(--muted)">Why customers stay</p>
+          <p className="brand-kicker text-(--muted)">
+            {checkoutContent?.retentionKicker || "Why customers stay"}
+          </p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
-            {[
-              {
-                title: "Transparent pricing",
-                text: "No surprise add-ons during checkout.",
-              },
-              {
-                title: "Personal support",
-                text: "Questions go directly to Alysha, not a call center.",
-              },
-              {
-                title: "Weekly flexibility",
-                text: "Adjust your meals as your schedule changes.",
-              },
-            ].map((item) => (
+            {retentionCards.map((item) => (
               <article key={item.title} className="rounded-2xl border border-(--line) bg-(--bg-cream) p-5">
                 <p className="brand-kicker text-(--berry)">{item.title}</p>
                 <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>

@@ -50,6 +50,105 @@ export type SanityAboutPageContent = {
   contactButtonLabel?: string;
 };
 
+export type SanitySiteLink = {
+  label: string;
+  href: string;
+  openInNewTab?: boolean;
+};
+
+export type SanitySiteSettingsContent = {
+  topRibbonText?: string;
+  brandName?: string;
+  brandSubtitle?: string;
+  primaryNavLinks: SanitySiteLink[];
+  headerCtaPrimary?: string;
+  headerCtaSecondary?: string;
+  footerTagline?: string;
+  footerCompanyLinks: SanitySiteLink[];
+  footerMenuLinks: SanitySiteLink[];
+  supportPhone?: string;
+  supportEmail?: string;
+  footerCopyright?: string;
+};
+
+export type SanityMenuPageContent = {
+  progressKicker?: string;
+  progressSteps: string[];
+  headerKicker?: string;
+  headerTitle?: string;
+  headerDescription?: string;
+};
+
+export type SanityPlansPageCard = {
+  label: string;
+  title: string;
+  text: string;
+};
+
+export type SanityPlansPageContent = {
+  heroKicker?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  valueCards: SanityPlansPageCard[];
+  savingsKicker?: string;
+  whyKicker?: string;
+  whyTitle?: string;
+  whyDescription?: string;
+  whyCards: Array<{ title: string; text: string }>;
+  faqKicker?: string;
+  faqTitle?: string;
+  faqs: Array<{ question: string; answer: string }>;
+  bottomCtaKicker?: string;
+  bottomCtaTitle?: string;
+  bottomCtaButtonLabel?: string;
+};
+
+export type SanityCheckoutPageContent = {
+  progressSteps: string[];
+  headerKicker?: string;
+  headerTitle?: string;
+  headerDescription?: string;
+  checkoutSteps: string[];
+  successKicker?: string;
+  successMessage?: string;
+  missingFieldsError?: string;
+  emptyCartError?: string;
+  invalidCartError?: string;
+  retentionKicker?: string;
+  retentionCards: Array<{ title: string; text: string }>;
+};
+
+export type SanityMealDetailPageContent = {
+  nutritionKicker?: string;
+  nutritionTitle?: string;
+  nutritionFootnote?: string;
+  ingredientsTitle?: string;
+  allergensPrefix?: string;
+  autoDietaryTags: string[];
+};
+
+export type SanityJournalPageContent = {
+  listKicker?: string;
+  listTitle?: string;
+  listDescription?: string;
+  readArticleLabel?: string;
+  fallbackExcerpt?: string;
+  detailBackLabel?: string;
+  detailEmptyBodyMessage?: string;
+};
+
+export type SanityOrderReceiptPageContent = {
+  receiptKicker?: string;
+  totalLabel?: string;
+  paymentStatusPrefix?: string;
+  subtotalLabel?: string;
+  deliveryFeeLabel?: string;
+  discountLabel?: string;
+  totalSummaryLabel?: string;
+  orderAgainLabel?: string;
+  backToCheckoutLabel?: string;
+};
+
 const homePostsQuery = groq`*[_type == "post" && featured == true] | order(publishedAt desc)[0...3]{
   title,
   "slug": slug.current,
@@ -105,6 +204,103 @@ const aboutPageQuery = groq`*[_type == "aboutPage"][0]{
   contactHeadline,
   contactButtonLabel
 }`;
+
+const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
+  topRibbonText,
+  brandName,
+  brandSubtitle,
+  primaryNavLinks[]{label, href},
+  headerCtaPrimary,
+  headerCtaSecondary,
+  footerTagline,
+  footerCompanyLinks[]{label, href, openInNewTab},
+  footerMenuLinks[]{label, href},
+  supportPhone,
+  supportEmail,
+  footerCopyright
+}`;
+
+const menuPageQuery = groq`*[_type == "menuPage"][0]{
+  progressKicker,
+  progressSteps,
+  headerKicker,
+  headerTitle,
+  headerDescription
+}`;
+
+const plansPageQuery = groq`*[_type == "plansPage"][0]{
+  heroKicker,
+  heroTitle,
+  heroDescription,
+  valueCards[]{label, title, text},
+  savingsKicker,
+  whyKicker,
+  whyTitle,
+  whyDescription,
+  whyCards[]{title, text},
+  faqKicker,
+  faqTitle,
+  faqs[]{"question": question, "answer": answer},
+  bottomCtaKicker,
+  bottomCtaTitle,
+  bottomCtaButtonLabel
+}`;
+
+const checkoutPageQuery = groq`*[_type == "checkoutPage"][0]{
+  progressSteps,
+  headerKicker,
+  headerTitle,
+  headerDescription,
+  checkoutSteps,
+  successKicker,
+  successMessage,
+  missingFieldsError,
+  emptyCartError,
+  invalidCartError,
+  retentionKicker,
+  retentionCards[]{title, text}
+}`;
+
+const mealDetailPageQuery = groq`*[_type == "mealDetailPage"][0]{
+  nutritionKicker,
+  nutritionTitle,
+  nutritionFootnote,
+  ingredientsTitle,
+  allergensPrefix,
+  autoDietaryTags
+}`;
+
+const journalPageQuery = groq`*[_type == "journalPage"][0]{
+  listKicker,
+  listTitle,
+  listDescription,
+  readArticleLabel,
+  fallbackExcerpt,
+  detailBackLabel,
+  detailEmptyBodyMessage
+}`;
+
+const orderReceiptPageQuery = groq`*[_type == "orderReceiptPage"][0]{
+  receiptKicker,
+  totalLabel,
+  paymentStatusPrefix,
+  subtotalLabel,
+  deliveryFeeLabel,
+  discountLabel,
+  totalSummaryLabel,
+  orderAgainLabel,
+  backToCheckoutLabel
+}`;
+
+function filterStringArray(items: string[] | undefined) {
+  return Array.isArray(items) ? items.filter(Boolean) : [];
+}
+
+function filterLinkArray(items: SanitySiteLink[] | undefined) {
+  return Array.isArray(items)
+    ? items.filter((item) => item?.label && item?.href)
+    : [];
+}
 
 function toTextBlocks(body: Array<{ children?: Array<{ text?: string }> }> | undefined) {
   if (!Array.isArray(body)) {
@@ -266,6 +462,144 @@ export async function getAboutPageContentFromSanity(): Promise<SanityAboutPageCo
       howItWorksSteps: Array.isArray(content.howItWorksSteps) ? content.howItWorksSteps.filter(Boolean) : [],
       pillars: Array.isArray(content.pillars) ? content.pillars.filter((item) => item?.label && item?.text) : [],
     };
+  } catch {
+    return null;
+  }
+}
+
+export async function getSiteSettingsFromSanity(): Promise<SanitySiteSettingsContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    const content = await sanityClient.fetch<SanitySiteSettingsContent | null>(siteSettingsQuery, {}, { next: { revalidate: 120 } });
+    if (!content) {
+      return null;
+    }
+
+    return {
+      ...content,
+      primaryNavLinks: filterLinkArray(content.primaryNavLinks),
+      footerCompanyLinks: filterLinkArray(content.footerCompanyLinks),
+      footerMenuLinks: filterLinkArray(content.footerMenuLinks),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getMenuPageContentFromSanity(): Promise<SanityMenuPageContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    const content = await sanityClient.fetch<SanityMenuPageContent | null>(menuPageQuery, {}, { next: { revalidate: 120 } });
+    if (!content) {
+      return null;
+    }
+
+    return {
+      ...content,
+      progressSteps: filterStringArray(content.progressSteps),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getPlansPageContentFromSanity(): Promise<SanityPlansPageContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    const content = await sanityClient.fetch<SanityPlansPageContent | null>(plansPageQuery, {}, { next: { revalidate: 120 } });
+    if (!content) {
+      return null;
+    }
+
+    return {
+      ...content,
+      valueCards: Array.isArray(content.valueCards)
+        ? content.valueCards.filter((item) => item?.label && item?.title && item?.text)
+        : [],
+      whyCards: Array.isArray(content.whyCards)
+        ? content.whyCards.filter((item) => item?.title && item?.text)
+        : [],
+      faqs: Array.isArray(content.faqs)
+        ? content.faqs.filter((item) => item?.question && item?.answer)
+        : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getCheckoutPageContentFromSanity(): Promise<SanityCheckoutPageContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    const content = await sanityClient.fetch<SanityCheckoutPageContent | null>(checkoutPageQuery, {}, { next: { revalidate: 120 } });
+    if (!content) {
+      return null;
+    }
+
+    return {
+      ...content,
+      progressSteps: filterStringArray(content.progressSteps),
+      checkoutSteps: filterStringArray(content.checkoutSteps),
+      retentionCards: Array.isArray(content.retentionCards)
+        ? content.retentionCards.filter((item) => item?.title && item?.text)
+        : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getMealDetailPageContentFromSanity(): Promise<SanityMealDetailPageContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    const content = await sanityClient.fetch<SanityMealDetailPageContent | null>(mealDetailPageQuery, {}, { next: { revalidate: 120 } });
+    if (!content) {
+      return null;
+    }
+
+    return {
+      ...content,
+      autoDietaryTags: filterStringArray(content.autoDietaryTags),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getJournalPageContentFromSanity(): Promise<SanityJournalPageContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    return await sanityClient.fetch<SanityJournalPageContent | null>(journalPageQuery, {}, { next: { revalidate: 120 } });
+  } catch {
+    return null;
+  }
+}
+
+export async function getOrderReceiptPageContentFromSanity(): Promise<SanityOrderReceiptPageContent | null> {
+  if (!canUseSanityClient()) {
+    return null;
+  }
+
+  try {
+    return await sanityClient.fetch<SanityOrderReceiptPageContent | null>(orderReceiptPageQuery, {}, { next: { revalidate: 120 } });
   } catch {
     return null;
   }

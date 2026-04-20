@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Header } from "../../components/landing/Header";
 import { formatCents } from "@/lib/checkout-pricing";
 import { getOrderReceiptByNumberAndToken } from "@/lib/order-receipts";
+import { getOrderReceiptPageContentFromSanity } from "@/sanity/lib/queries";
 
 type ReceiptOrder = NonNullable<Awaited<ReturnType<typeof getOrderReceiptByNumberAndToken>>>;
 type ReceiptOrderItem = ReceiptOrder["items"][number];
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: OrderReceiptPageProps): Promi
 
 export default async function OrderReceiptPage({ params, searchParams }: OrderReceiptPageProps) {
   const { orderNumber } = await params;
+  const pageContent = await getOrderReceiptPageContentFromSanity();
   const query = await searchParams;
 
   if (!query.t) {
@@ -53,17 +55,21 @@ export default async function OrderReceiptPage({ params, searchParams }: OrderRe
         <section className="brand-shell p-6 sm:p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="brand-kicker text-(--muted)">Order receipt</p>
+              <p className="brand-kicker text-(--muted)">
+                {pageContent?.receiptKicker || "Order receipt"}
+              </p>
               <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">{order.orderNumber}</h1>
               <p className="mt-2 text-sm text-(--muted)">
                 {order.plan?.name ? `${order.plan.name} plan` : "Weekly meal order"}
               </p>
             </div>
             <div className="rounded-xl border border-(--line) bg-white px-4 py-3 text-right">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">Order total</p>
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">
+                {pageContent?.totalLabel || "Order total"}
+              </p>
               <p className="mt-1 text-2xl font-black text-(--ink)">{formatCents(order.totalCents)}</p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-(--muted)">
-                Payment status: {order.paymentStatus}
+                {pageContent?.paymentStatusPrefix || "Payment status:"} {order.paymentStatus}
               </p>
             </div>
           </div>
@@ -86,19 +92,19 @@ export default async function OrderReceiptPage({ params, searchParams }: OrderRe
 
           <div className="mt-5 space-y-2 border-t border-(--line) pt-4 text-sm">
             <div className="flex items-center justify-between text-(--muted)">
-              <span>Subtotal</span>
+              <span>{pageContent?.subtotalLabel || "Subtotal"}</span>
               <span>{formatCents(order.subtotalCents)}</span>
             </div>
             <div className="flex items-center justify-between text-(--muted)">
-              <span>Delivery fee</span>
+              <span>{pageContent?.deliveryFeeLabel || "Delivery fee"}</span>
               <span>{formatCents(order.deliveryFeeCents)}</span>
             </div>
             <div className="flex items-center justify-between text-(--berry)">
-              <span>Discount</span>
+              <span>{pageContent?.discountLabel || "Discount"}</span>
               <span>{order.discountCents > 0 ? `-${formatCents(order.discountCents)}` : "$0.00"}</span>
             </div>
             <div className="flex items-center justify-between text-base font-black text-(--ink)">
-              <span>Total</span>
+              <span>{pageContent?.totalSummaryLabel || "Total"}</span>
               <span>{formatCents(order.totalCents)}</span>
             </div>
           </div>
@@ -108,13 +114,13 @@ export default async function OrderReceiptPage({ params, searchParams }: OrderRe
               href="/menu"
               className="brand-control rounded-full border border-(--ink) px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
             >
-              Order again
+              {pageContent?.orderAgainLabel || "Order again"}
             </Link>
             <Link
               href="/checkout"
               className="brand-control rounded-full border border-(--line) px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
             >
-              Back to checkout
+              {pageContent?.backToCheckoutLabel || "Back to checkout"}
             </Link>
           </div>
         </section>

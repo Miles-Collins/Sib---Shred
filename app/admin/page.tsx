@@ -7,6 +7,7 @@ import { getAdminActor } from "@/lib/admin-access";
 import { roleHasPermission } from "@/lib/admin-rbac";
 import { assignAdminRole, loginAdmin, logoutAdmin } from "./actions";
 import { buildPageMetadata } from "@/lib/seo";
+import { isSanityConfigured } from "@/sanity/env";
 
 type AdminPageProps = {
   searchParams: Promise<{ next?: string; error?: string; success?: string }>;
@@ -24,6 +25,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const nextPath = next?.startsWith("/") ? next : "/studio";
   const actor = await getAdminActor();
   const authConfigured = isGoogleAuthConfigured();
+  const sanityConfigured = isSanityConfigured();
   const canAccessStudio = actor ? roleHasPermission(actor.role, "studio.access") : false;
   const canManageRoles = actor ? roleHasPermission(actor.role, "admin.roles.manage") : false;
 
@@ -32,6 +34,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       ? "Please sign in first."
       : error === "unauthorized"
         ? "Your account is signed in but does not have access yet."
+      : error === "auth-not-configured"
+        ? "Google auth is not configured yet. Add AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET."
       : error === "missing-role-email"
         ? "Email is required to assign a role."
       : error === "invalid-role"
@@ -62,6 +66,24 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 Auth.js provider is not configured. Set AUTH_SECRET, AUTH_GOOGLE_ID, and AUTH_GOOGLE_SECRET.
               </p>
             ) : null}
+
+            {!sanityConfigured ? (
+              <p className="text-sm font-semibold text-[#a33f35]">
+                Sanity is not configured. Set NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET.
+              </p>
+            ) : null}
+
+            <div className="rounded-xl border border-(--line) bg-(--bg-cream) p-4 text-sm text-(--muted)">
+              <p>
+                Auth status: <span className="font-bold text-(--ink)">{authConfigured ? "configured" : "missing"}</span>
+              </p>
+              <p>
+                Sanity status: <span className="font-bold text-(--ink)">{sanityConfigured ? "configured" : "missing"}</span>
+              </p>
+              <p>
+                Owner emails configured: <span className="font-bold text-(--ink)">{process.env.ADMIN_OWNER_EMAILS?.trim() ? "yes" : "no"}</span>
+              </p>
+            </div>
 
             {!actor ? (
               <form action={loginAdmin} className="grid gap-3">

@@ -6,6 +6,7 @@ import { Header } from "../../components/landing/Header";
 import { blogPosts } from "../../components/landing/data";
 import {
   getAllJournalPostsFromSanity,
+  getJournalPageContentFromSanity,
   getJournalPostBySlugFromSanity,
 } from "@/sanity/lib/queries";
 import { buildPageMetadata } from "@/lib/seo";
@@ -73,6 +74,7 @@ export async function generateMetadata({ params }: JournalPostPageProps): Promis
 
 export default async function JournalPostPage({ params }: JournalPostPageProps) {
   const { slug } = await params;
+  const pageContent = await getJournalPageContentFromSanity();
   const sanityPost = await getJournalPostBySlugFromSanity(slug);
   const post = sanityPost || fallbackPostBySlug(slug);
 
@@ -105,7 +107,10 @@ export default async function JournalPostPage({ params }: JournalPostPageProps) 
             {post.body.length > 0 ? (
               post.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
             ) : (
-              <p>Content for this post will appear here once published in Sanity Studio.</p>
+              <p>
+                {pageContent?.detailEmptyBodyMessage ||
+                  "Content for this post will appear here once published in Sanity Studio."}
+              </p>
             )}
           </div>
 
@@ -114,7 +119,7 @@ export default async function JournalPostPage({ params }: JournalPostPageProps) 
               href="/journal"
               className="brand-control rounded-full border border-[var(--ink)] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
             >
-              Back to journal
+              {pageContent?.detailBackLabel || "Back to journal"}
             </Link>
           </div>
         </article>

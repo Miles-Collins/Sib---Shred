@@ -75,6 +75,52 @@ Flow:
 
 If Sanity env values are missing, the public site still works with fallback content and Studio will show a configuration message instead of crashing.
 
+### Admin + Studio Setup Checklist
+
+Use this checklist to get the integrated dashboard working on `/admin` and `/studio`.
+
+1. Add these values to `.env.local`:
+
+```bash
+AUTH_SECRET="replace-with-a-long-random-string"
+AUTH_GOOGLE_ID="your-google-oauth-client-id"
+AUTH_GOOGLE_SECRET="your-google-oauth-client-secret"
+ADMIN_OWNER_EMAILS="you@example.com"
+
+NEXT_PUBLIC_SANITY_PROJECT_ID="your-sanity-project-id"
+NEXT_PUBLIC_SANITY_DATASET="production"
+NEXT_PUBLIC_SANITY_API_VERSION="2026-04-10"
+```
+
+2. In Google Cloud Console, add these redirect URIs to your OAuth client:
+
+```text
+http://localhost:3000/api/auth/callback/google
+https://your-production-domain/api/auth/callback/google
+```
+
+3. Run database migration and seed owner role (once per environment):
+
+```bash
+npm run prisma:migrate
+npm run prisma:seed
+```
+
+4. Start the app:
+
+```bash
+npm run dev
+```
+
+5. Open `/admin`:
+- Confirm Auth status = configured
+- Confirm Sanity status = configured
+- Sign in with a Google account listed in `ADMIN_OWNER_EMAILS`
+
+6. Open `/studio`:
+- If signed in with OWNER role, Studio should load inside the Next.js site.
+- If access is denied, assign your account an OWNER or STAFF role from `/admin` role management.
+
 ## Content Model Notes
 
 Sanity currently includes a `post` document type for journal content.
