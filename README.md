@@ -38,6 +38,10 @@ At minimum, make sure these are set in `.env.local`:
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION`
+
+Optional for server-side private/draft reads:
+
+- `SANITY_API_TOKEN` (server-only; never prefixed with NEXT_PUBLIC)
 - `AUTH_SECRET`
 - `AUTH_GOOGLE_ID`
 - `AUTH_GOOGLE_SECRET`

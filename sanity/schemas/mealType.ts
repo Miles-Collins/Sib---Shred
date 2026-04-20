@@ -1,0 +1,138 @@
+import { defineArrayMember, defineField, defineType } from "sanity";
+
+export const mealType = defineType({
+  name: "meal",
+  title: "Meal",
+  type: "document",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (rule) => rule.required().min(2).max(120),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: { source: "name", maxLength: 96 },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "subtitle",
+      title: "Subtitle",
+      type: "string",
+      validation: (rule) => rule.max(80),
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      rows: 4,
+      validation: (rule) => rule.required().max(500),
+    }),
+    defineField({
+      name: "allergens",
+      title: "Allergens",
+      type: "string",
+      initialValue: "None declared",
+    }),
+    defineField({
+      name: "facilityNote",
+      title: "Facility Note",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "dietaryTags",
+      title: "Dietary Tags",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+    }),
+    defineField({
+      name: "calories",
+      title: "Calories",
+      type: "number",
+      validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
+      name: "protein",
+      title: "Protein",
+      description: "Example: 44g",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "carbs",
+      title: "Carbs",
+      description: "Example: 48g",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "fat",
+      title: "Fat",
+      description: "Example: 22g",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "sodium",
+      title: "Sodium",
+      description: "Example: 510mg",
+      type: "string",
+    }),
+    defineField({
+      name: "ingredients",
+      title: "Ingredients",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+      validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: "isGlutenFree",
+      title: "Gluten Free",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "tag",
+      title: "Category Tag",
+      type: "string",
+      validation: (rule) => rule.required().max(60),
+    }),
+    defineField({
+      name: "price",
+      title: "Price",
+      description: "Example: $15.49",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      options: { hotspot: true },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "isFeatured",
+      title: "Featured Meal",
+      type: "boolean",
+      initialValue: true,
+    }),
+    defineField({
+      name: "isActive",
+      title: "Active",
+      type: "boolean",
+      initialValue: true,
+    }),
+  ],
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "tag",
+      media: "image",
+    },
+  },
+});
