@@ -2,7 +2,7 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
+import { getAuthSession } from "@/auth";
 import { getAdminRoleForEmail, roleHasPermission, type AdminPermission, type AdminRoleName } from "@/lib/admin-rbac";
 
 export type AdminActor = {
@@ -19,7 +19,7 @@ function toSafeNextPath(path: string | undefined) {
 }
 
 export async function getAdminActor(): Promise<AdminActor | null> {
-  const session = await auth();
+  const session = await getAuthSession();
   const email = session?.user?.email?.trim().toLowerCase();
 
   if (!email) {

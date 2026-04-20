@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import { getServerSession, type NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 
 import { getAdminRoleForEmail } from "@/lib/admin-rbac";
@@ -7,7 +7,7 @@ export function isGoogleAuthConfigured() {
   return Boolean(process.env.AUTH_GOOGLE_ID?.trim() && process.env.AUTH_GOOGLE_SECRET?.trim());
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
@@ -37,5 +37,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/admin",
   },
-  trustHost: true,
-});
+  secret: process.env.AUTH_SECRET,
+};
+
+export async function getAuthSession() {
+  return getServerSession(authOptions);
+}

@@ -3,18 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { signIn, signOut } from "@/auth";
 import { requireAdminPermission } from "@/lib/admin-access";
 import { isAdminRoleName, upsertAdminRole } from "@/lib/admin-rbac";
 
 export async function loginAdmin(formData: FormData) {
   const next = String(formData.get("next") || "/studio");
   const nextPath = next.startsWith("/") ? next : "/studio";
-  await signIn("google", { redirectTo: nextPath });
+  redirect(`/api/auth/signin/google?callbackUrl=${encodeURIComponent(nextPath)}`);
 }
 
 export async function logoutAdmin() {
-  await signOut({ redirectTo: "/admin" });
+  redirect("/api/auth/signout?callbackUrl=%2Fadmin");
 }
 
 export async function assignAdminRole(formData: FormData) {
