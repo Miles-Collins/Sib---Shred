@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { NextStudio } from "next-sanity/studio";
 
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { requireAdminPermission } from "@/lib/admin-access";
 import { isSanityConfigured } from "@/sanity/env";
 import config from "@/sanity.config";
 import { buildPageMetadata } from "@/lib/seo";
@@ -22,13 +21,7 @@ type StudioPageProps = {
 
 export default async function StudioPage({ searchParams }: StudioPageProps) {
   const params = await searchParams;
-  const isAuthed = await isAdminAuthenticated();
-
-  if (!isAuthed) {
-    const query = new URLSearchParams();
-    query.set("next", "/studio");
-    redirect(`/admin?${query.toString()}`);
-  }
+  await requireAdminPermission("studio.access", "/studio");
 
   if (!isSanityConfigured()) {
     return (

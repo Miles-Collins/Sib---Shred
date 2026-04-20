@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { isGoogleAuthConfigured } from "@/auth";
 import { Header } from "../components/landing/Header";
-import { loginAdmin } from "./actions";
+import { getAdminActor } from "@/lib/admin-access";
+import { roleHasPermission } from "@/lib/admin-rbac";
+import { assignAdminRole, loginAdmin, logoutAdmin } from "./actions";
 import { buildPageMetadata } from "@/lib/seo";
 
 type AdminPageProps = {
-  searchParams: Promise<{ next?: string; error?: string; retryAfter?: string }>;
+  searchParams: Promise<{ next?: string; error?: string; success?: string }>;
 };
 
 export const metadata: Metadata = buildPageMetadata({
@@ -17,23 +20,25 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
-  const { next, error, retryAfter } = await searchParams;
+  const { next, error, success } = await searchParams;
   const nextPath = next?.startsWith("/") ? next : "/studio";
-  const retryAfterSeconds = Number.parseInt(retryAfter ?? "", 10);
-  const retryAfterMessage = Number.isFinite(retryAfterSeconds)
-    ? `Please wait about ${Math.max(1, retryAfterSeconds)} seconds before trying again.`
-    : "Please wait a few minutes before trying again.";
+  const actor = await getAdminActor();
+  const authConfigured = isGoogleAuthConfigured();
+  const canAccessStudio = actor ? roleHasPermission(actor.role, "studio.access") : false;
+  const canManageRoles = actor ? roleHasPermission(actor.role, "admin.roles.manage") : false;
 
   const errorMessage =
-    error === "missing-passcode"
-      ? "ADMIN_PASSCODE is not configured yet."
-      : error === "missing-session-secret"
-        ? "Admin session signing keys are not configured yet (ADMIN_SESSION_SECRET or ADMIN_SESSION_KEYS)."
-        : error === "too-many-attempts"
-          ? `Too many login attempts. ${retryAfterMessage}`
-      : error === "invalid-passcode"
-        ? "Incorrect passcode."
+    error === "auth-required"
+      ? "Please sign in first."
+      : error === "unauthorized"
+        ? "Your account is signed in but does not have access yet."
+      : error === "missing-role-email"
+        ? "Email is required to assign a role."
+      : error === "invalid-role"
+        ? "Role must be OWNER, STAFF, or VIEWER."
         : "";
+
+  const successMessage = success === "role-updated" ? "Role updated." : "";
 
   return (
     <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
@@ -48,40 +53,97 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             Sanity Studio Access
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-(--muted) sm:text-base">
-            This page is private. Enter your passcode to manage content in the Sanity admin area.
+            Sign in with your approved account to access private admin tools.
           </p>
 
-          <form action={loginAdmin} className="mt-8 grid gap-4 rounded-2xl border border-(--line) bg-white p-5 sm:p-6">
-            <input type="hidden" name="next" value={nextPath} />
-            <label className="grid gap-2">
-              <span className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">
-                Passcode
-              </span>
-              <input
-                name="passcode"
-                type="password"
-                required
-                autoComplete="current-password"
-                className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) placeholder:text-(--muted) focus:ring-2"
-                placeholder="Enter admin passcode"
-              />
-            </label>
-
-            <button
-              type="submit"
-              className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white"
-            >
-              Enter Studio
-            </button>
-
-            <p className="text-xs text-(--muted)">
-              Need setup help? Add your Sanity and admin environment variables first.
-            </p>
-
-            {errorMessage ? (
-              <p className="text-sm font-semibold text-[#a33f35]">{errorMessage}</p>
+          <section className="mt-8 grid gap-4 rounded-2xl border border-(--line) bg-white p-5 sm:p-6">
+            {!authConfigured ? (
+              <p className="text-sm font-semibold text-[#a33f35]">
+                Auth.js provider is not configured. Set AUTH_SECRET, AUTH_GOOGLE_ID, and AUTH_GOOGLE_SECRET.
+              </p>
             ) : null}
-          </form>
+
+            {!actor ? (
+              <form action={loginAdmin} className="grid gap-3">
+                <input type="hidden" name="next" value={nextPath} />
+                <button
+                  type="submit"
+                  disabled={!authConfigured}
+                  className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white disabled:opacity-50"
+                >
+                  Sign in with Google
+                </button>
+              </form>
+            ) : (
+              <div className="grid gap-3">
+                <p className="text-sm text-(--muted)">
+                  Signed in as <span className="font-bold text-(--ink)">{actor.email}</span>
+                </p>
+                <p className="text-sm text-(--muted)">
+                  Role: <span className="font-bold text-(--ink)">{actor.role}</span>
+                </p>
+
+                {canAccessStudio ? (
+                  <Link
+                    href="/studio"
+                    className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white"
+                  >
+                    Enter Studio
+                  </Link>
+                ) : (
+                  <p className="text-sm font-semibold text-[#a33f35]">
+                    Your role does not currently include Studio access.
+                  </p>
+                )}
+
+                <form action={logoutAdmin}>
+                  <button
+                    type="submit"
+                    className="brand-control inline-flex w-full items-center justify-center rounded-full border border-(--line) px-5 py-3 text-sm font-bold uppercase tracking-widest"
+                  >
+                    Sign out
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {canManageRoles ? (
+              <form action={assignAdminRole} className="mt-2 grid gap-3 rounded-xl border border-(--line) bg-(--bg-cream) p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">Role management (Owner)</p>
+                <label className="grid gap-1">
+                  <span className="text-xs font-semibold text-(--muted)">Email</span>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2"
+                    placeholder="staff@example.com"
+                  />
+                </label>
+                <label className="grid gap-1">
+                  <span className="text-xs font-semibold text-(--muted)">Role</span>
+                  <select
+                    name="role"
+                    defaultValue="VIEWER"
+                    className="brand-control rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2"
+                  >
+                    <option value="OWNER">OWNER</option>
+                    <option value="STAFF">STAFF</option>
+                    <option value="VIEWER">VIEWER</option>
+                  </select>
+                </label>
+                <button
+                  type="submit"
+                  className="brand-control inline-flex items-center justify-center rounded-full border border-(--ink) px-5 py-2 text-xs font-bold uppercase tracking-[0.08em]"
+                >
+                  Save role
+                </button>
+              </form>
+            ) : null}
+
+            {errorMessage ? <p className="text-sm font-semibold text-[#a33f35]">{errorMessage}</p> : null}
+            {successMessage ? <p className="text-sm font-semibold text-[#216a4a]">{successMessage}</p> : null}
+          </section>
 
           <div className="mt-6 flex flex-wrap gap-3">
             <Link

@@ -24,6 +24,12 @@ enum PaymentStatus {
   canceled
 }
 
+enum AdminRole {
+  OWNER
+  STAFF
+  VIEWER
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -121,4 +127,12 @@ model OrderItem {
 
   @@unique([orderId, mealId])
   @@index([mealId])
+}
+
+model AdminUserRole {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  role      AdminRole @default(VIEWER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }

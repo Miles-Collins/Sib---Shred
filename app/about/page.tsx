@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { Header } from "../components/landing/Header";
 import { buildPageMetadata } from "@/lib/seo";
+import { getAboutPageContentFromSanity } from "@/sanity/lib/queries";
 
 const signatureFont = Caveat({
   subsets: ["latin"],
@@ -18,7 +19,37 @@ export const metadata: Metadata = buildPageMetadata({
   path: "/about",
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const aboutContent = await getAboutPageContentFromSanity();
+  const portraitImageSrc = aboutContent?.portraitImageUrl || "/alysha-portrait.png";
+
+  const defaultHowItWorks = [
+    "Pick your meals from the weekly menu",
+    "Alysha preps, portions, and packages everything fresh",
+    "You heat, eat, and get your time back",
+  ];
+
+  const renderedHowItWorks = aboutContent?.howItWorksSteps.length
+    ? aboutContent.howItWorksSteps
+    : defaultHowItWorks;
+
+  const defaultPillars = [
+    {
+      label: "Kitchen style",
+      text: "Small-batch cooking with a focus on consistency and freshness.",
+    },
+    {
+      label: "Voice",
+      text: "Direct, personal, and built around a one-person relationship.",
+    },
+    {
+      label: "Experience",
+      text: "Simple ordering, clear labels, and meals that are ready when you need them.",
+    },
+  ];
+
+  const renderedPillars = aboutContent?.pillars.length ? aboutContent.pillars : defaultPillars;
+
   return (
     <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
@@ -29,7 +60,7 @@ export default function AboutPage() {
             <div className="relative">
               <div className="overflow-hidden rounded-[0.15rem] bg-white shadow-[0_18px_42px_rgba(16,27,23,0.12)]">
                 <Image
-                  src="/alysha-portrait.png"
+                  src={portraitImageSrc}
                   alt="Portrait of Alysha"
                   width={940}
                   height={1040}
@@ -47,28 +78,22 @@ export default function AboutPage() {
 
             <article className="relative border-t-2 border-[#adb3aa] bg-[#f1f2ef] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-14 lg:max-w-2xl lg:p-10">
               <p className="text-[12px] font-bold tracking-[0.24em] text-[#4f5551] uppercase">
-                It&apos;s nice to meet you.
+                {aboutContent?.introKicker || "It's nice to meet you."}
                 <span className={`${signatureFont.className} ml-2 text-[2.15rem] normal-case tracking-normal text-[#c59385]`}>
                   I&apos;m Alysha.
                 </span>
               </p>
 
               <h1 className="mt-5 text-[2rem] leading-[1.2] font-semibold text-[#323734] sm:text-[2.35rem]">
-                I help people <span className="font-black">eat with less stress</span> with blunt
-                honesty, clear portions, and practical weekly prep.
+                {aboutContent?.introHeadline || "I help people eat with less stress with blunt honesty, clear portions, and practical weekly prep."}
               </h1>
 
               <p className="mt-5 text-[1rem] leading-[1.8] text-[#4f5551]">
-                Sib Method started as a way to make healthy eating feel realistic,
-                even on packed weeks. Instead of another generic subscription experience,
-                I built something personal: I cook, portion, and package each meal myself
-                so the quality stays consistent from the first order to the final bite.
+                {aboutContent?.introBody1 || "Sib Method started as a way to make healthy eating feel realistic, even on packed weeks. Instead of another generic subscription experience, I built something personal: I cook, portion, and package each meal myself so the quality stays consistent from the first order to the final bite."}
               </p>
 
               <p className="mt-4 text-[1rem] leading-[1.8] text-[#4f5551]">
-                My goal is simple: make your week easier without sacrificing flavor or
-                nutrition. Fewer last-minute food decisions, less prep fatigue, and meals
-                you actually look forward to opening.
+                {aboutContent?.introBody2 || "My goal is simple: make your week easier without sacrificing flavor or nutrition. Fewer last-minute food decisions, less prep fatigue, and meals you actually look forward to opening."}
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -94,28 +119,24 @@ export default function AboutPage() {
 
           <h2 className="brand-section-title mt-3 text-3xl sm:text-4xl">Who I Am</h2>
           <p className="mt-4 max-w-4xl text-sm leading-relaxed text-(--muted) sm:text-base">
-            My name is Alysha. I am a passionate cook, advocate for wellness, and an official nutrition coach of the National Academy of Sports Medicine. Having spent the last fifteen years exploring how nutrition works for the body, starting from my years as an athlete practicing hockey, gymnastics, and living an extremely busy life. It all started out as something needed but later turned into something I loved doing, which is preparing meals that not only taste great but also nourish one's body.
+            {aboutContent?.whoAmIBody || "My name is Alysha. I am a passionate cook, advocate for wellness, and an official nutrition coach of the National Academy of Sports Medicine. Having spent the last fifteen years exploring how nutrition works for the body, starting from my years as an athlete practicing hockey, gymnastics, and living an extremely busy life. It all started out as something needed but later turned into something I loved doing, which is preparing meals that not only taste great but also nourish one's body."}
           </p>
 
           <h2 className="brand-section-title mt-8 text-3xl sm:text-4xl">Why Did I Start?</h2>
           <p className="mt-4 max-w-4xl text-sm leading-relaxed text-(--muted) sm:text-base">
-            The business has been established based on my understanding of the difficulties associated with healthy nutrition. There are always too many conflicting pieces of advice, too complicated lives, and too big ambitions. The point is to make this journey easier. My intention is to get rid of the guessing when it comes to eating healthy by providing people with delicious food that is going to help them feel great.
+            {aboutContent?.whyStartBody || "The business has been established based on my understanding of the difficulties associated with healthy nutrition. There are always too many conflicting pieces of advice, too complicated lives, and too big ambitions. The point is to make this journey easier. My intention is to get rid of the guessing when it comes to eating healthy by providing people with delicious food that is going to help them feel great."}
           </p>
 
           <h2 className="brand-section-title mt-8 text-3xl sm:text-4xl">Who Is This For?</h2>
           <p className="mt-4 max-w-4xl text-sm leading-relaxed text-(--muted) sm:text-base">
-            The service will be perfect for everyone who cares about their health but does not have enough time or knowledge to take good care of themselves. If your purpose is to gain muscles, burn fat, remain consistent, or simply improve your eating habits without stressing yourself, this is for you.
+            {aboutContent?.whoForBody || "The service will be perfect for everyone who cares about their health but does not have enough time or knowledge to take good care of themselves. If your purpose is to gain muscles, burn fat, remain consistent, or simply improve your eating habits without stressing yourself, this is for you."}
           </p>
         </section>
 
         <section className="brand-panel p-6 sm:p-8">
           <p className="brand-kicker text-(--muted)">How it works</p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
-            {[
-              "Pick your meals from the weekly menu",
-              "Alysha preps, portions, and packages everything fresh",
-              "You heat, eat, and get your time back",
-            ].map((item, index) => (
+            {renderedHowItWorks.map((item, index) => (
               <div
                 key={item}
                 className="rounded-2xl border border-(--line) bg-white p-5"
@@ -128,20 +149,7 @@ export default function AboutPage() {
         </section>
 
         <section className="brand-shell grid gap-4 p-6 sm:p-8 md:grid-cols-3">
-          {[
-            {
-              label: "Kitchen style",
-              text: "Small-batch cooking with a focus on consistency and freshness.",
-            },
-            {
-              label: "Voice",
-              text: "Direct, personal, and built around a one-person relationship.",
-            },
-            {
-              label: "Experience",
-              text: "Simple ordering, clear labels, and meals that are ready when you need them.",
-            },
-          ].map((item) => (
+          {renderedPillars.map((item) => (
             <article key={item.label} className="rounded-2xl border border-(--line) bg-white p-5">
               <p className="brand-kicker text-(--muted)">{item.label}</p>
               <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
@@ -156,14 +164,14 @@ export default function AboutPage() {
                 Get in touch
               </p>
               <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
-                Want to talk about an order or a custom plan?
+                {aboutContent?.contactHeadline || "Want to talk about an order or a custom plan?"}
               </h2>
             </div>
             <Link
               href="/checkout"
               className="brand-control rounded-full bg-(--ink) px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-white"
             >
-              Start an order
+              {aboutContent?.contactButtonLabel || "Start an order"}
             </Link>
           </div>
         </section>

@@ -15,6 +15,13 @@ function priceToCents(price: string) {
   return Math.round(Number.parseFloat(price.replace(/[^0-9.]/g, "")) * 100);
 }
 
+function ownerEmailsFromEnv() {
+  return (process.env.ADMIN_OWNER_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 async function main() {
   for (const plan of plans) {
     await prisma.plan.upsert({
@@ -82,7 +89,19 @@ async function main() {
     });
   }
 
-  console.log(`Seeded ${plans.length} plans and ${featuredMeals.length} meals.`);
+  const ownerEmails = ownerEmailsFromEnv();
+  for (const email of ownerEmails) {
+    await prisma.adminUserRole.upsert({
+      where: { email },
+      update: { role: "OWNER" },
+      create: {
+        email,
+        role: "OWNER",
+      },
+    });
+  }
+
+  console.log(`Seeded ${plans.length} plans, ${featuredMeals.length} meals, and ${ownerEmails.length} owner roles.`);
 }
 
 main()

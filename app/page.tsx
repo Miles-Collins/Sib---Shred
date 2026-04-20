@@ -11,7 +11,7 @@ import {
   plans,
   testimonials,
 } from "./components/landing/data";
-import { getHomepagePostsFromSanity } from "@/sanity/lib/queries";
+import { getHomePageContentFromSanity, getHomepagePostsFromSanity } from "@/sanity/lib/queries";
 import { getMealCatalog } from "@/lib/meal-catalog";
 import { buildPageMetadata, siteUrl } from "@/lib/seo";
 
@@ -42,7 +42,7 @@ function slugify(input: string) {
 
 export default async function Home() {
   const mealCatalog = await getMealCatalog();
-  const categoryHighlights = [
+  const defaultCategoryHighlights = [
     {
       title: "Under 500",
       text: "High flavor meals dialed in for lighter days.",
@@ -61,7 +61,7 @@ export default async function Home() {
     },
   ];
 
-  const valueBlocks = [
+  const defaultValueBlocks = [
     {
       title: "Free Nutrition Guidance",
       text: "Get practical guidance directly from me when you need help dialing in your plan.",
@@ -79,6 +79,52 @@ export default async function Home() {
       text: "Questions about plans, delivery, or ingredients? I make ordering personal and easy.",
     },
   ];
+
+  const defaultKitchenCards = [
+    {
+      label: "Small batch",
+      text: "Cooked in limited runs for consistency and freshness.",
+    },
+    {
+      label: "Real support",
+      text: "Questions go directly to Alysha, not a ticket queue.",
+    },
+  ];
+
+  const defaultMealPrepSteps = [
+    {
+      title: "Pick your meals",
+      text: "Choose from chef-prepared weekly drops that fit your goals.",
+    },
+    {
+      title: "I cook fresh",
+      text: "Meals are made locally in small batches for freshness.",
+    },
+    {
+      title: "I deliver",
+      text: "Convenient drop-offs to home or office on your schedule.",
+    },
+    {
+      title: "Heat & repeat",
+      text: "Ready in minutes so healthy eating stays effortless.",
+    },
+  ];
+
+  const homeContent = await getHomePageContentFromSanity();
+  const categoryHighlights = homeContent?.categoryHighlights.length
+    ? homeContent.categoryHighlights
+    : defaultCategoryHighlights;
+  const valueBlocks = homeContent?.valueBlocks.length
+    ? homeContent.valueBlocks
+    : defaultValueBlocks;
+  const kitchenCards = homeContent?.kitchenCards.length
+    ? homeContent.kitchenCards
+    : defaultKitchenCards;
+  const mealPrepSteps = homeContent?.mealPrepSteps.length
+    ? homeContent.mealPrepSteps
+    : defaultMealPrepSteps;
+  const renderedGoals = homeContent?.goals.length ? homeContent.goals : goals;
+  const renderedTestimonials = homeContent?.testimonials.length ? homeContent.testimonials : testimonials;
 
   const sanityPosts = await getHomepagePostsFromSanity();
   const renderedBlogPosts =
@@ -122,13 +168,13 @@ export default async function Home() {
         <section className="motion-reveal brand-panel-strong px-6 py-5 text-white sm:px-9">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="brand-section-title text-2xl sm:text-3xl">
-              Trusted by people who want great meals without the daily prep.
+              {homeContent?.trustedHeadline || "Trusted by people who want great meals without the daily prep."}
             </h2>
             <a
               href="#reviews"
               className="brand-control w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-(--ink)"
             >
-              View Reviews
+              {homeContent?.trustedCtaLabel || "View Reviews"}
             </a>
           </div>
         </section>
@@ -136,27 +182,16 @@ export default async function Home() {
         <section className="motion-reveal texture-dots overflow-hidden rounded-3xl border border-(--line) p-6 sm:p-8">
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="brand-kicker text-(--muted)">Alysha&apos;s kitchen standard</p>
+              <p className="brand-kicker text-(--muted)">{homeContent?.kitchenKicker || "Alysha's kitchen standard"}</p>
               <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-                Refined meal prep should feel personal, not mass-produced.
+                {homeContent?.kitchenHeadline || "Refined meal prep should feel personal, not mass-produced."}
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-(--muted) sm:text-base">
-                Every menu drop is intentionally small-batch. The recipes, packaging,
-                and final quality check are handled by Alysha so each delivery feels
-                like a thoughtful weekly reset, not a generic subscription box.
+                {homeContent?.kitchenDescription || "Every menu drop is intentionally small-batch. The recipes, packaging, and final quality check are handled by Alysha so each delivery feels like a thoughtful weekly reset, not a generic subscription box."}
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              {[
-                {
-                  label: "Small batch",
-                  text: "Cooked in limited runs for consistency and freshness.",
-                },
-                {
-                  label: "Real support",
-                  text: "Questions go directly to Alysha, not a ticket queue.",
-                },
-              ].map((item) => (
+              {kitchenCards.map((item) => (
                 <article key={item.label} className="rounded-2xl border border-(--line) bg-white p-5">
                   <p className="brand-kicker text-(--berry)">{item.label}</p>
                   <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
@@ -224,24 +259,7 @@ export default async function Home() {
             Meal prep made easy
           </p>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {[
-              {
-                title: "Pick your meals",
-                text: "Choose from chef-prepared weekly drops that fit your goals.",
-              },
-              {
-                title: "I cook fresh",
-                text: "Meals are made locally in small batches for freshness.",
-              },
-              {
-                title: "I deliver",
-                text: "Convenient drop-offs to home or office on your schedule.",
-              },
-              {
-                title: "Heat & repeat",
-                text: "Ready in minutes so healthy eating stays effortless.",
-              },
-            ].map((step, index) => (
+            {mealPrepSteps.map((step, index) => (
               <article
                 key={step.title}
                 className={`motion-lift motion-stagger brand-panel p-5 stagger-delay-${index}`}
@@ -264,16 +282,14 @@ export default async function Home() {
               Why it stands out
             </p>
             <h2 className="brand-section-title mt-2 text-3xl sm:text-4xl">
-              The convenience of big meal kits, with one-on-one kitchen quality.
+              {homeContent?.whyHeadline || "The convenience of big meal kits, with one-on-one kitchen quality."}
             </h2>
             <p className="mt-4 max-w-xl text-(--muted)">
-              Enjoy elevated flavors, clean ingredients, and delivery that respects
-              your week. It is a smarter way to eat well without spending nights
-              shopping, prepping, and cleaning.
+              {homeContent?.whyDescription || "Enjoy elevated flavors, clean ingredients, and delivery that respects your week. It is a smarter way to eat well without spending nights shopping, prepping, and cleaning."}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2">
-            {goals.map((goal) => (
+            {renderedGoals.map((goal) => (
               <div
                 key={goal}
                 className="motion-badge brand-badge brand-badge--charcoal rounded-[0.35rem] px-3 py-4 text-center text-sm"
@@ -403,7 +419,7 @@ export default async function Home() {
             Customers staying on track, week after week.
           </h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {testimonials.map((quote) => (
+            {renderedTestimonials.map((quote) => (
               <blockquote
                 key={quote}
                 className="rounded-2xl bg-(--bg-cream) p-5 text-sm leading-relaxed"
@@ -459,17 +475,17 @@ export default async function Home() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
-                Start today
+                {homeContent?.startCtaKicker || "Start today"}
               </p>
               <h2 className="mt-2 text-3xl leading-tight font-black tracking-tight sm:text-5xl">
-                Ready to skip grocery lines this week?
+                {homeContent?.startCtaHeadline || "Ready to skip grocery lines this week?"}
               </h2>
             </div>
             <Link
               href="/checkout"
               className="rounded-full bg-(--ink) px-8 py-4 text-sm font-bold uppercase tracking-widest text-white"
             >
-              Build My First Box
+              {homeContent?.startCtaButtonLabel || "Build My First Box"}
             </Link>
           </div>
         </section>

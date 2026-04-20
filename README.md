@@ -38,14 +38,10 @@ At minimum, make sure these are set in `.env.local`:
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION`
-- `ADMIN_PASSCODE`
-- `REDIS_URL`
-- `ADMIN_SESSION_SECRET` (single signing key)
-
-Optional key rotation variables:
-
-- `ADMIN_SESSION_KEYS` (comma-separated `keyId:secret` pairs)
-- `ADMIN_ACTIVE_SESSION_KEY_ID` (which key ID signs new sessions)
+- `AUTH_SECRET`
+- `AUTH_GOOGLE_ID`
+- `AUTH_GOOGLE_SECRET`
+- `ADMIN_OWNER_EMAILS` (comma-separated owner emails)
 
 If you are using database-backed menu/catalog features, also configure:
 
@@ -70,7 +66,7 @@ Flow:
 
 1. Run the app with `npm run dev`
 2. Visit `/admin`
-3. Enter your `ADMIN_PASSCODE`
+3. Sign in with your Auth.js provider account
 4. You will be redirected to `/studio`
 
 If Sanity env values are missing, the public site still works with fallback content and Studio will show a configuration message instead of crashing.
