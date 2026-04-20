@@ -28,7 +28,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     error === "missing-passcode"
       ? "ADMIN_PASSCODE is not configured yet."
       : error === "missing-session-secret"
-        ? "ADMIN_SESSION_SECRET is not configured yet."
+        ? "Admin session signing keys are not configured yet (ADMIN_SESSION_SECRET or ADMIN_SESSION_KEYS)."
         : error === "too-many-attempts"
           ? `Too many login attempts. ${retryAfterMessage}`
       : error === "invalid-passcode"

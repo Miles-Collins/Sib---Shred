@@ -39,7 +39,13 @@ At minimum, make sure these are set in `.env.local`:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION`
 - `ADMIN_PASSCODE`
-- `ADMIN_SESSION_SECRET`
+- `REDIS_URL`
+- `ADMIN_SESSION_SECRET` (single signing key)
+
+Optional key rotation variables:
+
+- `ADMIN_SESSION_KEYS` (comma-separated `keyId:secret` pairs)
+- `ADMIN_ACTIVE_SESSION_KEY_ID` (which key ID signs new sessions)
 
 If you are using database-backed menu/catalog features, also configure:
 

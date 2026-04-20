@@ -9,20 +9,13 @@ import {
   canIssueAdminSession,
   createAdminSessionToken,
   getAdminPasscode,
+  revokeAdminSessionToken,
 } from "@/lib/admin-auth";
-
-type LoginAttemptState = {
-  count: number;
-  windowStartMs: number;
-  blockedUntilMs: number;
-};
-
-const LOGIN_WINDOW_MS = 15 * 60 * 1000;
-const MAX_FAILED_ATTEMPTS = 6;
-const BLOCK_DURATION_MS = 15 * 60 * 1000;
-const BASE_DELAY_MS = 300;
-const MAX_DELAY_MS = 10_000;
-const FAILED_LOGIN_BY_IP = new Map<string, LoginAttemptState>();
+import {
+  clearFailedAdminLoginAttempts,
+  getAdminLoginThrottleState,
+  recordFailedAdminLoginAttempt,
+} from "@/lib/admin-security-store";
 
 function getClientIp(headersList: Headers) {
   const forwardedFor = headersList.get("x-forwarded-for");
@@ -41,50 +34,12 @@ function getClientIp(headersList: Headers) {
   return "unknown";
 }
 
-function getAttemptState(ip: string, nowMs: number) {
-  const existing = FAILED_LOGIN_BY_IP.get(ip);
-
-  if (!existing || nowMs - existing.windowStartMs > LOGIN_WINDOW_MS) {
-    const reset: LoginAttemptState = {
-      count: 0,
-      windowStartMs: nowMs,
-      blockedUntilMs: 0,
-    };
-    FAILED_LOGIN_BY_IP.set(ip, reset);
-    return reset;
-  }
-
-  return existing;
-}
-
-function getDelayMsForAttemptCount(attemptCount: number) {
-  const overLimit = Math.max(0, attemptCount - 1);
-  const delay = BASE_DELAY_MS * 2 ** overLimit;
-  return Math.min(MAX_DELAY_MS, delay);
-}
-
 async function sleepMs(delayMs: number) {
   if (delayMs <= 0) {
     return;
   }
 
   await new Promise((resolve) => setTimeout(resolve, delayMs));
-}
-
-function pruneRateLimitMap(nowMs: number) {
-  if (FAILED_LOGIN_BY_IP.size < 1000) {
-    return;
-  }
-
-  for (const [key, state] of FAILED_LOGIN_BY_IP.entries()) {
-    if (state.blockedUntilMs > nowMs) {
-      continue;
-    }
-
-    if (nowMs - state.windowStartMs > LOGIN_WINDOW_MS * 2) {
-      FAILED_LOGIN_BY_IP.delete(key);
-    }
-  }
 }
 
 export async function loginAdmin(formData: FormData) {
@@ -94,16 +49,12 @@ export async function loginAdmin(formData: FormData) {
   const nextPath = next.startsWith("/") ? next : "/studio";
   const requestHeaders = await headers();
   const clientIp = getClientIp(requestHeaders);
-  const nowMs = Date.now();
-  pruneRateLimitMap(nowMs);
 
-  const state = getAttemptState(clientIp, nowMs);
-  if (state.blockedUntilMs > nowMs) {
-    const retryAfterMs = state.blockedUntilMs - nowMs;
-    const retryAfterSeconds = Math.ceil(retryAfterMs / 1000);
-    console.warn(`[admin-auth] blocked login attempt from ${clientIp}, retryAfter=${retryAfterSeconds}s`);
+  const throttle = await getAdminLoginThrottleState(clientIp);
+  if (throttle.blocked) {
+    console.warn(`[admin-auth] blocked login attempt from ${clientIp}, retryAfter=${throttle.retryAfterSeconds}s`);
     redirect(
-      `/admin?error=too-many-attempts&retryAfter=${encodeURIComponent(String(retryAfterSeconds))}&next=${encodeURIComponent(nextPath)}`,
+      `/admin?error=too-many-attempts&retryAfter=${encodeURIComponent(String(throttle.retryAfterSeconds))}&next=${encodeURIComponent(nextPath)}`,
     );
   }
 
@@ -116,21 +67,18 @@ export async function loginAdmin(formData: FormData) {
   }
 
   if (passcode !== configuredPasscode) {
-    state.count += 1;
-    if (state.count >= MAX_FAILED_ATTEMPTS) {
-      state.blockedUntilMs = nowMs + BLOCK_DURATION_MS;
-      FAILED_LOGIN_BY_IP.set(clientIp, state);
-      console.warn(`[admin-auth] too many failed login attempts from ${clientIp}; blocked for ${Math.ceil(BLOCK_DURATION_MS / 1000)}s`);
-      redirect(`/admin?error=too-many-attempts&retryAfter=${encodeURIComponent(String(Math.ceil(BLOCK_DURATION_MS / 1000)))}&next=${encodeURIComponent(nextPath)}`);
+    const failure = await recordFailedAdminLoginAttempt(clientIp);
+    if (failure.blocked) {
+      console.warn(`[admin-auth] too many failed login attempts from ${clientIp}; blocked for ${failure.retryAfterSeconds}s`);
+      redirect(`/admin?error=too-many-attempts&retryAfter=${encodeURIComponent(String(failure.retryAfterSeconds))}&next=${encodeURIComponent(nextPath)}`);
     }
 
-    FAILED_LOGIN_BY_IP.set(clientIp, state);
-    await sleepMs(getDelayMsForAttemptCount(state.count));
-    console.warn(`[admin-auth] invalid passcode attempt from ${clientIp}; attempt=${state.count}`);
+    await sleepMs(failure.delayMs);
+    console.warn(`[admin-auth] invalid passcode attempt from ${clientIp}; attempt=${failure.attemptCount}`);
     redirect(`/admin?error=invalid-passcode&next=${encodeURIComponent(nextPath)}`);
   }
 
-  FAILED_LOGIN_BY_IP.delete(clientIp);
+  await clearFailedAdminLoginAttempts(clientIp);
 
   const token = createAdminSessionToken();
   if (!token) {
@@ -151,6 +99,12 @@ export async function loginAdmin(formData: FormData) {
 
 export async function logoutAdmin() {
   const cookieStore = await cookies();
+  const token = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
+
+  if (token) {
+    await revokeAdminSessionToken(token);
+  }
+
   cookieStore.delete(ADMIN_COOKIE_NAME);
   redirect("/admin");
 }

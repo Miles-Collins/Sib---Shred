@@ -56,8 +56,10 @@ export function validateRuntimeEnv() {
 
   const databaseUrl = process.env.DATABASE_URL;
   const directUrl = process.env.DIRECT_URL;
+  const redisUrl = process.env.REDIS_URL;
   const adminPasscode = process.env.ADMIN_PASSCODE;
   const adminSessionSecret = process.env.ADMIN_SESSION_SECRET;
+  const adminSessionKeys = process.env.ADMIN_SESSION_KEYS;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const sanityApiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION;
 
@@ -77,8 +79,12 @@ export function validateRuntimeEnv() {
     errors.push("ADMIN_PASSCODE is required in production.");
   }
 
-  if (isProd && !isProductionBuildPhase && isBlank(adminSessionSecret)) {
-    errors.push("ADMIN_SESSION_SECRET is required in production.");
+  if (isProd && !isProductionBuildPhase && isBlank(redisUrl)) {
+    errors.push("REDIS_URL is required in production for distributed admin security controls.");
+  }
+
+  if (isProd && !isProductionBuildPhase && isBlank(adminSessionSecret) && isBlank(adminSessionKeys)) {
+    errors.push("Set ADMIN_SESSION_SECRET or ADMIN_SESSION_KEYS in production.");
   }
 
   if (!isBlank(siteUrl)) {
