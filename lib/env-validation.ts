@@ -56,10 +56,6 @@ export function validateRuntimeEnv() {
 
   const databaseUrl = process.env.DATABASE_URL;
   const directUrl = process.env.DIRECT_URL;
-  const authSecret = process.env.AUTH_SECRET;
-  const googleClientId = process.env.AUTH_GOOGLE_ID;
-  const googleClientSecret = process.env.AUTH_GOOGLE_SECRET;
-  const adminOwnerEmails = process.env.ADMIN_OWNER_EMAILS;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const sanityApiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION;
 
@@ -73,22 +69,6 @@ export function validateRuntimeEnv() {
 
   if (isProd && !isProductionBuildPhase && isBlank(databaseUrl) && isBlank(directUrl)) {
     errors.push("Set DATABASE_URL or DIRECT_URL in production.");
-  }
-
-  if (isProd && !isProductionBuildPhase && isBlank(authSecret)) {
-    errors.push("AUTH_SECRET is required in production.");
-  }
-
-  if (isProd && !isProductionBuildPhase && isBlank(googleClientId)) {
-    errors.push("AUTH_GOOGLE_ID is required in production.");
-  }
-
-  if (isProd && !isProductionBuildPhase && isBlank(googleClientSecret)) {
-    errors.push("AUTH_GOOGLE_SECRET is required in production.");
-  }
-
-  if (isProd && !isProductionBuildPhase && isBlank(adminOwnerEmails)) {
-    errors.push("ADMIN_OWNER_EMAILS is required in production.");
   }
 
   if (!isBlank(siteUrl)) {
