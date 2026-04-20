@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { isGoogleAuthConfigured } from "@/auth";
+import { GoogleSignInButton } from "./GoogleSignInButton";
 import { Header } from "../components/landing/Header";
 import { getAdminActor } from "@/lib/admin-access";
 import { roleHasPermission } from "@/lib/admin-rbac";
@@ -23,7 +24,6 @@ export const metadata: Metadata = buildPageMetadata({
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const { next, error, success } = await searchParams;
   const nextPath = next?.startsWith("/") ? next : "/studio";
-  const signInHref = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(nextPath)}`;
   const actor = await getAdminActor();
   const authConfigured = isGoogleAuthConfigured();
   const sanityConfigured = isSanityConfigured();
@@ -33,8 +33,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const errorMessage =
     error === "auth-required"
       ? "Please sign in first."
-      : error === "google"
-        ? "Google provider is not available in this runtime. Open /api/auth/providers and confirm \"google\" is listed."
       : error === "Configuration"
         ? "Auth configuration is invalid. Check AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, and callback URLs."
       : error === "OAuthSignin"
@@ -103,12 +101,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             {!actor ? (
               <div className="grid gap-3">
                 {authConfigured ? (
-                  <Link
-                    href={signInHref}
+                  <GoogleSignInButton
+                    callbackUrl={nextPath}
                     className="brand-control tropical-sheen inline-flex w-full items-center justify-center rounded-full bg-(--sun) px-5 py-3 text-sm font-bold uppercase tracking-widest text-white"
-                  >
-                    Sign in with Google
-                  </Link>
+                  />
                 ) : (
                   <button
                     type="button"
