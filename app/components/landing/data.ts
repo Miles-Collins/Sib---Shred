@@ -161,17 +161,17 @@ export const plans: Plan[] = [
   {
     title: "Starter",
     detail: "5 meals / week",
-    price: "$58",
+    price: "$35",
   },
   {
     title: "Momentum",
     detail: "10 meals / week",
-    price: "$108",
+    price: "$65",
   },
   {
     title: "All In",
     detail: "15 meals / week",
-    price: "$154",
+    price: "$85",
   },
 ];
 

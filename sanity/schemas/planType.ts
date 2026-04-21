@@ -28,7 +28,7 @@ export const planType = defineType({
     defineField({
       name: "price",
       title: "Price",
-      description: "Example: $108",
+      description: "Example: $65",
       type: "string",
       validation: (rule) => rule.required(),
     }),

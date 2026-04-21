@@ -13,7 +13,7 @@ export const metadata: Metadata = buildPageMetadata({
   path: "/plans",
 });
 
-const A_LA_CARTE_PRICE = 16.49;
+const A_LA_CARTE_PRICE = 7;
 
 const savingsRows = plans.map((plan) => {
   const mealsPerWeek = Number(plan.detail.match(/\d+/)?.[0] ?? 0);
