@@ -291,20 +291,58 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {filteredMeals.map((meal, index) => (
+        {filteredMeals.map((meal, index) => {
+          const [isHovering, setIsHovering] = useState(false);
+          
+          const addMealToCart = () => {
+            const cart = JSON.parse(localStorage.getItem("sib-method-cart") || "[]");
+            const existing = cart.find((item: { slug: string }) => item.slug === meal.slug);
+            
+            if (existing) {
+              existing.qty += 1;
+            } else {
+              cart.push({
+                slug: meal.slug,
+                name: meal.name,
+                price: meal.price,
+                image: meal.image,
+                qty: 1,
+              });
+            }
+            
+            localStorage.setItem("sib-method-cart", JSON.stringify(cart));
+            window.dispatchEvent(new Event("sib-method-cart-updated"));
+          };
+
+          return (
           <article
             key={meal.slug}
             className={`motion-stagger stagger-delay-${Math.min(index, 8)} brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-(--line) bg-white shadow-(--shadow-card)`}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
-            <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>
-              <Image
-                src={meal.image}
-                alt={meal.name}
-                width={900}
-                height={560}
-                className="motion-card-image h-52 w-full object-cover"
-              />
-            </Link>
+            <div className="relative overflow-hidden rounded-t-[1.4rem]">
+              <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>
+                <Image
+                  src={meal.image}
+                  alt={meal.name}
+                  width={900}
+                  height={560}
+                  className="motion-card-image h-52 w-full object-cover transition-transform duration-300"
+                />
+              </Link>
+              {isHovering && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-t-[1.4rem]">
+                  <button
+                    type="button"
+                    onClick={addMealToCart}
+                    className="brand-control rounded-full bg-blue-600 px-6 py-2 text-sm font-bold text-white hover:bg-blue-700"
+                  >
+                    Add to cart
+                  </button>
+                </div>
+              )}
+            </div>
 
             <div className="space-y-3 p-4">
               <div className="flex flex-wrap gap-2">
@@ -348,7 +386,8 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               </div>
             </div>
           </article>
-        ))}
+        );
+        })}
       </section>
 
       {!filteredMeals.length ? (
