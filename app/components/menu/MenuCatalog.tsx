@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { Meal } from "../landing/types";
@@ -47,9 +47,11 @@ function truncateWithEllipsis(text: string, limit: number) {
 }
 
 export function MenuCatalog({ meals }: MenuCatalogProps) {
+  const router = useRouter();
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"popular" | "price" | "calories">("popular");
+  const [hoveredMealSlug, setHoveredMealSlug] = useState<string | null>(null);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [showRestoredChip, setShowRestoredChip] = useState(false);
   const restoredScrollRef = useRef(false);
@@ -218,6 +220,11 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
     window.sessionStorage.setItem(MENU_SCROLL_KEY, String(Math.round(window.scrollY)));
   };
 
+  const goToMealDetail = (slug: string) => {
+    preserveMenuStateForDetail();
+    router.push(`/menu/${slug}`);
+  };
+
   return (
     <div className="space-y-7">
       {showRestoredChip ? (
@@ -290,9 +297,9 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <section className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {filteredMeals.map((meal, index) => {
-          const [isHovering, setIsHovering] = useState(false);
+          const isHovering = hoveredMealSlug === meal.slug;
           
           const addMealToCart = () => {
             const cart = JSON.parse(localStorage.getItem("sib-method-cart") || "[]");
@@ -317,34 +324,41 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
           return (
           <article
             key={meal.slug}
-            className={`motion-stagger stagger-delay-${Math.min(index, 8)} brand-card-hover motion-card overflow-hidden rounded-[1.4rem] border border-(--line) bg-white shadow-(--shadow-card)`}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            className={`motion-stagger stagger-delay-${Math.min(index, 8)} cursor-pointer overflow-hidden rounded-[1.4rem] bg-white/75 backdrop-blur-sm`}
+            onMouseEnter={() => setHoveredMealSlug(meal.slug)}
+            onMouseLeave={() => setHoveredMealSlug((current) => (current === meal.slug ? null : current))}
+            onClick={() => goToMealDetail(meal.slug)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                goToMealDetail(meal.slug);
+              }
+            }}
+            role="link"
+            tabIndex={0}
+            aria-label={`View ${meal.name}`}
           >
             <div className="relative overflow-hidden rounded-t-[1.4rem]">
-              <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>
-                <Image
-                  src={meal.image}
-                  alt={meal.name}
-                  width={900}
-                  height={560}
-                  className="motion-card-image h-52 w-full object-cover transition-transform duration-300"
-                />
-              </Link>
-              {isHovering && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-t-[1.4rem]">
-                  <button
-                    type="button"
-                    onClick={addMealToCart}
-                    className="brand-control rounded-full bg-blue-600 px-6 py-2 text-sm font-bold text-white hover:bg-blue-700"
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              )}
+              <Image
+                src={meal.image}
+                alt={meal.name}
+                width={900}
+                height={560}
+                className="motion-card-image h-52 w-full object-cover transition-transform duration-300"
+              />
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  addMealToCart();
+                }}
+                className="absolute bottom-2 right-0 rounded-l-full rounded-r-none border border-(--line) bg-white/90 px-3.5 py-1.5 text-sm font-semibold leading-none text-(--ink) shadow-[0_3px_8px_rgba(16,27,23,0.14)] backdrop-blur-sm transition-colors hover:bg-white"
+              >
+                Add to cart
+              </button>
             </div>
 
-            <div className="space-y-3 p-4">
+            <div className="space-y-2 p-4">
               <div className="flex flex-wrap gap-2">
                 {meal.dietaryTags.map((tag) => (
                   <div key={tag} className="inline-flex items-center" title={tag}>
@@ -359,30 +373,25 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 ))}
               </div>
 
-              <h2 className="brand-section-title text-[1.45rem] leading-tight">
-                <Link href={`/menu/${meal.slug}`} onClick={preserveMenuStateForDetail}>{meal.name}</Link>
-              </h2>
-
               <p className="text-sm leading-relaxed text-(--muted)" title={meal.description}>
                 {truncateWithEllipsis(meal.description, MENU_CARD_DESCRIPTION_LIMIT)}
               </p>
 
-              <div className="grid grid-cols-2 gap-2 text-sm text-(--muted)">
-                <p>Calories: {meal.calories}</p>
-                <p>Protein: {meal.protein}</p>
-                <p>Carbs: {meal.carbs}</p>
-                <p>Fat: {meal.fat}</p>
+              <div className="flex items-center text-xs font-semibold uppercase tracking-[0.08em] text-(--muted)">
+                <span>Macros</span>
               </div>
 
-              <div className="flex items-center justify-between border-t border-(--line) pt-3">
-                <p className="text-[1.85rem] font-black text-(--berry)">{meal.price}</p>
-                <Link
-                  href={`/menu/${meal.slug}`}
-                  onClick={preserveMenuStateForDetail}
-                  className="brand-control rounded-md bg-(--sun) px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(139,191,92,0.18)]"
-                >
-                  View Meal
-                </Link>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-out ${
+                  isHovering ? "max-h-24 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0"
+                }`}
+              >
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-(--muted)">
+                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.protein} protein</span>
+                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.carbs} carbs</span>
+                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.fat} fat</span>
+                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.calories} cal</span>
+                </div>
               </div>
             </div>
           </article>
