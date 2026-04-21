@@ -40,14 +40,16 @@ async function PlansPageContent({
   pageContentPromise: ReturnType<typeof getPlansPageContentFromSanity>;
 }) {
   const pageContent = await pageContentPromise;
-  const featuredPlan = savingsRows[1];
+  const featuredPlan = savingsRows.reduce((best, current) =>
+    current.weeklySavings > best.weeklySavings ? current : best,
+  );
   const valueCards =
     pageContent?.valueCards && pageContent.valueCards.length > 0
       ? pageContent.valueCards.slice(0, 3)
       : [
-          { label: "Best value", title: "Momentum", text: "Balanced volume and savings." },
+          { label: "Best value", title: "All In", text: "Lowest cost per meal." },
+          { label: "Most popular", title: "Momentum", text: "Best balance of meals and spend." },
           { label: "Avg ala carte", title: `$${A_LA_CARTE_PRICE.toFixed(2)}`, text: "Per meal, before fees." },
-          { label: "Cancel anytime", title: "No contract", text: "Pause or skip with ease." },
         ];
   const whyCards =
     pageContent?.whyCards && pageContent.whyCards.length > 0
@@ -72,7 +74,7 @@ async function PlansPageContent({
       : [
           {
             question: "Which plan gives the best savings?",
-            answer: "Momentum is the best value for most people because it balances meal count and price per meal.",
+            answer: "All In gives the best savings per meal, while Momentum is the most popular balance for most people.",
           },
           {
             question: "Can I change plans later?",
@@ -128,7 +130,7 @@ async function PlansPageContent({
                 <div
                   key={plan.title}
                   className={`rounded-2xl border p-4 ${
-                    index === 1
+                    plan.title === featuredPlan.title
                       ? "border-(--sun) bg-(--mint)/50"
                       : "border-(--line) bg-white"
                   }`}
@@ -140,7 +142,7 @@ async function PlansPageContent({
                       </p>
                       <p className="mt-1 text-lg font-black text-(--ink)">{plan.detail}</p>
                     </div>
-                    {index === 1 ? (
+                    {plan.title === featuredPlan.title ? (
                       <span className="brand-badge brand-badge--green rounded-[0.2rem] px-2 py-1 text-[11px]">
                         Best Value
                       </span>
