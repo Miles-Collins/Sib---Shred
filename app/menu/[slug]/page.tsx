@@ -126,7 +126,7 @@ export default async function MealPage({ params }: MealPageProps) {
               <TinyShareButton title={meal.name} />
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-2xl border border-(--line) shadow-[0_10px_24px_rgba(16,27,23,0.08)]">
+            <div className="mt-5 overflow-hidden rounded-2xl border border-(--border-light) shadow-md shadow-black/5">
               <Image
                 src={meal.image}
                 alt={meal.name}
@@ -148,7 +148,7 @@ export default async function MealPage({ params }: MealPageProps) {
               ).map((tag) => (
                 <span
                   key={tag}
-                  className={`brand-badge motion-badge rounded-[0.2rem] px-2.5 py-1 ${dietBadgeClass(tag)}`}
+                  className={`brand-badge motion-badge rounded-xl px-2.5 py-1 ${dietBadgeClass(tag)}`}
                 >
                   {tag}
                 </span>
@@ -169,7 +169,7 @@ export default async function MealPage({ params }: MealPageProps) {
               {rows.map(([label, value]) => (
                 <div
                   key={label}
-                  className="flex items-center justify-between border-t border-[#d7d8d1] py-3 text-[0.95rem] sm:text-[1rem]"
+                  className="flex items-center justify-between border-t border-(--border-light) py-3 text-[0.95rem] sm:text-[1rem]"
                 >
                   <span className="font-semibold">{label}</span>
                   <span className="font-medium text-(--ink)">{value}</span>
@@ -201,7 +201,7 @@ export default async function MealPage({ params }: MealPageProps) {
               <ul key={`column-${index}`} className="space-y-2">
                 {column.map((ingredient) => (
                   <li key={ingredient} className="flex items-center gap-3 text-[1rem]">
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-[#70716f] text-[11px] text-white">
+                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-[#5FA8C7] text-[11px] text-white">
                       ■
                     </span>
                     <span>{ingredient}</span>

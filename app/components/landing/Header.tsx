@@ -234,7 +234,7 @@ export function Header() {
   };
 
   return (
-    <header className="tablet-landscape-header sticky top-0 z-50 border-b border-(--line) bg-white/90 backdrop-blur-md">
+    <header className="tablet-landscape-header sticky top-0 z-50 border-b border-(--border-light) bg-white/90 backdrop-blur-md">
       <div className="tropical-ribbon px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
         {topRibbonText}
       </div>
@@ -248,7 +248,7 @@ export function Header() {
             aria-controls="primary-tablet-nav"
             data-expanded={isMenuOpen ? "true" : "false"}
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-(--ink) transition-colors hover:bg-black/5"
+            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-(--ink) transition-colors hover:bg-[#EAF6FB]"
           >
             <span className="sr-only">Menu</span>
             <span className="relative block h-4 w-5">
@@ -304,14 +304,14 @@ export function Header() {
 
         <div className="hidden w-full items-center justify-between gap-4 xl:flex xl:gap-6">
           <Link href="/" className="group flex items-center gap-3 shrink-0">
-            <div className="hidden h-px w-7 bg-(--line) sm:block" />
+            <div className="hidden h-px w-7 bg-(--border-light) sm:block" />
             <div>
               <p className="tablet-brand-title brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
                 {brandName}
               </p>
               <p className="brand-kicker text-[10px] text-(--muted)">{brandSubtitle}</p>
             </div>
-            <div className="h-px w-4 bg-(--line) transition-colors group-hover:bg-(--ink)" />
+            <div className="h-px w-4 bg-(--border-light) transition-colors group-hover:bg-(--ink)" />
           </Link>
 
           {/* Center Navigation Links */}
@@ -338,13 +338,13 @@ export function Header() {
           <div className="ml-2 flex shrink-0 items-center gap-2.5 sm:ml-4 xl:gap-3">
             <Link
               href="/menu"
-              className="brand-control tropical-sheen rounded-md border border-(--line) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-[0_6px_18px_rgba(16,27,23,0.05)] transition"
+              className="brand-control tropical-sheen rounded-full border border-(--border-light) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-md shadow-black/5 transition hover:bg-[#EAF6FB]"
             >
               {headerCtaPrimary}
             </Link>
             <Link
               href="/checkout"
-              className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-md bg-(--sun) px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+              className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-full bg-[#5FA8C7] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
             >
               {headerCtaSecondary}
               {cartCount > 0 ? (
@@ -363,10 +363,10 @@ export function Header() {
             <Link
               key={`tablet-tab-${item.href}`}
               href={item.href}
-              className={`brand-control inline-flex min-h-11 items-center justify-center rounded-md border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition ${
+              className={`brand-control inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition ${
                 isActive(item.href)
                   ? "border-(--sun) bg-(--sun) text-white"
-                  : "border-(--line) bg-white text-(--muted) hover:text-(--ink)"
+                  : "border-(--border-light) bg-white text-(--muted) hover:bg-[#EAF6FB] hover:text-(--ink)"
               }`}
             >
               {item.label}
@@ -458,7 +458,7 @@ export function Header() {
           </Link>
           <Link
             href="/checkout"
-            className="brand-control tropical-sheen inline-flex min-h-12 items-center justify-center rounded-md bg-(--sun) px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white"
+            className="brand-control tropical-sheen inline-flex min-h-12 items-center justify-center rounded-xl bg-[#5FA8C7] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white"
           >
             {headerCtaSecondary}
           </Link>

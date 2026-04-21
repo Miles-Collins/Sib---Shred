@@ -46,12 +46,31 @@ function truncateWithEllipsis(text: string, limit: number) {
   return `${normalized.slice(0, limit).trimEnd()}...`;
 }
 
+function toBadgeLabel(tag: string) {
+  return tag
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function badgeClassForTag(tag: string) {
+  if (tag === "HIGH PROTEIN") {
+    return "border-(--sun) bg-(--sun) text-white";
+  }
+
+  if (tag === "GF") {
+    return "border-(--ocean) bg-(--ocean) text-white";
+  }
+
+  return "border-(--line) bg-(--paper-soft) text-(--muted)";
+}
+
 export function MenuCatalog({ meals }: MenuCatalogProps) {
   const router = useRouter();
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"popular" | "price" | "calories">("popular");
-  const [hoveredMealSlug, setHoveredMealSlug] = useState<string | null>(null);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [showRestoredChip, setShowRestoredChip] = useState(false);
   const restoredScrollRef = useRef(false);
@@ -233,7 +252,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
         </div>
       ) : null}
 
-      <section className="tablet-menu-controls motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+      <section className="tablet-menu-controls motion-sticky rounded-2xl border border-(--line) bg-(--paper-soft) p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0 lg:pb-0">
             {FILTERS.map((filter) => {
@@ -247,7 +266,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                   onClick={() => toggleFilter(filter)}
                   className={`brand-chip inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold tracking-[0.08em] uppercase ${
                     active
-                      ? "border-(--ink) bg-(--ink) text-white shadow-[0_8px_18px_rgba(16,27,23,0.14)] translate-y-px"
+                      ? "border-(--sun) bg-(--sun) text-white shadow-[0_8px_18px_rgba(95,168,199,0.24)] translate-y-px"
                       : "border-(--line) bg-white text-(--ink) shadow-[0_4px_10px_rgba(16,27,23,0.04)]"
                   }`}
                 >
@@ -267,7 +286,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               <button
                 type="button"
                 onClick={() => setActiveFilters([])}
-                className="brand-control ml-1 rounded-full border border-(--line) bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-(--muted) underline"
+                className="brand-control ml-1 rounded-full border border-(--sun) bg-(--sun) px-3 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(95,168,199,0.24)] underline"
               >
                 Clear
               </button>
@@ -279,7 +298,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search meals"
-              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) placeholder:text-(--muted) focus:ring-2 md:min-h-12"
+              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--ocean) placeholder:text-(--muted) focus:ring-2 md:min-h-12"
             />
             <select
               aria-label="Sort meals"
@@ -287,7 +306,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
               onChange={(event) =>
                 setSortBy(event.target.value as "popular" | "price" | "calories")
               }
-              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--sun) focus:ring-2 sm:w-auto md:min-h-12"
+              className="brand-control w-full rounded-md border border-(--line) bg-white px-3 py-2 text-sm outline-none ring-(--ocean) focus:ring-2 sm:w-auto md:min-h-12"
             >
               <option value="popular">Sort: Popular</option>
               <option value="price">Sort: Price</option>
@@ -299,34 +318,12 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
 
       <section className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {filteredMeals.map((meal, index) => {
-          const isHovering = hoveredMealSlug === meal.slug;
-          
-          const addMealToCart = () => {
-            const cart = JSON.parse(localStorage.getItem("sib-method-cart") || "[]");
-            const existing = cart.find((item: { slug: string }) => item.slug === meal.slug);
-            
-            if (existing) {
-              existing.qty += 1;
-            } else {
-              cart.push({
-                slug: meal.slug,
-                name: meal.name,
-                price: meal.price,
-                image: meal.image,
-                qty: 1,
-              });
-            }
-            
-            localStorage.setItem("sib-method-cart", JSON.stringify(cart));
-            window.dispatchEvent(new Event("sib-method-cart-updated"));
-          };
+          const visibleTags = meal.dietaryTags.slice(0, 3);
 
           return (
           <article
             key={meal.slug}
-            className={`motion-stagger stagger-delay-${Math.min(index, 8)} cursor-pointer overflow-hidden rounded-[1.4rem] bg-white/75 backdrop-blur-sm`}
-            onMouseEnter={() => setHoveredMealSlug(meal.slug)}
-            onMouseLeave={() => setHoveredMealSlug((current) => (current === meal.slug ? null : current))}
+            className={`motion-stagger stagger-delay-${Math.min(index, 8)} cursor-pointer overflow-hidden rounded-[1.2rem] border border-(--warm) bg-[linear-gradient(165deg,#fffdf8_0%,#fbf2e4_52%,var(--warm)_100%)] shadow-[0_4px_12px_rgba(180,140,90,0.08)]`}
             onClick={() => goToMealDetail(meal.slug)}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
@@ -338,7 +335,7 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
             tabIndex={0}
             aria-label={`View ${meal.name}`}
           >
-            <div className="relative overflow-hidden rounded-t-[1.4rem]">
+            <div className="relative overflow-hidden rounded-t-[1.2rem]">
               <Image
                 src={meal.image}
                 alt={meal.name}
@@ -346,52 +343,33 @@ export function MenuCatalog({ meals }: MenuCatalogProps) {
                 height={560}
                 className="motion-card-image h-52 w-full object-cover transition-transform duration-300"
               />
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  addMealToCart();
-                }}
-                className="absolute bottom-2 right-0 rounded-l-full rounded-r-none border border-(--line) bg-white/90 px-3.5 py-1.5 text-sm font-semibold leading-none text-(--ink) shadow-[0_3px_8px_rgba(16,27,23,0.14)] backdrop-blur-sm transition-colors hover:bg-white"
-              >
-                Add to cart
-              </button>
             </div>
 
             <div className="space-y-2 p-4">
-              <div className="flex flex-wrap gap-2">
-                {meal.dietaryTags.map((tag) => (
-                  <div key={tag} className="inline-flex items-center" title={tag}>
-                    <Image
-                      src={TAG_META[tag]?.icon ?? "/labels/gf-badge.svg"}
-                      alt={tag}
-                      width={24}
-                      height={24}
-                      className="motion-badge h-6 w-6"
-                    />
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-[1.04rem] font-semibold leading-snug text-(--ink)">
+                {meal.name}
+              </h2>
 
               <p className="text-sm leading-relaxed text-(--muted)" title={meal.description}>
-                {truncateWithEllipsis(meal.description, MENU_CARD_DESCRIPTION_LIMIT)}
+                {meal.subtitle || truncateWithEllipsis(meal.description, MENU_CARD_DESCRIPTION_LIMIT)}
               </p>
 
-              <div className="flex items-center text-xs font-semibold uppercase tracking-[0.08em] text-(--muted)">
-                <span>Macros</span>
-              </div>
-
-              <div
-                className={`overflow-hidden transition-all duration-300 ease-out ${
-                  isHovering ? "max-h-24 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0"
-                }`}
-              >
-                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-(--muted)">
-                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.protein} protein</span>
-                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.carbs} carbs</span>
-                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.fat} fat</span>
-                  <span className="rounded-full bg-(--bg-cream) px-2 py-0.5">{meal.calories} cal</span>
-                </div>
+              <div className="flex min-h-7 flex-wrap items-center gap-2 pt-2">
+                {visibleTags.length ? (
+                  visibleTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className={`rounded-[0.3rem] border px-2.5 py-0.5 text-[11px] font-bold leading-none ${badgeClassForTag(tag)}`}
+                      title={tag}
+                    >
+                      {toBadgeLabel(tag)}
+                    </span>
+                  ))
+                ) : (
+                  <span className="invisible rounded-[0.3rem] border px-2.5 py-0.5 text-[11px] font-bold leading-none">
+                    Placeholder
+                  </span>
+                )}
               </div>
             </div>
           </article>

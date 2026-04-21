@@ -34,7 +34,7 @@ export function TinyShareButton({ title }: TinyShareButtonProps) {
     <button
       type="button"
       onClick={share}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#6b6b6b] text-sm font-bold text-[#202020]"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-(--border-light) bg-white text-sm font-bold text-(--ink) shadow-md shadow-black/5 hover:bg-[#EAF6FB]"
       aria-label="Copy or share meal link"
       title={copied ? "Copied" : "Copy or share"}
     >

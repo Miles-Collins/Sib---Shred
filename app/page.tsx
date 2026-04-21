@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Header } from "./components/landing/Header";
 import { Hero } from "./components/landing/Hero";
-import { MealCard } from "./components/landing/MealCard";
+import { FeaturedMealsCarousel } from "./components/landing/FeaturedMealsCarousel";
 import {
   blogPosts,
   goals,
@@ -140,7 +140,7 @@ export default async function Home() {
         }));
 
   return (
-    <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
+    <div className="flex min-h-full flex-col bg-(--background) text-(--ink)">
       <Header />
       <script
         type="application/ld+json"
@@ -150,11 +150,11 @@ export default async function Home() {
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8 md:pb-28 xl:pb-20">
         <Hero />
 
-        <section className="motion-reveal brand-grid brand-panel grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
+        <section className="motion-reveal brand-grid grid gap-3 rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-4 md:grid-cols-2 lg:grid-cols-4">
           {categoryHighlights.map((item, index) => (
             <article
               key={item.title}
-              className={`motion-lift motion-stagger rounded-[1.4rem] border border-(--line) bg-white/95 p-5 stagger-delay-${index}`}
+              className={`motion-lift motion-stagger rounded-[1.4rem] border border-[#e4cfb0] bg-[#F5E6D3] p-5 stagger-delay-${index}`}
             >
               <p className="brand-kicker text-(--berry)">
                 category
@@ -165,21 +165,21 @@ export default async function Home() {
           ))}
         </section>
 
-        <section className="motion-reveal brand-panel-strong px-6 py-5 text-white sm:px-9">
+        <section className="motion-reveal rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] px-6 py-5 text-(--ink) sm:px-9">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="brand-section-title text-2xl sm:text-3xl">
               {homeContent?.trustedHeadline || "Trusted by people who want great meals without the daily prep."}
             </h2>
             <a
               href="#reviews"
-              className="brand-control w-fit rounded-md bg-white px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-(--ink)"
+              className="brand-control w-fit rounded-md bg-[#5FA8C7] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
             >
               {homeContent?.trustedCtaLabel || "View Reviews"}
             </a>
           </div>
         </section>
 
-        <section className="motion-reveal texture-dots overflow-hidden rounded-3xl border border-(--line) p-6 sm:p-8">
+        <section className="motion-reveal overflow-hidden rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-6 sm:p-8">
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="brand-kicker text-(--muted)">{homeContent?.kitchenKicker || "Alysha's kitchen standard"}</p>
@@ -192,7 +192,7 @@ export default async function Home() {
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
               {kitchenCards.map((item) => (
-                <article key={item.label} className="rounded-2xl border border-(--line) bg-white p-5">
+                <article key={item.label} className="rounded-2xl border border-[#e4cfb0] bg-[#F5E6D3] p-5">
                   <p className="brand-kicker text-(--berry)">{item.label}</p>
                   <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
                 </article>
@@ -219,14 +219,10 @@ export default async function Home() {
             </Link>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {mealCatalog.map((meal, index) => (
-              <MealCard key={meal.name} meal={meal} delayMs={index * 90} />
-            ))}
-          </div>
+          <FeaturedMealsCarousel meals={mealCatalog} />
         </section>
 
-        <section className="motion-reveal brand-shell space-y-5 p-6 sm:p-8">
+        <section className="motion-reveal space-y-5 rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-6 sm:p-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="brand-kicker text-(--muted)">
@@ -246,7 +242,7 @@ export default async function Home() {
               <Link
                 key={option}
                 href="/menu"
-                className="rounded-full border border-(--line) bg-(--bg-cream) px-4 py-2 text-sm font-semibold"
+                className="rounded-full border border-[#e4cfb0] bg-white px-4 py-2 text-sm font-semibold"
               >
                 {option}
               </Link>
@@ -262,7 +258,7 @@ export default async function Home() {
             {mealPrepSteps.map((step, index) => (
               <article
                 key={step.title}
-                className={`motion-lift motion-stagger brand-panel p-5 stagger-delay-${index}`}
+                className={`motion-lift motion-stagger rounded-2xl border border-[#e4cfb0] bg-[#F5E6D3] p-5 stagger-delay-${index}`}
               >
                 <p className="brand-kicker text-(--berry)">
                   Step {index + 1}
@@ -276,7 +272,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="motion-reveal brand-shell grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
+        <section className="motion-reveal grid gap-8 rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="brand-kicker text-(--muted)">
               Why it stands out
@@ -300,7 +296,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="motion-reveal brand-panel-strong overflow-hidden p-6 text-white sm:p-9">
+        <section className="motion-reveal overflow-hidden rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-6 text-(--ink) sm:p-9">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <h2 className="brand-section-title max-w-lg text-3xl sm:text-4xl">
               You are busy. Your nutrition plan should not be.
@@ -422,7 +418,7 @@ export default async function Home() {
             {renderedTestimonials.map((quote) => (
               <blockquote
                 key={quote}
-                className="rounded-2xl bg-(--bg-cream) p-5 text-sm leading-relaxed"
+                className="rounded-2xl border border-[#e4cfb0] bg-[#F5E6D3] p-5 text-sm leading-relaxed"
               >
                 &ldquo;{quote}&rdquo;
               </blockquote>
@@ -452,7 +448,7 @@ export default async function Home() {
             {renderedBlogPosts.map((post) => (
               <article
                 key={post.title}
-                className="motion-lift brand-panel p-5"
+                className="motion-lift rounded-2xl border border-[#e4cfb0] bg-[#F5E6D3] p-5"
               >
                 <p className="brand-kicker text-(--muted)">
                   {post.date}
@@ -471,7 +467,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-(--line) bg-(--mint)/45 p-7 sm:p-10">
+        <section className="rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-7 sm:p-10">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
@@ -483,7 +479,7 @@ export default async function Home() {
             </div>
             <Link
               href="/checkout"
-              className="rounded-full bg-(--ink) px-8 py-4 text-sm font-bold uppercase tracking-widest text-white"
+              className="rounded-full bg-[#5FA8C7] px-8 py-4 text-sm font-bold uppercase tracking-widest text-white"
             >
               {homeContent?.startCtaButtonLabel || "Build My First Box"}
             </Link>

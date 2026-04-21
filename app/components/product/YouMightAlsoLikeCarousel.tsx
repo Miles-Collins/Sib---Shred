@@ -133,7 +133,7 @@ export function YouMightAlsoLikeCarousel({
             type="button"
             onClick={movePrev}
             disabled={startIndex === 0}
-            className="rounded-md border border-(--line) bg-white px-3 py-1.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-45"
+            className="rounded-xl border border-(--border-light) bg-white px-3 py-1.5 text-sm font-semibold shadow-md shadow-black/5 hover:bg-[#EAF6FB] disabled:cursor-not-allowed disabled:opacity-45"
           >
             Prev
           </button>
@@ -141,7 +141,7 @@ export function YouMightAlsoLikeCarousel({
             type="button"
             onClick={moveNext}
             disabled={startIndex === maxStart}
-            className="rounded-md border border-(--line) bg-white px-3 py-1.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-45"
+            className="rounded-xl border border-(--border-light) bg-white px-3 py-1.5 text-sm font-semibold shadow-md shadow-black/5 hover:bg-[#EAF6FB] disabled:cursor-not-allowed disabled:opacity-45"
           >
             Next
           </button>
@@ -155,7 +155,7 @@ export function YouMightAlsoLikeCarousel({
           const inferredIndex = Math.round(scrollLeft / cardStep);
           setStartIndex(Math.max(0, Math.min(maxStart, inferredIndex)));
         }}
-        className="overflow-x-auto rounded-xl border border-(--line) bg-white"
+        className="overflow-x-auto rounded-2xl border border-(--border-light) bg-white shadow-md shadow-black/5"
       >
         <div
           onTouchStart={onTouchStart}
@@ -167,7 +167,7 @@ export function YouMightAlsoLikeCarousel({
               key={meal.slug}
               data-carousel-card="true"
               href={`/menu/${meal.slug}`}
-              className="shrink-0 snap-start min-w-[84%] rounded-xl border border-(--line) bg-white p-3 sm:min-w-[72%] md:min-w-[56%] lg:min-w-[44%] xl:min-w-[320px]"
+              className="shrink-0 snap-start min-w-[84%] rounded-2xl border border-(--border-light) bg-white p-3 shadow-md shadow-black/5 sm:min-w-[72%] md:min-w-[56%] lg:min-w-[44%] xl:min-w-[320px]"
             >
               <Image
                 src={meal.image}

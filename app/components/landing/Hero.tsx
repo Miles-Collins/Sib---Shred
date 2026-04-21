@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="tablet-hero-shell grain-panel relative overflow-hidden rounded-3xl border border-(--line) p-5 sm:p-10 lg:p-11">
+    <section className="tablet-hero-shell relative overflow-hidden rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-5 sm:p-10 lg:p-11">
       <div
         aria-hidden
         className="pointer-events-none absolute -top-20 -right-16 h-52 w-52 rounded-full bg-(--sun)/20 blur-3xl sm:-top-24 sm:-right-20 sm:h-64 sm:w-64"
@@ -30,13 +30,13 @@ export function Hero() {
           <div className="mt-6 grid gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
             <Link
               href="/menu"
-              className="brand-control tropical-sheen inline-flex w-full justify-center rounded-md bg-(--sun) px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition hover:brightness-95 sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
+              className="brand-control tropical-sheen inline-flex w-full justify-center rounded-md bg-[#5FA8C7] px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition hover:brightness-95 sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
             >
               Choose Meals
             </Link>
             <Link
               href="/plans"
-              className="brand-control tropical-sheen inline-flex w-full justify-center rounded-md border border-(--ink) bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-widest transition hover:bg-(--ink) hover:text-white sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
+              className="brand-control tropical-sheen inline-flex w-full justify-center rounded-md border border-[#5FA8C7] bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-[#5FA8C7] transition hover:bg-[#5FA8C7] hover:text-white sm:w-auto sm:py-3 sm:text-sm sm:tracking-[0.09em]"
             >
               View Plans
             </Link>

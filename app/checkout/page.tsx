@@ -72,12 +72,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         ];
 
   return (
-    <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
+    <div className="page-cream flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8 md:pb-28 xl:pb-10">
         {isSuccess ? (
-          <section className="rounded-2xl border border-(--sun) bg-(--mint)/45 px-5 py-4 shadow-[0_10px_26px_rgba(16,27,23,0.06)]">
+          <section className="rounded-2xl border border-(--border-light) bg-[#F7EFE5] px-5 py-4 shadow-md shadow-black/5">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
               {checkoutContent?.successKicker || "Order received"}
             </p>
@@ -91,7 +91,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               <p className="mt-3">
                 <Link
                   href={`/orders/${encodeURIComponent(successfulOrder.orderNumber)}?t=${encodeURIComponent(successfulOrder.receiptAccessToken)}`}
-                  className="text-sm font-bold uppercase tracking-widest text-(--ink) underline decoration-(--ink) underline-offset-4"
+                  className="text-sm font-bold uppercase tracking-widest text-[#5FA8C7] underline decoration-[#5FA8C7] underline-offset-4"
                 >
                   View permanent receipt
                 </Link>
@@ -110,15 +110,15 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   {successfulOrder.plan?.name ? `${successfulOrder.plan.name} plan` : "Weekly meal order"}
                 </p>
               </div>
-              <div className="rounded-xl border border-(--line) bg-white px-4 py-3 text-right">
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--muted)">Total charged</p>
+              <div className="rounded-xl border border-(--border-light) bg-white px-4 py-3 text-right shadow-md shadow-black/5">
+                <p className="text-xs font-bold uppercase tracking-[0.12em] text-(--text-secondary)">Total charged</p>
                 <p className="mt-1 text-2xl font-black text-(--ink)">{formatCents(successfulOrder.totalCents)}</p>
               </div>
             </div>
 
             <div className="mt-5 grid gap-3">
               {successfulOrder.items.map((item: SuccessfulOrderItem) => (
-                <article key={item.id} className="rounded-2xl border border-(--line) bg-white p-4">
+                <article key={item.id} className="rounded-2xl border border-(--border-light) bg-white p-4 shadow-md shadow-black/5">
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-bold uppercase tracking-widest text-(--ink)">{item.meal.name}</p>
@@ -152,30 +152,30 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         ) : null}
 
         {params.error === "missing-fields" ? (
-          <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
-            <p className="text-sm font-semibold text-[#8d3f31]">
+          <section className="rounded-2xl border border-[#e4cfb0] bg-[#F7EFE5] px-5 py-4 shadow-md shadow-black/5">
+            <p className="text-sm font-semibold text-(--text-secondary)">
               {checkoutContent?.missingFieldsError || "Please complete the required delivery fields before submitting."}
             </p>
           </section>
         ) : null}
 
         {params.error === "empty-cart" ? (
-          <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
-            <p className="text-sm font-semibold text-[#8d3f31]">
+          <section className="rounded-2xl border border-[#e4cfb0] bg-[#F7EFE5] px-5 py-4 shadow-md shadow-black/5">
+            <p className="text-sm font-semibold text-(--text-secondary)">
               {checkoutContent?.emptyCartError || "Your cart is empty. Add at least one meal before checkout."}
             </p>
           </section>
         ) : null}
 
         {params.error === "invalid-cart" ? (
-          <section className="rounded-2xl border border-[#b96a5b] bg-[#f8ece8] px-5 py-4">
-            <p className="text-sm font-semibold text-[#8d3f31]">
+          <section className="rounded-2xl border border-[#e4cfb0] bg-[#F7EFE5] px-5 py-4 shadow-md shadow-black/5">
+            <p className="text-sm font-semibold text-(--text-secondary)">
               {checkoutContent?.invalidCartError || "We could not validate one or more cart items. Please review your cart and try again."}
             </p>
           </section>
         ) : null}
 
-        <section className="motion-sticky rounded-2xl border border-(--line) bg-white/92 p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+        <section className="motion-sticky rounded-2xl border border-(--border-light) bg-[#F4FAFD] p-3 shadow-md shadow-black/5 sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="brand-kicker text-(--muted)">
               {checkoutContent?.headerKicker || "Order progress"}
@@ -186,10 +186,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   key={step.label}
                   className={`rounded-full border px-2 py-2 ${
                     step.state === "active"
-                      ? "border-(--ink) bg-(--ink) text-white"
+                      ? "border-[#5FA8C7] bg-[#5FA8C7] text-white"
                       : step.state === "complete"
-                        ? "border-(--sun) bg-(--mint) text-(--ink)"
-                        : "border-(--line) bg-(--paper-soft) text-(--muted)"
+                        ? "border-[#7FC8E3] bg-[#EAF6FB] text-(--ink)"
+                        : "border-(--border-light) bg-white text-(--muted)"
                   }`}
                 >
                   <span className="mr-1">{index + 1}.</span>
@@ -214,7 +214,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
           <div className="mt-6 grid gap-3 md:grid-cols-3">
             {checkoutStepsContent.map((step, index) => (
-              <div key={step} className="rounded-2xl border border-(--line) bg-white p-4">
+              <div key={step} className="rounded-2xl border border-(--border-light) bg-white p-4 shadow-md shadow-black/5">
                 <p className="brand-kicker text-(--berry)">Step {index + 1}</p>
                 <p className="mt-2 text-sm font-semibold text-(--ink)">{step}</p>
               </div>
@@ -230,7 +230,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           </p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {retentionCards.map((item) => (
-              <article key={item.title} className="rounded-2xl border border-(--line) bg-(--bg-cream) p-5">
+              <article key={item.title} className="rounded-2xl border border-[#e4cfb0] bg-[#F7EFE5] p-5 shadow-md shadow-black/5">
                 <p className="brand-kicker text-(--berry)">{item.title}</p>
                 <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
               </article>

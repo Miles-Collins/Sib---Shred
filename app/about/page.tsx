@@ -51,14 +51,14 @@ export default async function AboutPage() {
   const renderedPillars = aboutContent?.pillars.length ? aboutContent.pillars : defaultPillars;
 
   return (
-    <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
+    <div className="flex min-h-full flex-col text-(--ink)">
       <Header />
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
-        <section className="overflow-hidden rounded-[1.2rem] border border-[#d4d9d0] bg-[#eceeeb] p-4 sm:p-8 lg:p-10">
+        <section className="overflow-hidden rounded-[1.2rem] border border-(--border-light) bg-[#F4FAFD] p-4 shadow-md shadow-black/5 sm:p-8 lg:p-10">
           <div className="relative grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div className="relative">
-              <div className="overflow-hidden rounded-[0.15rem] bg-white shadow-[0_18px_42px_rgba(16,27,23,0.12)]">
+              <div className="overflow-hidden rounded-[0.15rem] bg-white shadow-md shadow-black/10">
                 <Image
                   src={portraitImageSrc}
                   alt="Portrait of Alysha"
@@ -69,43 +69,43 @@ export default async function AboutPage() {
                 />
               </div>
 
-              <div className="absolute top-12 left-0 hidden -translate-x-1/2 items-center bg-[#b97d6f] px-3 py-5 md:flex">
+              <div className="absolute top-12 left-0 hidden -translate-x-1/2 items-center bg-[#5FA8C7] px-3 py-5 md:flex">
                 <span className="[writing-mode:vertical-rl] rotate-180 text-[10px] font-bold tracking-[0.2em] text-white uppercase">
                   Meet Alysha
                 </span>
               </div>
             </div>
 
-            <article className="relative border-t-2 border-[#adb3aa] bg-[#f1f2ef] p-6 shadow-[0_20px_46px_rgba(16,27,23,0.1)] sm:p-8 lg:-ml-14 lg:max-w-2xl lg:p-10">
+            <article className="relative border-t-2 border-(--border-light) bg-white p-6 shadow-md shadow-black/5 sm:p-8 lg:-ml-14 lg:max-w-2xl lg:p-10">
               <p className="text-[12px] font-bold tracking-[0.24em] text-[#4f5551] uppercase">
                 {aboutContent?.introKicker || "It's nice to meet you."}
-                <span className={`${signatureFont.className} ml-2 text-[2.15rem] normal-case tracking-normal text-[#c59385]`}>
+                <span className={`${signatureFont.className} ml-2 text-[2.15rem] normal-case tracking-normal text-[#5FA8C7]`}>
                   I&apos;m Alysha.
                 </span>
               </p>
 
-              <h1 className="mt-5 text-[2rem] leading-[1.2] font-semibold text-[#323734] sm:text-[2.35rem]">
+              <h1 className="mt-5 text-[2rem] leading-[1.2] font-semibold text-(--ink) sm:text-[2.35rem]">
                 {aboutContent?.introHeadline || "I help people eat with less stress with blunt honesty, clear portions, and practical weekly prep."}
               </h1>
 
-              <p className="mt-5 text-[1rem] leading-[1.8] text-[#4f5551]">
+              <p className="mt-5 text-[1rem] leading-[1.8] text-(--muted)">
                 {aboutContent?.introBody1 || "Sib Method started as a way to make healthy eating feel realistic, even on packed weeks. Instead of another generic subscription experience, I built something personal: I cook, portion, and package each meal myself so the quality stays consistent from the first order to the final bite."}
               </p>
 
-              <p className="mt-4 text-[1rem] leading-[1.8] text-[#4f5551]">
+              <p className="mt-4 text-[1rem] leading-[1.8] text-(--muted)">
                 {aboutContent?.introBody2 || "My goal is simple: make your week easier without sacrificing flavor or nutrition. Fewer last-minute food decisions, less prep fatigue, and meals you actually look forward to opening."}
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/menu"
-                  className="brand-control rounded-full bg-(--ink) px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
+                  className="brand-control rounded-full bg-[#5FA8C7] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-white"
                 >
                   Explore Menu
                 </Link>
                 <Link
                   href="/plans"
-                  className="brand-control rounded-full border border-(--ink) px-5 py-2 text-sm font-bold uppercase tracking-[0.08em]"
+                  className="brand-control rounded-full border border-[#5FA8C7] px-5 py-2 text-sm font-bold uppercase tracking-[0.08em] text-[#5FA8C7]"
                 >
                   View Plans
                 </Link>
@@ -139,7 +139,7 @@ export default async function AboutPage() {
             {renderedHowItWorks.map((item, index) => (
               <div
                 key={item}
-                className="rounded-2xl border border-(--line) bg-white p-5"
+                className="rounded-2xl border border-(--border-light) bg-white p-5 shadow-md shadow-black/5"
               >
                 <p className="brand-kicker text-(--berry)">Step {index + 1}</p>
                 <p className="mt-2 text-sm leading-relaxed text-(--ink)">{item}</p>
@@ -150,14 +150,14 @@ export default async function AboutPage() {
 
         <section className="brand-shell grid gap-4 p-6 sm:p-8 md:grid-cols-3">
           {renderedPillars.map((item) => (
-            <article key={item.label} className="rounded-2xl border border-(--line) bg-white p-5">
+            <article key={item.label} className="rounded-2xl border border-(--border-light) bg-white p-5 shadow-md shadow-black/5">
               <p className="brand-kicker text-(--muted)">{item.label}</p>
               <p className="mt-2 text-sm leading-relaxed text-(--muted)">{item.text}</p>
             </article>
           ))}
         </section>
 
-        <section className="rounded-3xl border border-(--line) bg-(--mint)/45 p-7 sm:p-10">
+        <section className="rounded-3xl border border-[#e4cfb0] bg-[#F7EFE5] p-7 shadow-md shadow-black/5 sm:p-10">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">
@@ -169,7 +169,7 @@ export default async function AboutPage() {
             </div>
             <Link
               href="/checkout"
-              className="brand-control rounded-full bg-(--ink) px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-white"
+              className="brand-control rounded-full bg-[#5FA8C7] px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-white"
             >
               {aboutContent?.contactButtonLabel || "Start an order"}
             </Link>
