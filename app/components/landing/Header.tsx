@@ -137,11 +137,8 @@ export function Header() {
     [navLinks],
   );
 
-  const topRibbonText =
-    siteSettings?.topRibbonText || "Fresh weekly drop by Alysha + free local delivery";
   const brandName = siteSettings?.brandName || "SIB METHOD";
   const brandSubtitle = siteSettings?.brandSubtitle || "Meal Prep";
-  const headerCtaPrimary = siteSettings?.headerCtaPrimary || "Explore Meals";
   const headerCtaSecondary = siteSettings?.headerCtaSecondary || "Start Order";
   const supportPhone = siteSettings?.supportPhone || "(866) 442-3287";
   const supportEmail = siteSettings?.supportEmail || "info@sibmethod.com";
@@ -234,13 +231,9 @@ export function Header() {
   };
 
   return (
-    <header className="tablet-landscape-header sticky top-0 z-50 border-b border-(--border-light) bg-white/90 backdrop-blur-md">
-      <div className="tropical-ribbon px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white sm:px-8 sm:text-xs">
-        {topRibbonText}
-      </div>
-
-      <nav className="tablet-main-nav mx-auto w-full max-w-7xl px-4 py-4 sm:px-8">
-        <div className="flex w-full items-center justify-between xl:hidden">
+    <header className="header-surface tablet-landscape-header sticky top-0 z-50 border-b border-(--border-light)">
+      <nav className="tablet-main-nav w-full">
+        <div className="flex w-full items-center justify-between px-3 py-2.5 xl:hidden">
           <button
             ref={menuButtonRef}
             type="button"
@@ -248,7 +241,7 @@ export function Header() {
             aria-controls="primary-tablet-nav"
             data-expanded={isMenuOpen ? "true" : "false"}
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-(--ink) transition-colors hover:bg-[#EAF6FB]"
+            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-(--ink) transition-colors hover:bg-[#e8f2f6]"
           >
             <span className="sr-only">Menu</span>
             <span className="relative block h-4 w-5">
@@ -280,7 +273,7 @@ export function Header() {
           <Link
             href="/checkout"
             aria-label="Open cart"
-            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-(--ink) transition-colors hover:bg-black/5"
+            className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-(--ink) transition-colors hover:bg-[#e8f2f6]"
           >
             <svg
               aria-hidden="true"
@@ -302,53 +295,68 @@ export function Header() {
           </Link>
         </div>
 
-        <div className="hidden w-full items-center justify-between gap-4 xl:flex xl:gap-6">
-          <Link href="/" className="group flex items-center gap-3 shrink-0">
-            <div className="hidden h-px w-7 bg-(--border-light) sm:block" />
-            <div>
-              <p className="tablet-brand-title brand-section-title text-[1.55rem] leading-none tracking-[0.04em]">
-                {brandName}
-              </p>
-              <p className="brand-kicker text-[10px] text-(--muted)">{brandSubtitle}</p>
-            </div>
-            <div className="h-px w-4 bg-(--border-light) transition-colors group-hover:bg-(--ink)" />
+        <div className="hidden h-11 w-full items-center border-b border-[#d4dde2] bg-[#f5f5f7] px-6 xl:flex">
+          <Link
+            href="/"
+            className="shrink-0 text-[0.82rem] font-semibold tracking-[0.1em] text-[#1d1d1f] uppercase"
+          >
+            Sib Method
           </Link>
 
-          {/* Center Navigation Links */}
-          <div className="min-w-0 flex-1 items-center justify-center gap-5 text-[13px] font-semibold uppercase tracking-[0.06em] text-(--muted) xl:flex xl:gap-6">
+          <div className="mx-auto flex items-center justify-center gap-9 text-[0.74rem] font-medium text-[#38383a]">
             {navLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative inline-flex shrink-0 items-center whitespace-nowrap transition-colors ${
-                  isActive(item.href)
-                    ? "text-(--ink) font-bold"
-                    : "hover:text-(--ink)"
+                className={`apple-nav-link relative inline-flex items-center whitespace-nowrap transition-colors ${
+                  isActive(item.href) ? "is-active text-[#111111]" : "text-[#38383a] hover:text-[#111111]"
                 }`}
               >
-                <span className="whitespace-nowrap">{item.label}</span>
-                {isActive(item.href) && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-(--ink)" />
-                )}
+                {item.label}
               </Link>
             ))}
           </div>
 
-          {/* Right CTA Buttons */}
-          <div className="ml-2 flex shrink-0 items-center gap-2.5 sm:ml-4 xl:gap-3">
+          <div className="ml-5 flex shrink-0 items-center gap-4 text-[#38383a]">
             <Link
               href="/menu"
-              className="brand-control tropical-sheen rounded-full border border-(--border-light) bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] shadow-md shadow-black/5 transition hover:bg-[#EAF6FB]"
+              aria-label="Search menu"
+              className="inline-flex h-6 w-6 items-center justify-center hover:text-[#111111]"
             >
-              {headerCtaPrimary}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4.5 w-4.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
             </Link>
             <Link
               href="/checkout"
-              className="brand-control tropical-sheen inline-flex items-center justify-center gap-2 rounded-full bg-[#5FA8C7] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:brightness-95"
+              aria-label="Open cart"
+              className="relative inline-flex h-6 w-6 items-center justify-center hover:text-[#111111]"
             >
-              {headerCtaSecondary}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4.5 w-4.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 7h12l-1.2 11H7.2L6 7Z" />
+                <path d="M9 7V5a3 3 0 0 1 6 0v2" />
+              </svg>
               {cartCount > 0 ? (
-                <span className="inline-flex min-w-[1.4rem] items-center justify-center rounded-full bg-(--ink) px-1.5 py-0.5 text-[10px] font-black leading-none text-white">
+                <span className="absolute -right-1.5 -top-1.5 inline-flex h-4 min-w-4 items-center justify-center bg-[#111111] px-1 text-[9px] font-black leading-none text-white">
                   {cartCount}
                 </span>
               ) : null}
@@ -357,16 +365,16 @@ export function Header() {
         </div>
       </nav>
 
-      <div className="mx-auto hidden w-full max-w-7xl px-4 pb-2 sm:px-8 md:block xl:hidden">
+      <div className="hidden w-full pb-2 md:block xl:hidden">
         <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
           {tabletSectionTabs.map((item) => (
             <Link
               key={`tablet-tab-${item.href}`}
               href={item.href}
-              className={`brand-control inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] transition ${
+              className={`inline-flex min-h-11 items-center justify-center rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition ${
                 isActive(item.href)
                   ? "border-(--sun) bg-(--sun) text-white"
-                  : "border-(--border-light) bg-white text-(--muted) hover:bg-[#EAF6FB] hover:text-(--ink)"
+                  : "border-(--border-light) bg-white/95 text-(--muted) hover:bg-[#e8f2f6] hover:text-(--ink)"
               }`}
             >
               {item.label}
@@ -387,7 +395,7 @@ export function Header() {
       <div
         id="primary-tablet-nav"
         ref={menuRef}
-        className="relative z-50 mx-auto w-full max-w-7xl px-4 pb-3 sm:px-8 xl:hidden"
+        className="relative z-50 w-full pb-3 xl:hidden"
       >
         <div
           className={`grid overflow-hidden transition-[grid-template-rows,opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none ${
@@ -404,10 +412,10 @@ export function Header() {
                     key={`tablet-${item.href}`}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`brand-control inline-flex min-h-11 items-center rounded-md border border-(--line) px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] transition sm:min-h-12 ${
+                    className={`inline-flex min-h-11 items-center rounded-full border border-(--line) px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] transition sm:min-h-12 ${
                       isActive(item.href)
                         ? "bg-(--sun) text-white border-(--sun)"
-                        : "bg-white text-(--muted) hover:text-(--ink)"
+                        : "bg-white text-(--muted) hover:bg-[#e8f2f6] hover:text-(--ink)"
                     }`}
                   >
                     {item.label}
@@ -418,13 +426,13 @@ export function Header() {
               <div className="mt-3 grid grid-cols-1 gap-2 sm:mt-4 sm:grid-cols-2 sm:gap-3">
                 <a
                   href={supportPhoneHref}
-                  className="brand-control inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-(--line) bg-white px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
                 >
                   {supportPhone}
                 </a>
                 <a
                   href={`mailto:${supportEmail}`}
-                  className="brand-control inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-(--line) bg-white px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-(--muted) sm:min-h-12"
                 >
                   {supportEmail}
                 </a>
@@ -434,11 +442,11 @@ export function Header() {
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 hidden border-t border-(--line) bg-white/95 px-4 pb-[calc(env(safe-area-inset-bottom)+0.55rem)] pt-2 shadow-[0_-10px_30px_rgba(0,0,0,0.09)] md:block xl:hidden">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-2">
+      <div className="fixed inset-x-0 bottom-0 z-30 hidden border-t border-(--line) bg-white/95 pb-[calc(env(safe-area-inset-bottom)+0.55rem)] pt-2 shadow-[0_-10px_30px_rgba(0,0,0,0.09)] md:block xl:hidden">
+        <div className="grid w-full grid-cols-3 gap-2">
           <Link
             href="/menu"
-            className={`brand-control inline-flex min-h-12 items-center justify-center rounded-md border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] ${
+            className={`inline-flex min-h-12 items-center justify-center rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] ${
               isActive("/menu")
                 ? "border-(--sun) bg-(--sun) text-white"
                 : "border-(--line) bg-white text-(--muted)"
@@ -448,7 +456,7 @@ export function Header() {
           </Link>
           <Link
             href="/plans"
-            className={`brand-control inline-flex min-h-12 items-center justify-center rounded-md border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] ${
+            className={`inline-flex min-h-12 items-center justify-center rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] ${
               isActive("/plans")
                 ? "border-(--sun) bg-(--sun) text-white"
                 : "border-(--line) bg-white text-(--muted)"
@@ -458,7 +466,7 @@ export function Header() {
           </Link>
           <Link
             href="/checkout"
-            className="brand-control tropical-sheen inline-flex min-h-12 items-center justify-center rounded-xl bg-[#5FA8C7] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white"
+            className="apple-button-primary inline-flex min-h-12 items-center justify-center rounded-full px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white"
           >
             {headerCtaSecondary}
           </Link>

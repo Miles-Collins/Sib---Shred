@@ -30,7 +30,7 @@ export default async function MenuPage() {
     <div className="flex min-h-full flex-col bg-(--background) text-(--ink)">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-5 py-8 sm:px-8 md:pb-28 xl:pb-8">
+      <main className="flex w-full flex-1 flex-col gap-8 py-8 md:pb-28 xl:pb-8">
         <section className="motion-sticky rounded-2xl border border-(--line) bg-(--paper-soft) p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="brand-kicker text-(--muted)">

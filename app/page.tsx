@@ -12,7 +12,7 @@ import {
   testimonials,
 } from "./components/landing/data";
 import { getHomePageContentFromSanity, getHomepagePostsFromSanity } from "@/sanity/lib/queries";
-import { getMealCatalog } from "@/lib/meal-catalog";
+import { getAllMealCatalog, getMealCatalog } from "@/lib/meal-catalog";
 import { buildPageMetadata, siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -42,6 +42,7 @@ function slugify(input: string) {
 
 export default async function Home() {
   const mealCatalog = await getMealCatalog();
+  const allMealCatalog = await getAllMealCatalog();
   const defaultCategoryHighlights = [
     {
       title: "Under 500",
@@ -147,7 +148,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
       />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 pb-20 pt-4 sm:px-8 md:pb-28 xl:pb-20">
+      <main className="flex w-full flex-col gap-14 pb-20 pt-4 md:pb-28 xl:pb-20">
         <Hero />
 
         <section className="motion-reveal brand-grid grid gap-3 rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-4 md:grid-cols-2 lg:grid-cols-4">
@@ -201,25 +202,12 @@ export default async function Home() {
           </div>
         </section>
 
-        <section id="menu" className="motion-reveal space-y-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="brand-kicker text-(--muted)">
-                Weekly spotlight
-              </p>
-              <h2 className="brand-section-title mt-1 text-3xl sm:text-4xl">
-                Featured meals
-              </h2>
-            </div>
-            <Link
-              href="/menu"
-              className="brand-nav-link text-sm font-bold uppercase tracking-[0.12em] text-(--ink) underline-offset-4 hover:underline"
-            >
-              View all 40+ meals
-            </Link>
+        <section id="menu" className="motion-reveal weekly-specials-shell space-y-6 py-7 sm:py-9">
+          <div className="text-center">
+            <h2 className="brand-section-title text-3xl sm:text-5xl">Weekly Specials</h2>
           </div>
 
-          <FeaturedMealsCarousel meals={mealCatalog} />
+          <FeaturedMealsCarousel meals={mealCatalog} allMeals={allMealCatalog} />
         </section>
 
         <section className="motion-reveal space-y-5 rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-6 sm:p-8">

@@ -3,7 +3,7 @@ import "server-only";
 import { prisma } from "@/lib/prisma";
 import { featuredMeals, plans as fallbackPlans } from "@/app/components/landing/data";
 import type { Meal, Plan } from "@/app/components/landing/types";
-import { getMealsFromSanity } from "@/sanity/lib/queries";
+import { getAllMealsFromSanity, getMealsFromSanity } from "@/sanity/lib/queries";
 
 function canQueryDatabase() {
   return Boolean(process.env.DATABASE_URL || process.env.DIRECT_URL);
@@ -113,6 +113,51 @@ export async function getMealCatalog(): Promise<Meal[]> {
   try {
     records = await prisma.meal.findMany({
       where: { isActive: true },
+      orderBy: { createdAt: "asc" },
+    });
+  } catch {
+    return parseMeals();
+  }
+
+  if (records.length === 0) {
+    return parseMeals();
+  }
+
+  return records.map(toMeal);
+}
+
+export async function getAllMealCatalog(): Promise<Meal[]> {
+  const sanityMeals = await getAllMealsFromSanity();
+  if (sanityMeals.length > 0) {
+    return sanityMeals.map((meal) => ({
+      slug: meal.slug,
+      name: meal.name,
+      subtitle: meal.subtitle ?? undefined,
+      description: meal.description,
+      allergens: meal.allergens ?? "",
+      facilityNote: meal.facilityNote ?? "",
+      dietaryTags: Array.isArray(meal.dietaryTags) ? meal.dietaryTags : [],
+      calories: meal.calories,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fat: meal.fat,
+      sodium: meal.sodium ?? "0mg",
+      ingredients: Array.isArray(meal.ingredients) ? meal.ingredients : [],
+      isGlutenFree: Boolean(meal.isGlutenFree),
+      tag: meal.tag,
+      price: normalizeDisplayPrice(meal.price),
+      image: meal.imageUrl ?? "/meal-chipotle.svg",
+    }));
+  }
+
+  if (!canQueryDatabase()) {
+    return parseMeals();
+  }
+
+  let records: Awaited<ReturnType<typeof prisma.meal.findMany>> = [];
+
+  try {
+    records = await prisma.meal.findMany({
       orderBy: { createdAt: "asc" },
     });
   } catch {

@@ -86,7 +86,7 @@ export default async function JournalPostPage({ params }: JournalPostPageProps) 
     <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
+      <main className="flex w-full flex-1 flex-col gap-8 py-10">
         <div className="text-[15px] text-[var(--muted)]">
           <Link href="/" className="hover:underline">
             Home

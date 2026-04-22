@@ -94,7 +94,7 @@ async function PlansPageContent({
     <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-5 py-10 sm:px-8">
+      <main className="flex w-full flex-1 flex-col gap-10 py-10">
         <section className="brand-shell grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-(--muted)">

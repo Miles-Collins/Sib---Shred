@@ -56,7 +56,7 @@ export default async function Footer() {
 
   return (
     <footer className="border-t border-(--line) bg-white/70">
-      <div className="mx-auto grid w-full max-w-6xl gap-5 px-5 py-8 text-sm text-(--muted) sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
+      <div className="grid w-full gap-5 py-8 text-sm text-(--muted) sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="text-lg font-black text-(--ink)">{settings?.brandName || "SIB METHOD"}</p>
           <p className="mt-1">{settings?.footerTagline || "Healthy Meals Delivered by Alysha"}</p>
@@ -79,7 +79,7 @@ export default async function Footer() {
           <p>{settings?.supportEmail || "info@sibmethod.com"}</p>
         </div>
       </div>
-      <div className="border-t border-(--line) px-5 py-4 text-center text-xs text-(--muted) sm:px-8">
+      <div className="border-t border-(--line) py-4 text-center text-xs text-(--muted)">
         {settings?.footerCopyright || "© 2026 Sib Method - All Rights Reserved."}
       </div>
     </footer>

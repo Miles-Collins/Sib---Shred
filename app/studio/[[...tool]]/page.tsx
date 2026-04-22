@@ -25,7 +25,7 @@ export default async function StudioPage({ searchParams }: StudioPageProps) {
 
   if (!isSanityConfigured()) {
     return (
-      <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center gap-4 px-6 py-10">
+      <main className="flex min-h-screen w-full flex-col justify-center gap-4 py-10">
         <h1 className="text-3xl font-black tracking-tight">Sanity is not configured yet.</h1>
         <p className="text-(--muted)">
           Add NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET to your environment variables,

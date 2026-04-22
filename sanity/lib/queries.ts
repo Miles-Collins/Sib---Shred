@@ -269,6 +269,27 @@ const mealsQuery = groq`*[_type == "meal" && isActive == true] | order(name asc)
   isFeatured
 }`;
 
+const mealsAllQuery = groq`*[_type == "meal"] | order(name asc){
+  "slug": slug.current,
+  name,
+  subtitle,
+  description,
+  allergens,
+  facilityNote,
+  dietaryTags,
+  calories,
+  protein,
+  carbs,
+  fat,
+  sodium,
+  ingredients,
+  isGlutenFree,
+  tag,
+  price,
+  "imageUrl": image.asset->url,
+  isFeatured
+}`;
+
 const plansPageQuery = groq`*[_type == "plansPage"][0]{
   heroKicker,
   heroTitle,
@@ -569,6 +590,44 @@ export async function getMealsFromSanity(): Promise<SanityMeal[]> {
     const selectedMeals = featuredMeals.length > 0 ? featuredMeals : activeMeals;
 
     return selectedMeals.map((meal) => ({
+      slug: meal.slug,
+      name: meal.name,
+      subtitle: meal.subtitle,
+      description: meal.description,
+      allergens: meal.allergens,
+      facilityNote: meal.facilityNote,
+      dietaryTags: filterStringArray(meal.dietaryTags),
+      calories: Number.isFinite(meal.calories) ? meal.calories : 0,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fat: meal.fat,
+      sodium: meal.sodium,
+      ingredients: filterStringArray(meal.ingredients),
+      isGlutenFree: Boolean(meal.isGlutenFree),
+      tag: meal.tag,
+      price: meal.price,
+      imageUrl: meal.imageUrl,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllMealsFromSanity(): Promise<SanityMeal[]> {
+  if (!canUseSanityClient()) {
+    return [];
+  }
+
+  try {
+    const meals = await sanityClient.fetch<
+      Array<SanityMeal & { isFeatured?: boolean }>
+    >(mealsAllQuery, {}, { next: { revalidate: 120 } });
+
+    const allMeals = Array.isArray(meals)
+      ? meals.filter((meal) => meal?.slug && meal?.name && meal?.description && meal?.price)
+      : [];
+
+    return allMeals.map((meal) => ({
       slug: meal.slug,
       name: meal.name,
       subtitle: meal.subtitle,

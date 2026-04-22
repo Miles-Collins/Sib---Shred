@@ -39,7 +39,7 @@ export default async function JournalPage() {
     <div className="flex min-h-full flex-col bg-[var(--bg-cream)] text-[var(--ink)]">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
+      <main className="flex w-full flex-1 flex-col gap-8 py-10">
         <section className="brand-shell p-6 sm:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
             {pageContent?.listKicker || "Journal"}

@@ -54,7 +54,7 @@ export default async function AboutPage() {
     <div className="flex min-h-full flex-col text-(--ink)">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-10 sm:px-8">
+      <main className="flex w-full flex-1 flex-col gap-8 py-10">
         <section className="overflow-hidden rounded-[1.2rem] border border-(--border-light) bg-[#F4FAFD] p-4 shadow-md shadow-black/5 sm:p-8 lg:p-10">
           <div className="relative grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div className="relative">

@@ -100,7 +100,7 @@ export default async function MealPage({ params }: MealPageProps) {
     <div className="flex min-h-full flex-col bg-(--bg-cream) text-(--ink)">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-6 sm:px-8">
+      <main className="flex w-full flex-1 flex-col gap-8 py-6">
         <div className="text-[15px] text-(--muted)">
           <Link href="/" className="hover:underline">
             Home

@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --ocean-light: #EAF6FB;
-  --ocean-mid: #D6EDF5;
-  --ocean-accent: #7FC8E3;
-  --ocean-primary: #5FA8C7;
-  --sand-light: #F7EFE5;
-  --sand-mid: #F1E4D3;
-  --text-primary: #1F3A40;
-  --text-secondary: #2F5D62;
-  --border-light: #E6EEF2;
+  --ocean-light: #eff8fc;
+  --ocean-mid: #d9edf5;
+  --ocean-accent: #74bedb;
+  --ocean-primary: #4f9dbf;
+  --sand-light: #f7eee2;
+  --sand-mid: #efdfcb;
+  --text-primary: #17343d;
+  --text-secondary: #335d68;
+  --border-light: #d9e8ef;
 
   --bg-cream: var(--ocean-light);
   --ink: var(--text-primary);
@@ -25,7 +25,7 @@
   --lagoon: var(--ocean-primary);
   --sand: var(--sand-light);
   --paper: #ffffff;
-  --paper-soft: #F4FAFD;
+  --paper-soft: #f4f9fc;
   --shadow-card: 0 4px 12px rgba(95, 168, 199, 0.10);
   --shadow-raise: 0 8px 20px rgba(95, 168, 199, 0.14);
   --background: var(--bg-cream);
@@ -62,6 +62,11 @@ body {
     filter 160ms ease;
 }
 
+/* Apple-inspired hard-edge variant requested: remove all rounded corners globally. */
+[class*="rounded"] {
+  border-radius: 0 !important;
+}
+
 :where(a, button, summary, select, [role="button"]):hover {
   transform: translateY(-1px);
 }
@@ -81,7 +86,7 @@ body {
 }
 
 :where(.brand-card-hover):hover .motion-card-image {
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-2px);
 }
 
 :where(a, button, summary, select, [role="button"]):active {
@@ -261,6 +266,26 @@ h2 {
   transform: translateY(-1px);
 }
 
+.no-hover-carousel :where(a, button, [role="button"]):hover,
+.no-hover-carousel .brand-card-hover:hover,
+.no-hover-carousel .motion-lift:hover,
+.no-hover-carousel .motion-badge:hover,
+.no-hover-carousel .apple-nav-link:hover {
+  transform: none !important;
+  filter: none !important;
+}
+
+.no-hover-carousel .brand-card-hover:hover {
+  box-shadow: var(--shadow-card) !important;
+  border-color: var(--line) !important;
+}
+
+.no-hover-carousel .brand-control:hover,
+.no-hover-carousel .apple-button-primary:hover,
+.no-hover-carousel .apple-button-secondary:hover {
+  box-shadow: none !important;
+}
+
 .motion-badge {
   transition:
     transform 160ms ease,
@@ -365,6 +390,95 @@ h2 {
   outline-offset: 2px;
 }
 
+.header-surface {
+  background: rgba(255, 255, 255, 0.84);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.apple-nav-link {
+  letter-spacing: 0.01em;
+  padding-bottom: 0.35rem;
+  transition: color 150ms ease;
+}
+
+.apple-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: color-mix(in oklab, var(--ink) 88%, white 12%);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 180ms ease;
+}
+
+.apple-nav-link:hover::after,
+.apple-nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.apple-button-primary,
+.apple-button-secondary {
+  border: 1px solid transparent;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.apple-button-primary {
+  background: color-mix(in oklab, var(--sun) 90%, #0b2432 10%);
+  box-shadow: 0 10px 26px rgba(9, 64, 82, 0.22);
+}
+
+.apple-button-primary:hover {
+  box-shadow: 0 14px 30px rgba(9, 64, 82, 0.25);
+}
+
+.apple-button-secondary {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--ink);
+}
+
+.apple-button-secondary:hover {
+  background: #ffffff;
+  border-color: #9bc3d4;
+}
+
+.apple-hero-surface {
+  border-color: #d9e8ef;
+  background:
+    radial-gradient(circle at 86% 14%, rgba(116, 190, 219, 0.2) 0%, rgba(116, 190, 219, 0) 30%),
+    radial-gradient(circle at 12% 100%, rgba(6, 66, 87, 0.14) 0%, rgba(6, 66, 87, 0) 34%),
+    linear-gradient(150deg, #f7efe3 0%, #f2f8fb 58%, #ebf5fa 100%);
+}
+
+.apple-hero-media {
+  transform: perspective(1200px) rotateY(-5deg) rotateX(1deg);
+  transform-origin: center;
+}
+
+.weekly-specials-shell {
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 1px solid rgba(15, 56, 74, 0.2);
+  background:
+    radial-gradient(circle at 85% -10%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 34%),
+    radial-gradient(circle at 5% 100%, rgba(173, 221, 241, 0.45) 0%, rgba(173, 221, 241, 0) 48%),
+    linear-gradient(180deg, #c7d9e3 0%, #b8ceda 100%);
+}
+
+@media (max-width: 1023px) {
+  .apple-hero-media {
+    transform: none;
+  }
+}
+
 .tropical-ribbon {
   position: relative;
   background:
@@ -408,12 +522,12 @@ h4 {
   }
 
   .tablet-hero-shell {
-    padding: 2rem;
+    padding: 2.15rem;
   }
 
   .tablet-hero-title {
-    font-size: 3.1rem;
-    line-height: 1.03;
+    font-size: 3.2rem;
+    line-height: 1.02;
   }
 
   .tablet-readable {
