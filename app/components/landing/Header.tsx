@@ -23,13 +23,11 @@ type SiteSettingsResponse = {
 };
 
 const FALLBACK_NAV_LINKS: SiteLink[] = [
+  { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
   { href: "/plans", label: "Plans" },
-  { href: "/journal", label: "Journal" },
-  { href: "/#how", label: "How It Works" },
-  { href: "/#reviews", label: "Testimonials" },
   { href: "/about", label: "About" },
-  { href: "/#blog", label: "Blog" },
+  { href: "/journal", label: "Journal" },
 ];
 
 export function Header() {
