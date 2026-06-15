@@ -286,10 +286,10 @@ export default async function Home() {
 
         <section className="motion-reveal overflow-hidden rounded-3xl border border-[#e4cfb0] bg-[#F5E6D3] p-6 text-(--ink) sm:p-9">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="brand-section-title max-w-lg text-3xl sm:text-4xl">
+            <h2 className="brand-section-title max-w-lg text-3xl [text-shadow:0_2px_10px_rgba(22,48,68,0.14)] sm:text-4xl">
               You are busy. Your nutrition plan should not be.
             </h2>
-            <p className="max-w-sm text-sm text-white/80">
+            <p className="max-w-sm text-sm text-[#5f5447] [text-shadow:0_1px_3px_rgba(255,255,255,0.5)]">
               A quick snapshot of where meal prep saves time without sacrificing
               quality.
             </p>
@@ -297,7 +297,7 @@ export default async function Home() {
           <div className="mt-6 overflow-x-auto">
             <table className="menu-table w-full border-separate border-spacing-y-2 text-left text-sm">
               <thead>
-                <tr className="text-white/75">
+                <tr className="font-semibold text-[#6f6251] [text-shadow:0_1px_2px_rgba(255,255,255,0.45)]">
                   <th className="px-3 py-2">Option</th>
                   <th className="px-3 py-2">Time per meal</th>
                   <th className="px-3 py-2">Typical cost</th>
