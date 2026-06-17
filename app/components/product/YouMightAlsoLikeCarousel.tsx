@@ -67,8 +67,10 @@ export function YouMightAlsoLikeCarousel({
 
   useEffect(() => {
     if (startIndex > maxStart) {
-      setStartIndex(maxStart);
+      const raf = requestAnimationFrame(() => setStartIndex(maxStart));
+      return () => cancelAnimationFrame(raf);
     }
+    return;
   }, [maxStart, startIndex]);
 
   const moveTo = (index: number) => {
