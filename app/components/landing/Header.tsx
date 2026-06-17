@@ -230,13 +230,17 @@ export function Header() {
 
   return (
     <header className="header-surface tablet-landscape-header sticky top-0 z-50 border-b border-(--border-light)">
-      <nav className="tablet-main-nav w-full">
+      <a href="#main" className="sr-only focus:not-sr-only">
+        Skip to main content
+      </a>
+      <nav role="navigation" aria-label="Primary navigation" className="tablet-main-nav w-full">
         <div className="flex w-full items-center justify-between px-3 py-2.5 xl:hidden">
           <button
             ref={menuButtonRef}
             type="button"
             aria-label="Toggle navigation menu"
             aria-controls="primary-tablet-nav"
+            aria-expanded={isMenuOpen}
             data-expanded={isMenuOpen ? "true" : "false"}
             onClick={() => setIsMenuOpen((prev) => !prev)}
             className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-(--ink) transition-colors hover:bg-[#e8f2f6]"
@@ -261,7 +265,7 @@ export function Header() {
             </span>
           </button>
 
-          <Link href="/" className="-ml-2 flex flex-col items-center text-center">
+          <Link href="/" aria-label="Home" className="-ml-2 flex flex-col items-center text-center">
             <p className="tablet-brand-title brand-section-title text-[1.7rem] leading-none tracking-[0.035em]">
               {brandName}
             </p>
@@ -270,7 +274,7 @@ export function Header() {
 
           <Link
             href="/checkout"
-            aria-label="Open cart"
+            aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} items` : ''}`}
             className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-(--ink) transition-colors hover:bg-[#e8f2f6]"
           >
             <svg
@@ -306,6 +310,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
                 className={`apple-nav-link relative inline-flex items-center whitespace-nowrap transition-colors ${
                   isActive(item.href) ? "is-active text-[#111111]" : "text-[#38383a] hover:text-[#111111]"
                 }`}
@@ -369,6 +374,7 @@ export function Header() {
             <Link
               key={`tablet-tab-${item.href}`}
               href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
               className={`inline-flex min-h-11 items-center justify-center rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition ${
                 isActive(item.href)
                   ? "border-(--sun) bg-(--sun) text-white"
@@ -410,6 +416,7 @@ export function Header() {
                     key={`tablet-${item.href}`}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
+                    aria-current={isActive(item.href) ? "page" : undefined}
                     className={`inline-flex min-h-11 items-center rounded-full border border-(--line) px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] transition sm:min-h-12 ${
                       isActive(item.href)
                         ? "bg-(--sun) text-white border-(--sun)"
@@ -444,6 +451,7 @@ export function Header() {
         <div className="grid w-full grid-cols-3 gap-2">
           <Link
             href="/menu"
+            aria-current={isActive("/menu") ? "page" : undefined}
             className={`inline-flex min-h-12 items-center justify-center rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] ${
               isActive("/menu")
                 ? "border-(--sun) bg-(--sun) text-white"
@@ -454,6 +462,7 @@ export function Header() {
           </Link>
           <Link
             href="/plans"
+            aria-current={isActive("/plans") ? "page" : undefined}
             className={`inline-flex min-h-12 items-center justify-center rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] ${
               isActive("/plans")
                 ? "border-(--sun) bg-(--sun) text-white"
