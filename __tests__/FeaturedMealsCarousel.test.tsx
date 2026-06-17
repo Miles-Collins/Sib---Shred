@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
 
 import { FeaturedMealsCarousel } from '../app/components/landing/FeaturedMealsCarousel'
 import type { Meal } from '../app/components/landing/types'
@@ -27,8 +26,12 @@ const makeMeal = (i: number): Meal => ({
 describe('FeaturedMealsCarousel', () => {
   beforeEach(() => {
     // ensure requestAnimationFrame available
-    // @ts-ignore
-    global.requestAnimationFrame = global.requestAnimationFrame || ((cb) => setTimeout(cb, 0))
+    if (!globalThis.requestAnimationFrame) {
+      Object.defineProperty(globalThis, 'requestAnimationFrame', {
+        configurable: true,
+        value: (cb: FrameRequestCallback) => window.setTimeout(() => cb(performance.now()), 0),
+      })
+    }
     // mock scrollWidth/scrollLeft computations if needed
   })
 

@@ -12,10 +12,9 @@ import { Header } from '../app/components/landing/Header'
 describe('Header', () => {
   beforeEach(() => {
     // Mock site-settings fetch
-    // @ts-ignore
-    global.fetch = vi.fn(() =>
+    globalThis.fetch = vi.fn(() =>
       Promise.resolve({ ok: true, json: () => Promise.resolve({ settings: { brandName: 'Test Brand', brandSubtitle: 'Meal Prep', primaryNavLinks: [{ href: '/', label: 'Home' }] } }) }),
-    )
+    ) as unknown as typeof fetch
 
     localStorage.clear()
   })
