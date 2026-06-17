@@ -80,7 +80,7 @@ export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCar
     return copy;
   }, [clientSeed, meals]);
 
-  const orderedMeals = shuffledMeals.length > 0 ? shuffledMeals : [];
+  const orderedMeals = useMemo(() => (shuffledMeals.length > 0 ? shuffledMeals : []), [shuffledMeals]);
   const shuffledAllMeals = useMemo(() => {
     const source = allMeals.length > 0 ? allMeals : orderedMeals;
 
