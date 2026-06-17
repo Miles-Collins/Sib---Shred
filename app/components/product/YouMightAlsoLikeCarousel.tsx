@@ -66,8 +66,10 @@ export function YouMightAlsoLikeCarousel({
   }, [suggestions.length]);
 
   useEffect(() => {
-    setStartIndex((current) => Math.min(current, maxStart));
-  }, [maxStart]);
+    if (startIndex > maxStart) {
+      setStartIndex(maxStart);
+    }
+  }, [maxStart, startIndex]);
 
   const moveTo = (index: number) => {
     const clamped = Math.max(0, Math.min(maxStart, index));
