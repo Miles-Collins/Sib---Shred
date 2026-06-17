@@ -1,5 +1,7 @@
 # Sib Method Website
 
+[![CI](https://github.com/Miles-Collins/Sib---Shred/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Miles-Collins/Sib---Shred/actions/workflows/ci.yml)
+
 This is the main website for Sib Method, built with Next.js.
 
 It includes:
