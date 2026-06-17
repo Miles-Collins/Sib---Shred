@@ -44,7 +44,7 @@ export default async function MenuPage() {
           </p>
         </header>
 
-        <section className="motion-sticky rounded-2xl border border-(--line) bg-(--paper-soft) p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
+        <section className="rounded-2xl border border-(--line) bg-(--paper-soft) p-3 shadow-[0_10px_26px_rgba(16,27,23,0.06)] sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="brand-kicker text-(--muted)">
               {menuPageContent?.progressKicker || "Order progress"}
