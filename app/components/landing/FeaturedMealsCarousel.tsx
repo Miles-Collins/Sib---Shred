@@ -241,10 +241,10 @@ export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCar
             scrollTrackByAmount("top", -1);
             scrollTrackByAmount("bottom", 1, 260);
           }}
-          className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center border border-white/35 bg-white/12 text-(--ink) backdrop-blur-md transition hover:bg-white/22 hover:border-white/45"
+          className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center border border-white/55 bg-white/28 text-[#17343d] shadow-[0_10px_24px_rgba(10,45,57,0.14)] backdrop-blur-md transition hover:bg-white/42 hover:border-white/70 hover:shadow-[0_12px_28px_rgba(10,45,57,0.18)]"
           aria-label="Scroll featured meals left"
         >
-          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="m15 18-6-6 6-6" />
           </svg>
         </button>
@@ -255,10 +255,10 @@ export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCar
             scrollTrackByAmount("top", 1);
             scrollTrackByAmount("bottom", -1, 260);
           }}
-          className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center border border-white/35 bg-white/12 text-(--ink) backdrop-blur-md transition hover:bg-white/22 hover:border-white/45"
+          className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center border border-white/55 bg-white/28 text-[#17343d] shadow-[0_10px_24px_rgba(10,45,57,0.14)] backdrop-blur-md transition hover:bg-white/42 hover:border-white/70 hover:shadow-[0_12px_28px_rgba(10,45,57,0.18)]"
           aria-label="Scroll featured meals right"
         >
-          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="m9 18 6-6-6-6" />
           </svg>
         </button>
