@@ -33,7 +33,7 @@ const shuffledBySeed = (source: Meal[], seed: number) => {
   return copy;
 };
 
-const AUTO_SCROLL_INTERVAL_MS = 2500;
+const AUTO_SCROLL_INTERVAL_MS = 3250;
 
 export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCarouselProps) {
   const topScrollerRef = useRef<HTMLDivElement | null>(null);
