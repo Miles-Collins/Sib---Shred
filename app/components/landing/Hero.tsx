@@ -60,13 +60,13 @@ export function Hero() {
 
         <div className="relative">
           <div className="apple-hero-media relative overflow-hidden rounded-4xl border border-[#d8e7ee] bg-[linear-gradient(165deg,#ffffff,#eef8fb)] p-2 shadow-[0_30px_80px_rgba(10,45,57,0.16)]">
-            <div className="relative h-85 overflow-hidden rounded-[1.65rem] sm:h-108">
+            <div className="relative h-72 overflow-hidden rounded-[1.65rem] sm:h-96">
               <Image
                 src="/alysha-portrait.png"
                 alt="Alysha plating premium meal prep"
                 fill
                 priority
-                className="object-cover object-center"
+                className="object-contain object-center"
                 sizes="(max-width: 1024px) 100vw, 44vw"
               />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,24,29,0)_38%,rgba(4,24,29,0.5)_100%)]" />
