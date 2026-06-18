@@ -56,7 +56,7 @@ export default async function Footer() {
 
   return (
     <footer className="border-t border-(--line) bg-white/70">
-      <div className="grid w-full gap-5 py-8 text-sm text-(--muted) sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-full gap-5 px-4 py-8 text-sm text-(--muted) sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
         <div>
           <p className="text-lg font-black text-(--ink)">{settings?.brandName || "SIB METHOD"}</p>
           <p className="mt-1">{settings?.footerTagline || "Healthy Meals Delivered by Alysha"}</p>
