@@ -33,6 +33,8 @@ const shuffledBySeed = (source: Meal[], seed: number) => {
   return copy;
 };
 
+const AUTO_SCROLL_INTERVAL_MS = 4200;
+
 export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCarouselProps) {
   const topScrollerRef = useRef<HTMLDivElement | null>(null);
   const bottomScrollerRef = useRef<HTMLDivElement | null>(null);
@@ -156,7 +158,7 @@ export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCar
 
       topScroller.scrollBy({ left: getTopStep(topScroller), behavior: "smooth" });
       bottomScroller.scrollBy({ left: -260, behavior: "smooth" });
-    }, 6500);
+    }, AUTO_SCROLL_INTERVAL_MS);
 
     return () => {
       window.clearInterval(tick);
