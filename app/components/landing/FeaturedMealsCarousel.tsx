@@ -234,6 +234,36 @@ export function FeaturedMealsCarousel({ meals, allMeals = [] }: FeaturedMealsCar
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
     >
+      <div className="pointer-events-none absolute inset-y-0 left-0 right-0 hidden items-center justify-between px-2 lg:flex">
+        <button
+          type="button"
+          onClick={() => {
+            scrollTrackByAmount("top", -1);
+            scrollTrackByAmount("bottom", 1, 260);
+          }}
+          className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center border border-white/35 bg-white/12 text-(--ink) backdrop-blur-md transition hover:bg-white/22 hover:border-white/45"
+          aria-label="Scroll featured meals left"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            scrollTrackByAmount("top", 1);
+            scrollTrackByAmount("bottom", -1, 260);
+          }}
+          className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center border border-white/35 bg-white/12 text-(--ink) backdrop-blur-md transition hover:bg-white/22 hover:border-white/45"
+          aria-label="Scroll featured meals right"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
       <div className="mb-4 flex items-center justify-end gap-2 md:hidden">
         <button
           type="button"
